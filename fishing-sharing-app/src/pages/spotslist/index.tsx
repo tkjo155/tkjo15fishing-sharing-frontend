@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import SpotList from '../components/SpotList'
+import SpotList from '../spotlist'
 import { Spot } from '@/Types'
 
 function App() {
