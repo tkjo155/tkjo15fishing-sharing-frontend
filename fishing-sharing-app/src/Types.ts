@@ -1,4 +1,4 @@
-export type Spot = {
+export type FishLogs = {
   id: number
   name: string
   prefecture: string
@@ -12,4 +12,11 @@ export type Spot = {
   isMiddleTide: boolean
   isNagashio: boolean
   isWakashio: boolean
+}
+
+export type Places = {
+  id: number
+  name: string
+  prefecture: string
+  placeId: number
 }

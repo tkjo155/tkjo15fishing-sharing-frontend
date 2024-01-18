@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import SpotList from '../spotlist'
-import { Spot } from '@/Types'
+import { Places } from '@/Types'
 
 function App() {
-  const [spots, setSpots] = useState<Spot[]>([])
+  const [spots, setSpots] = useState<Places[]>([])
 
   return (
     <div>
