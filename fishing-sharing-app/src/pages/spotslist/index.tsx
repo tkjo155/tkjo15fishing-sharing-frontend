@@ -3,11 +3,11 @@ import SpotList from '../spotlist'
 import { Places } from '@/Types'
 
 function App() {
-  const [spots, setSpots] = useState<Places[]>([])
+  const [places, setPlaces] = useState<Places[]>([])
 
   return (
     <div>
-      <SpotList spots={spots} setSpots={setSpots} />
+      <SpotList places={places} setPlaces={setPlaces} />
     </div>
   )
 }

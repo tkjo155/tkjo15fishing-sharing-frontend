@@ -4,22 +4,20 @@ import { Card, CardBody, Navbar, NavbarBrand, NavbarItem, NextUIProvider } from 
 import { Button } from '@nextui-org/react'
 
 type SpotListProps = {
-  spots: Places[]
-  setSpots: React.Dispatch<React.SetStateAction<Places[]>>
+  places: Places[]
+  setPlaces: React.Dispatch<React.SetStateAction<Places[]>>
 }
 
-const SpotList = ({ spots, setSpots }: SpotListProps) => {
-  const exampleFishLogs: Places[] = [
+const SpotList = ({ places, setPlaces }: SpotListProps) => {
+  const examplePlaces: Places[] = [
     {
       id: 1,
       name: '東京港',
-      prefecture: 'Tokyo',
       placeId: 123,
     },
     {
       id: 2,
       name: '大阪港',
-      prefecture: 'Osaka',
       placeId: 456,
     },
   ]
@@ -41,10 +39,10 @@ const SpotList = ({ spots, setSpots }: SpotListProps) => {
         </Navbar>
       </header>
       <h1 style={{ textAlign: 'center', width: '100%', fontSize: '24px' }}>釣り場一覧</h1>
-      {exampleFishLogs.map((exampleFishLog) => (
-        <Card key={exampleFishLog.id}>
+      {examplePlaces.map((examplePlace) => (
+        <Card key={examplePlace.id}>
           <CardBody>
-            <strong>{exampleFishLog.name}</strong> - {exampleFishLog.prefecture}
+            <strong>{examplePlace.name}</strong> - {examplePlace.placeId}
           </CardBody>
         </Card>
       ))}

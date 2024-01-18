@@ -10,6 +10,7 @@ export type FishLogs = {
   size: number
   isSpringTide: boolean
   isMiddleTide: boolean
+  isNeapTide: boolean
   isNagashio: boolean
   isWakashio: boolean
 }
@@ -17,6 +18,5 @@ export type FishLogs = {
 export type Places = {
   id: number
   name: string
-  prefecture: string
   placeId: number
 }
