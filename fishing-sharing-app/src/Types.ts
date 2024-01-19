@@ -1,7 +1,5 @@
 export type FishLogs = {
   id: number
-  name: string
-  prefecture: string
   placeId: number
   date: string
   image: string
