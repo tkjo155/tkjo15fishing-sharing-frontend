@@ -13,12 +13,12 @@ const SpotList = ({ places, setPlaces }: SpotListProps) => {
     {
       id: 1,
       name: '東京港',
-      placeId: 123,
+      prefectureId: 123,
     },
     {
       id: 2,
       name: '大阪港',
-      placeId: 456,
+      prefectureId: 456,
     },
   ]
 
@@ -42,7 +42,7 @@ const SpotList = ({ places, setPlaces }: SpotListProps) => {
       {examplePlaces.map((examplePlace) => (
         <Card key={examplePlace.id}>
           <CardBody>
-            <strong>{examplePlace.name}</strong> - {examplePlace.placeId}
+            <strong>{examplePlace.name}</strong> - {examplePlace.prefectureId}
           </CardBody>
         </Card>
       ))}
