@@ -16,5 +16,5 @@ export type FishLogs = {
 export type Places = {
   id: number
   name: string
-  placeId: number
+  prefectureId: number
 }
