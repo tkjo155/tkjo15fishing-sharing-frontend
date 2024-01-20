@@ -3,22 +3,22 @@ import { Places } from '@/Types'
 import { Card, CardBody, Navbar, NavbarBrand, NavbarItem, NextUIProvider } from '@nextui-org/react'
 import { Button } from '@nextui-org/react'
 
-type SpotListProps = {
+type PlacesListProps = {
   places: Places[]
   setPlaces: React.Dispatch<React.SetStateAction<Places[]>>
 }
 
-const SpotList = ({ places, setPlaces }: SpotListProps) => {
+const PlacesList = ({ places, setPlaces }: PlacesListProps) => {
   const examplePlaces: Places[] = [
     {
       id: 1,
       name: '東京港',
-      placeId: 123,
+      prefectureId: 123,
     },
     {
       id: 2,
       name: '大阪港',
-      placeId: 456,
+      prefectureId: 456,
     },
   ]
 
@@ -42,7 +42,7 @@ const SpotList = ({ places, setPlaces }: SpotListProps) => {
       {examplePlaces.map((examplePlace) => (
         <Card key={examplePlace.id}>
           <CardBody>
-            <strong>{examplePlace.name}</strong> - {examplePlace.placeId}
+            <strong>{examplePlace.name}</strong> - {examplePlace.prefectureId}
           </CardBody>
         </Card>
       ))}
@@ -50,4 +50,4 @@ const SpotList = ({ places, setPlaces }: SpotListProps) => {
   )
 }
 
-export default SpotList
+export default PlacesList
