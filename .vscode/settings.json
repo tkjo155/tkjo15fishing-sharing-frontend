@@ -1,0 +1,18 @@
+{
+  "editor.insertSpaces": true,
+  "editor.tabSize": 2,
+  "editor.detectIndentation": false,
+  "markdown.preview.breaks": true,
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode" // フォーマッタをprettierに指定
+  },
+  "editor.formatOnSave": true, // ファイル保存時にPrettierでフォーマット
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "eslint.options": {
+    "extensions": [".js", ".jsx", ".md", ".mdx", ".ts", ".tsx"]
+  },
+  "auto-close-tag.activationOnLanguage": ["xml", "php", "...", "mdx"]
+}
