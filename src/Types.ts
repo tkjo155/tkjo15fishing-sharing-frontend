@@ -1,3 +1,4 @@
+//釣行記録
 export type FishLogs = {
   id: number
   placeId: number
@@ -12,7 +13,7 @@ export type FishLogs = {
   isNagashio: boolean
   isWakashio: boolean
 }
-
+//港と都道府県情報(idで呼びだす)
 export type Places = {
   id: number
   name: string

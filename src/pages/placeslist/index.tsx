@@ -1,26 +1,26 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Places } from '@/Types'
 import { Card, CardBody, Navbar, NavbarBrand, NavbarItem, NextUIProvider } from '@nextui-org/react'
 import { Button } from '@nextui-org/react'
+import { gql, useQuery } from '@apollo/client'
+import { constants } from 'os'
 
-type PlacesListProps = {
-  places: Places[]
-  setPlaces: React.Dispatch<React.SetStateAction<Places[]>>
-}
+const GET_PLACES = gql`
+  query {
+    places {
+      id
+      name
+      prefectureId
+    }
+  }
+`
 
-const PlacesList = ({ places, setPlaces }: PlacesListProps) => {
-  const examplePlaces: Places[] = [
-    {
-      id: 1,
-      name: '東京港',
-      prefectureId: 123,
-    },
-    {
-      id: 2,
-      name: '大阪港',
-      prefectureId: 456,
-    },
-  ]
+const PlacesList = () => {
+  //「Task」の配列という型で空の配列を初期値とする
+  const { data: placesData, loading: placesLoading, error: placesError } = useQuery(GET_PLACES)
+
+  if (placesLoading) return <>Loading...</>
+  if (placesError) return <>{`Error! ${placesError.message}`}</>
 
   return (
     <div>
@@ -39,10 +39,10 @@ const PlacesList = ({ places, setPlaces }: PlacesListProps) => {
         </Navbar>
       </header>
       <h1 style={{ textAlign: 'center', width: '100%', fontSize: '24px' }}>釣り場一覧</h1>
-      {examplePlaces.map((examplePlace) => (
-        <Card key={examplePlace.id}>
+      {placesData.places.map((place: { id: number; name: string; prefectureId: number }) => (
+        <Card key={place.id}>
           <CardBody>
-            <strong>{examplePlace.name}</strong> - {examplePlace.prefectureId}
+            <strong>{place.name}</strong>
           </CardBody>
         </Card>
       ))}
