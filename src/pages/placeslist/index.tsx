@@ -4,6 +4,9 @@ import { Card, CardBody, Navbar, NavbarBrand, NavbarItem, NextUIProvider } from 
 import { Button } from '@nextui-org/react'
 import { gql, useQuery } from '@apollo/client'
 import { constants } from 'os'
+import { client } from '../_app'
+import dynamic from 'next/dynamic'
+import { AppProps } from 'next/app'
 
 const GET_PLACES = gql`
   query {
@@ -14,13 +17,17 @@ const GET_PLACES = gql`
     }
   }
 `
-
 const PlacesList = () => {
-  //「Task」の配列という型で空の配列を初期値とする
-  const { data: placesData, loading: placesLoading, error: placesError } = useQuery(GET_PLACES)
-
-  if (placesLoading) return <>Loading...</>
-  if (placesError) return <>{`Error! ${placesError.message}`}</>
+  // コンポーネント内で管理する状態
+  const [places, setPlaces] = useState<Places[]>([])
+  const { data: placesData } = useQuery(GET_PLACES)
+  // placesData が存在し、かつ placesData.places が配列である場合に setPlaces を呼び出す
+  useEffect(() => {
+    if (placesData && placesData.places) {
+      setPlaces(placesData.places)
+    }
+    //placesData が変更されることを確認
+  }, [placesData])
 
   return (
     <div>
@@ -39,15 +46,28 @@ const PlacesList = () => {
         </Navbar>
       </header>
       <h1 style={{ textAlign: 'center', width: '100%', fontSize: '24px' }}>釣り場一覧</h1>
-      {placesData.places.map((place: { id: number; name: string; prefectureId: number }) => (
-        <Card key={place.id}>
+      {places.map(({ name }: { name: string }) => (
+        <Card key={name}>
           <CardBody>
-            <strong>{place.name}</strong>
+            <strong>{name}</strong>
           </CardBody>
         </Card>
       ))}
     </div>
   )
+}
+
+export async function getStaticProps() {
+  const { data } = await client.query({
+    query: GET_PLACES,
+  })
+
+  return {
+    props: {
+      placesData: data,
+    },
+    revalidate: 60,
+  }
 }
 
 export default PlacesList
