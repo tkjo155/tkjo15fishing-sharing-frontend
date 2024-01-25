@@ -1,32 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { Places } from '@/Types'
+import { GET_PLACES } from '../graphql/getPlaces'
 import { Card, CardBody, Navbar, NavbarBrand, NavbarItem, NextUIProvider } from '@nextui-org/react'
 import { Button } from '@nextui-org/react'
-import { gql, useQuery } from '@apollo/client'
-import { constants } from 'os'
+import { useQuery } from '@apollo/client'
 import { client } from '../_app'
-import dynamic from 'next/dynamic'
-import { AppProps } from 'next/app'
 
-const GET_PLACES = gql`
-  query {
-    places {
-      id
-      name
-      prefectureId
-    }
-  }
-`
 const PlacesList = () => {
   // コンポーネント内で管理する状態
   const [places, setPlaces] = useState<Places[]>([])
   const { data: placesData } = useQuery(GET_PLACES)
-  // placesData が存在し、かつ placesData.places が配列である場合に setPlaces を呼び出す
+  //  placesData が変更されるたびにsetPlaces を呼び出す
   useEffect(() => {
-    if (placesData && placesData.places) {
-      setPlaces(placesData.places)
-    }
-    //placesData が変更されることを確認
+    placesData && setPlaces(placesData.places)
   }, [placesData])
 
   return (
@@ -46,10 +32,10 @@ const PlacesList = () => {
         </Navbar>
       </header>
       <h1 style={{ textAlign: 'center', width: '100%', fontSize: '24px' }}>釣り場一覧</h1>
-      {places.map(({ name }: { name: string }) => (
-        <Card key={name}>
+      {places.map((place) => (
+        <Card key={place.id}>
           <CardBody>
-            <strong>{name}</strong>
+            <strong>{place.name}</strong>
           </CardBody>
         </Card>
       ))}
