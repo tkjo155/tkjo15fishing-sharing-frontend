@@ -1,19 +1,34 @@
 import React, { useEffect, useState } from 'react'
 import { Places } from '@/Types'
-import { GET_PLACES } from '../graphql/getPlaces'
-import { Card, CardBody, Navbar, NavbarBrand, NavbarItem, NextUIProvider } from '@nextui-org/react'
+import { GET_PLACES } from '../../graphql/getPlaces'
+import {
+  Card,
+  CardBody,
+  Navbar,
+  NavbarBrand,
+  NavbarItem,
+  NextUIProvider,
+  dataFocusVisibleClasses,
+} from '@nextui-org/react'
 import { Button } from '@nextui-org/react'
 import { useQuery } from '@apollo/client'
 import { client } from '../_app'
 
 const PlacesList = () => {
-  // コンポーネント内で管理する状態
+  //「Task」の配列という型で空の配列を初期値とする
   const [places, setPlaces] = useState<Places[]>([])
-  const { data: placesData } = useQuery(GET_PLACES)
-  //  placesData が変更されるたびにsetPlaces を呼び出す
+  //定義したgraphqlクエリを使ってtaskデータを取得.useQuery(GraphQLデータをUIと共有するReactフック)は自動で状態入れてくれる.
+  const { data } = useQuery(GET_PLACES)
+
+  //[data]が変更された時だけ関数が発火する
   useEffect(() => {
-    placesData && setPlaces(placesData.places)
-  }, [placesData])
+    //asyncでこれは非同期処理の関数だと宣言
+    const fetchInitialPlaces = async () => {
+      const resultPlaces: Places[] = data?.places || []
+      setPlaces(resultPlaces)
+    }
+    fetchInitialPlaces()
+  }, [data])
 
   return (
     <div>
