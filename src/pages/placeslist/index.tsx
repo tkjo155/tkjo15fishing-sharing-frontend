@@ -15,9 +15,9 @@ import { useQuery } from '@apollo/client'
 import { client } from '../_app'
 
 const PlacesList = () => {
-  //「Task」の配列という型で空の配列を初期値とする
+  //「Places」の配列という型で空の配列を初期値とする
   const [places, setPlaces] = useState<Places[]>([])
-  //定義したgraphqlクエリを使ってtaskデータを取得.useQuery(GraphQLデータをUIと共有するReactフック)は自動で状態入れてくれる.
+  //定義したgraphqlクエリを使ってplacesデータを取得
   const { data } = useQuery(GET_PLACES)
 
   //[data]が変更された時だけ関数が発火する
