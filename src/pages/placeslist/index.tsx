@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Places } from '@/Types'
+import { Places, Prefectures } from '@/Types'
 import { GET_PLACES } from '../../graphql/getPlaces'
 import {
   Card,
@@ -13,22 +13,25 @@ import {
 import { Button } from '@nextui-org/react'
 import { useQuery } from '@apollo/client'
 import { client } from '../_app'
+import router from 'next/router'
+import { GET_PREFECTURES } from '@/graphql/getPrefecture'
 
 const PlacesList = () => {
-  //「Places」の配列という型で空の配列を初期値とする
   const [places, setPlaces] = useState<Places[]>([])
-  //定義したgraphqlクエリを使ってplacesデータを取得
+  const [prefectures, setPrefectures] = useState<Prefectures[]>([])
   const { data } = useQuery(GET_PLACES)
+  const { data: prefecturesData } = useQuery(GET_PREFECTURES)
 
-  //[data]が変更された時だけ関数が発火する
   useEffect(() => {
-    //asyncでこれは非同期処理の関数だと宣言
-    const fetchInitialPlaces = async () => {
-      const resultPlaces: Places[] = data?.places || []
-      setPlaces(resultPlaces)
+    // データが取得できたらPlacesをセット
+    if (data) {
+      setPlaces(data.places)
     }
-    fetchInitialPlaces()
-  }, [data])
+    // データが取得できたらPrefecturesをセット
+    if (prefecturesData) {
+      setPrefectures(prefecturesData.prefectures)
+    }
+  }, [data, prefecturesData])
 
   return (
     <div>
@@ -40,7 +43,11 @@ const PlacesList = () => {
             </p>
           </NavbarBrand>
           <NavbarItem>
-            <Button color='primary' variant='shadow'>
+            <Button
+              color='primary'
+              variant='shadow'
+              onClick={() => router.push('/placeregistration')}
+            >
               釣り場登録
             </Button>
           </NavbarItem>
@@ -51,6 +58,10 @@ const PlacesList = () => {
         <Card key={place.id}>
           <CardBody>
             <strong>{place.name}</strong>
+            <p>
+              {prefectures.find((prefecture) => prefecture.id == place.prefectureId)?.name ||
+                'Unknown'}
+            </p>
           </CardBody>
         </Card>
       ))}

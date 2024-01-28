@@ -18,4 +18,10 @@ export type Places = {
   id: number
   name: string
   prefectureId: number
+  prefecture?: Prefectures
+}
+
+export type Prefectures = {
+  id: number
+  name: string
 }
