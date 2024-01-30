@@ -13,15 +13,22 @@ export type FishLogs = {
   isNagashio: boolean
   isWakashio: boolean
 }
-//港と都道府県情報(idで呼びだす)
-export type Places = {
+
+export type Place = {
   id: number
   name: string
   prefectureId: number
-  prefecture?: Prefectures
 }
 
-export type Prefectures = {
+export type PlacesResponse = {
+  places: Place[]
+}
+
+export type Prefecture = {
   id: number
   name: string
+}
+
+export type PrefecturesResponse = {
+  prefectures: Prefecture[]
 }

@@ -1,54 +1,53 @@
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useState, useEffect } from 'react'
-import { Places } from '@/Types'
+import { Place } from '@/Types'
 import { useMutation, useQuery } from '@apollo/client'
 import { Button, Input, Navbar, NavbarBrand, Select, SelectItem } from '@nextui-org/react'
 import { CREATE_PLACE } from '@/graphql/createPlaces'
-import router, { useRouter } from 'next/router'
+import router from 'next/router'
 import { GET_PLACES } from '@/graphql/getPlaces'
-import { client } from '../_app'
-
-type PlaceInputProps = {
-  places: Places[]
-  setPlaces: React.Dispatch<React.SetStateAction<Places[]>>
-}
-
-interface FormData {
-  inputName: string
-  selectedPrefecture: string
-}
+import { PrefectureList } from '../prefectures'
 
 const PlaceRegistrationForm = () => {
+  //港情報登録
   const [createPlace] = useMutation(CREATE_PLACE)
-  const [inputTitle, setInputTitle] = useState('')
-  const [prefectures, setPrefectures] = useState<Places[]>([])
-
+  //港名の状態管理
+  const [inputName, setInputName] = useState('')
+  //placeの型でバリデーション
   const {
     register,
     handleSubmit,
     formState: { errors },
-    setError,
-  } = useForm<FormData>({})
+  } = useForm<Place>()
 
-  //完了ボタンを押したらデータ追加
-  const onSubmit: SubmitHandler<FormData> = async (formData) => {
-    const newPlace: Places = {
-      id: prefectures.length + 1,
-      name: formData.inputName,
-      prefectureId: parseInt(formData.selectedPrefecture),
-    }
+  //完了ボタンを押したらデータ追加、画面遷移
+  const onSubmit: SubmitHandler<Place> = async (formData) => {
     try {
-      await createPlace({
-        variables: {
-          create: {
-            name: newPlace.name,
-            prefectureId: newPlace.prefectureId,
+      //選択されたprefectureを取り出す
+      const selectedPrefecture = PrefectureList.find(
+        (prefecture) => prefecture.id == formData.prefectureId,
+      )
+
+      // 選択された都道府県が見つかったか確認
+      if (selectedPrefecture) {
+        // 必要な情報を抽出する
+        const { id } = selectedPrefecture
+        //データ追加
+        await createPlace({
+          variables: {
+            create: {
+              name: formData.name,
+              prefectureId: id,
+            },
           },
-        },
-        refetchQueries: [{ query: GET_PLACES }],
-      })
-      // 一覧画面に遷移
-      router.push('/placeslist')
+          //サーバーに変更を加えた後に UI を最新のデータで更新
+          refetchQueries: [{ query: GET_PLACES }],
+        })
+        // 一覧画面に遷移
+        router.push('/placeslist')
+      } else {
+        console.error('Selected prefecture not found.')
+      }
     } catch (error) {
       console.error('Error creating place:', error)
     }
@@ -70,9 +69,9 @@ const PlaceRegistrationForm = () => {
         <div className='flex w-full flex-wrap md:flex-nowrap gap-4'>
           <label style={{ fontSize: '18px', display: 'block' }}>港名</label>
 
-          {errors.inputName && <span style={{ color: 'red' }}>{errors.inputName.message}</span>}
+          {errors.name && <span style={{ color: 'red' }}>{errors.name.message}</span>}
           <Input
-            {...register('inputName', {
+            {...register('name', {
               required: '港名は必須です',
               maxLength: {
                 value: 50,
@@ -80,23 +79,21 @@ const PlaceRegistrationForm = () => {
               },
             })}
             type='text'
-            value={inputTitle}
-            onChange={(e) => setInputTitle(e.target.value)}
+            value={inputName}
+            onChange={(e) => setInputName(e.target.value)}
             style={{ width: '600px', margin: '5px 0 10px 0' }}
           />
         </div>
       </div>
       <label style={{ fontSize: '18px', display: 'block', marginTop: '30px' }}>都道府県</label>
-      {errors.selectedPrefecture && (
-        <span style={{ color: 'red' }}>{errors.selectedPrefecture.message}</span>
-      )}
+      {errors.prefectureId && <span style={{ color: 'red' }}>{errors.prefectureId.message}</span>}
       <div className='flex w-full flex-wrap md:flex-nowrap gap-4'>
         <Select
           label='Select prefecture'
           className='max-w-xs'
-          {...register('selectedPrefecture', { required: '都道府県は必須です' })}
+          {...register('prefectureId', { required: '都道府県は必須です' })}
         >
-          {prefectures.map((prefecture) => (
+          {PrefectureList.map((prefecture) => (
             <SelectItem key={prefecture.id}>{prefecture.name}</SelectItem>
           ))}
         </Select>

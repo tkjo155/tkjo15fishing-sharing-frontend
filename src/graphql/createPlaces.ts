@@ -10,4 +10,4 @@ export const CREATE_PLACE = gql`
       prefectureId
     }
   }
-  `
+`
