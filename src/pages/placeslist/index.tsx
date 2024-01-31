@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Place, PlacesResponse, Prefecture } from '@/Types'
+import { Place, PlacesResponse } from '@/Types'
 import { GET_PLACES } from '../../graphql/getPlaces'
 import { Card, CardBody, Navbar, NavbarBrand, NavbarItem } from '@nextui-org/react'
 import { Button } from '@nextui-org/react'
 import { useQuery } from '@apollo/client'
 import { client } from '../_app'
 import router from 'next/router'
-import { GET_PREFECTURES } from '@/graphql/getPrefecture'
 import { PrefectureList } from '../prefectures'
 
 const PlacesList = () => {
@@ -26,7 +25,7 @@ const PlacesList = () => {
       // 取得した場所を状態に設定
       setPlaces(resultPlaces)
     }
-    // コンポーネントがマウントされたとき、データまたは placeData が変更されたときに fetchInitialPlaces 関数を呼び出す
+    // コンポーネントがマウントされたとき、配列情報または placeData が変更されたときに fetchInitialPlaces 関数を呼び出す
     fetchInitialPlaces()
   }, [placesArrayData, placesData])
 
@@ -40,11 +39,7 @@ const PlacesList = () => {
             </p>
           </NavbarBrand>
           <NavbarItem>
-            <Button
-              color='primary'
-              variant='shadow'
-              onClick={() => router.push('/placeregistration')}
-            >
+            <Button color='primary' variant='shadow' onClick={() => router.push('/placeslist/new')}>
               釣り場登録
             </Button>
           </NavbarItem>
