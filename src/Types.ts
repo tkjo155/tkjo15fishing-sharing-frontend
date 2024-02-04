@@ -17,6 +17,18 @@ export type FishLogs = {
 export type Place = {
   id: number
   name: string
+  prefecture: string
+}
+
+export type PlaceList = {
+  id: number
+  name: string
+  prefecture: string
+}
+
+export type InputPlace = {
+  id: number
+  name: string
   prefectureId: number
 }
 

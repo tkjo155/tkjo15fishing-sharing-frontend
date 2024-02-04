@@ -1,74 +1,78 @@
-'use client'
-
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useEffect, useState } from 'react'
-import { Place, Prefecture } from '@/Types'
+import { InputPlace, Prefecture } from '@/Types'
 import { useMutation, useQuery } from '@apollo/client'
 import { Button, Input, Navbar, NavbarBrand, Select, SelectItem } from '@nextui-org/react'
 import { CREATE_PLACE } from '@/graphql/createPlaces'
 import router from 'next/router'
 import { GET_PLACES } from '@/graphql/getPlaces'
-import { PrefectureList } from '../../prefectures'
 import { GET_PREFECTURES } from '@/graphql/getPrefecture'
+import { createApolloClient } from '@/libs/client'
 
 const PlaceRegistrationForm = () => {
   //港情報登録
   const [createPlace] = useMutation(CREATE_PLACE)
+  //港情報取得
+  const { data: placesData } = useQuery(GET_PLACES)
   //都道府県情報取得
-  const { data } = useQuery(GET_PREFECTURES)
+  const { data: prefecturesData } = useQuery(GET_PREFECTURES)
+  const [prefectures, setPrefectures] = useState<Prefecture[]>([])
   //港名の状態管理
   const [inputName, setInputName] = useState('')
-  //都道府県の状態管理
-  const [prefectures, setPrefectures] = useState<Prefecture[]>([])
+
   //placeの型でバリデーション
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Place>()
+  } = useForm<InputPlace>()
+
   //[data]が変更された時だけ関数が発火する
   useEffect(() => {
     //初期位置データを取得
     const fetchInitialPrefectures = async () => {
       // データが prefecture プロパティを持つオブジェクトであると仮定
-      const resultPrefectures: Prefecture[] = data?.prefectures || []
+      const resultPrefectures: Prefecture[] = placesData?.prefectures || []
       // 取得した都道府県を状態に設定
       setPrefectures(resultPrefectures)
     }
     // コンポーネントがマウントされたとき、prefecture が変更されたときに fetchInitialPrefecture 関数を呼び出す
     fetchInitialPrefectures()
-  }, [data])
+  }, [placesData])
 
   //完了ボタンを押したらデータ追加、画面遷移
-  const onSubmit: SubmitHandler<Place> = async (formData) => {
+  const onSubmit: SubmitHandler<InputPlace> = async (formData) => {
     try {
       //選択されたprefectureを取り出す
-      const selectedPrefecture = PrefectureList.find(
-        (prefecture) => prefecture.id == formData.prefectureId,
+      const selectedPrefecture = prefecturesData?.prefectures.find(
+        (prefecture: Prefecture) => prefecture.id == formData.prefectureId,
       )
 
-      if (selectedPrefecture) {
-        //データ追加
-        await createPlace({
-          variables: {
-            create: {
-              name: formData.name,
-              prefectureId: selectedPrefecture.id,
-            },
-          },
-          //サーバーに変更を加えた後に UI を最新のデータで更新
-          refetchQueries: [{ query: GET_PLACES }],
-        })
-        // 一覧画面に遷移
-        router.push('/placeslist')
+      // selectedPrefecture が undefined の場合の処理
+      if (!selectedPrefecture) {
+        console.error('Selected prefecture not found.')
+        return // 処理を中断
       }
 
-      // 選択された都道府県がundefinedの時の処理
-      if (!selectedPrefecture) return
+      // データ追加
+      createPlace({
+        variables: {
+          create: {
+            name: formData.name,
+            prefectureId: parseInt(selectedPrefecture.id),
+          },
+        },
+        // サーバーに変更を加えた後に UI を最新のデータで更新
+        refetchQueries: [{ query: GET_PLACES }],
+      })
+
+      // 一覧画面に遷移
+      router.push('/placeslist')
     } catch (error) {
       console.error('Error creating place:', error)
     }
   }
+
   return (
     <form>
       <div>
@@ -109,8 +113,11 @@ const PlaceRegistrationForm = () => {
           className='max-w-xs'
           {...register('prefectureId', { required: '都道府県は必須です' })}
         >
-          {prefectures.map((prefecture) => (
-            <SelectItem key={prefecture.id}>{prefecture.name}</SelectItem>
+          {(prefecturesData?.prefectures! || []).map((prefecture: Prefecture) => (
+            //prefecturesData?.prefecturesがundefinedの場合、空の配列を返す
+            <SelectItem key={prefecture.id} value={prefecture.id}>
+              {prefecture.name}
+            </SelectItem>
           ))}
         </Select>
       </div>
@@ -130,6 +137,20 @@ const PlaceRegistrationForm = () => {
       </div>
     </form>
   )
+}
+
+//ビルド時にページを事前レンダリング
+export async function getStaticProps() {
+  const client = createApolloClient()
+  //GraphQL クエリ ( GET_PREFECTURES) をサーバーに送信
+  const { data } = await client.query({
+    query: GET_PREFECTURES,
+  })
+  return {
+    props: {
+      data,
+    },
+  }
 }
 
 export default PlaceRegistrationForm

@@ -5,7 +5,7 @@ export const GET_PLACES = gql`
     places {
       id
       name
-      prefectureId
+      prefecture
     }
   }
 `
