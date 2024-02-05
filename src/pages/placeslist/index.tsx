@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { PlacesResponse } from '@/Types'
+import { Place, PlacesResponse } from '@/Types'
 import { GET_PLACES } from '../../graphql/getPlaces'
 import { Card, CardBody, Navbar, NavbarBrand, NavbarItem } from '@nextui-org/react'
 import { Button } from '@nextui-org/react'
 import { useQuery } from '@apollo/client'
 import { client } from '../_app'
-import router from 'next/router'
+import Link from 'next/link'
 
 const PlacesList = () => {
   //港の配列状態管理/山括弧は TypeScript に使用
-  const [places, setPlaces] = useState<PlacesResponse>({ places: [] })
+  const [places, setPlaces] = useState<Place[]>()
   //港の配列情報取得/山括弧は TypeScript に使用
   const { data: placesData } = useQuery<PlacesResponse>(GET_PLACES)
   //港の配列情報取得/山括弧は TypeScript に使用
@@ -20,7 +20,7 @@ const PlacesList = () => {
     //初期位置データを取得
     const fetchInitialPlaces = async () => {
       // データが place プロパティを持つオブジェクトであると仮定
-      const resultPlaces: PlacesResponse = placesData || { places: [] }
+      const resultPlaces: Place[] = placesData?.places || []
       // 取得した場所を状態に設定
       setPlaces(resultPlaces)
     }
@@ -38,9 +38,11 @@ const PlacesList = () => {
             </p>
           </NavbarBrand>
           <NavbarItem>
-            <Button color='primary' variant='shadow' onClick={() => router.push('/placeslist/new')}>
-              釣り場登録
-            </Button>
+            <Link href={'/placeslist/new'} passHref legacyBehavior>
+              <Button color='primary' variant='shadow'>
+                釣り場登録
+              </Button>
+            </Link>
           </NavbarItem>
         </Navbar>
       </header>

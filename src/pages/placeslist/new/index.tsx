@@ -8,14 +8,18 @@ import router from 'next/router'
 import { GET_PLACES } from '@/graphql/getPlaces'
 import { GET_PREFECTURES } from '@/graphql/getPrefecture'
 import { createApolloClient } from '@/libs/client'
+import Link from 'next/link'
+import { GetStaticProps } from 'next'
 
-const PlaceRegistrationForm = () => {
+interface PlaceRegistrationFormProps {
+  data: {
+    prefectures: Prefecture[]
+  }
+}
+
+const PlaceRegistrationForm: React.FC<PlaceRegistrationFormProps> = ({ data }) => {
   //港情報登録
   const [createPlace] = useMutation(CREATE_PLACE)
-  //港情報取得
-  const { data: placesData } = useQuery(GET_PLACES)
-  //都道府県情報取得
-  const { data: prefecturesData } = useQuery(GET_PREFECTURES)
   const [prefectures, setPrefectures] = useState<Prefecture[]>([])
   //港名の状態管理
   const [inputName, setInputName] = useState('')
@@ -32,19 +36,19 @@ const PlaceRegistrationForm = () => {
     //初期位置データを取得
     const fetchInitialPrefectures = async () => {
       // データが prefecture プロパティを持つオブジェクトであると仮定
-      const resultPrefectures: Prefecture[] = placesData?.prefectures || []
+      const resultPrefectures: Prefecture[] = data?.prefectures || []
       // 取得した都道府県を状態に設定
       setPrefectures(resultPrefectures)
     }
     // コンポーネントがマウントされたとき、prefecture が変更されたときに fetchInitialPrefecture 関数を呼び出す
     fetchInitialPrefectures()
-  }, [placesData])
+  }, [data])
 
   //完了ボタンを押したらデータ追加、画面遷移
   const onSubmit: SubmitHandler<InputPlace> = async (formData) => {
     try {
       //選択されたprefectureを取り出す
-      const selectedPrefecture = prefecturesData?.prefectures.find(
+      const selectedPrefecture = data?.prefectures.find(
         (prefecture: Prefecture) => prefecture.id == formData.prefectureId,
       )
 
@@ -54,12 +58,12 @@ const PlaceRegistrationForm = () => {
         return // 処理を中断
       }
 
-      // データ追加
+      // データ追加s
       createPlace({
         variables: {
           create: {
             name: formData.name,
-            prefectureId: parseInt(selectedPrefecture.id),
+            prefectureId: Number(selectedPrefecture.id),
           },
         },
         // サーバーに変更を加えた後に UI を最新のデータで更新
@@ -113,7 +117,7 @@ const PlaceRegistrationForm = () => {
           className='max-w-xs'
           {...register('prefectureId', { required: '都道府県は必須です' })}
         >
-          {(prefecturesData?.prefectures! || []).map((prefecture: Prefecture) => (
+          {(data?.prefectures! || []).map((prefecture: Prefecture) => (
             //prefecturesData?.prefecturesがundefinedの場合、空の配列を返す
             <SelectItem key={prefecture.id} value={prefecture.id}>
               {prefecture.name}
@@ -122,15 +126,11 @@ const PlaceRegistrationForm = () => {
         </Select>
       </div>
       <div style={{ marginTop: '100px', textAlign: 'center' }}>
-        <Button
-          color='default'
-          variant='shadow'
-          size='lg'
-          style={{ marginRight: '50px' }}
-          onClick={() => router.push('/placeslist')}
-        >
-          キャンセル
-        </Button>
+        <Link href={'/placeslist'} passHref legacyBehavior>
+          <Button color='default' variant='shadow' size='lg' style={{ marginRight: '50px' }}>
+            キャンセル
+          </Button>
+        </Link>
         <Button color='primary' variant='shadow' size='lg' onClick={handleSubmit(onSubmit)}>
           完了
         </Button>
@@ -140,7 +140,7 @@ const PlaceRegistrationForm = () => {
 }
 
 //ビルド時にページを事前レンダリング
-export async function getStaticProps() {
+export const getStaticProps: GetStaticProps<PlaceRegistrationFormProps> = async () => {
   const client = createApolloClient()
   //GraphQL クエリ ( GET_PREFECTURES) をサーバーに送信
   const { data } = await client.query({
