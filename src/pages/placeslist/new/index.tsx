@@ -20,7 +20,6 @@ interface PlaceRegistrationFormProps {
 const PlaceForm = ({ data }: PlaceRegistrationFormProps) => {
   //港情報登録
   const [createPlace] = useMutation(CREATE_PLACE)
-  const [prefectures, setPrefectures] = useState<Prefecture[]>([])
   //港名の状態管理
   const [inputName, setInputName] = useState('')
 
@@ -34,10 +33,6 @@ const PlaceForm = ({ data }: PlaceRegistrationFormProps) => {
   //完了ボタンを押したらデータ追加、画面遷移
   const onSubmit: SubmitHandler<InputPlace> = async (formData) => {
     // selectedPrefecture が undefined の場合の処理
-    if (!setPrefectures) {
-      console.error('Selected prefecture not found.')
-      return // 処理を中断
-    }
 
     try {
       // データ追加

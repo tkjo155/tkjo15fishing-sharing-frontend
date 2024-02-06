@@ -1,5 +1,5 @@
 import React from 'react'
-import { Place, PlacesResponse } from '@/Types'
+import { PlacesResponse } from '@/Types'
 import { GET_PLACES } from '../../graphql/getPlaces'
 import { Card, CardBody, Navbar, NavbarBrand, NavbarItem } from '@nextui-org/react'
 import { Button } from '@nextui-org/react'
