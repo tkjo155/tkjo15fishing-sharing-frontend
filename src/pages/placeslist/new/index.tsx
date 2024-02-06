@@ -1,7 +1,7 @@
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { InputPlace, Prefecture } from '@/Types'
-import { useMutation, useQuery } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { Button, Input, Navbar, NavbarBrand, Select, SelectItem } from '@nextui-org/react'
 import { CREATE_PLACE } from '@/graphql/createPlaces'
 import router from 'next/router'
@@ -17,7 +17,7 @@ interface PlaceRegistrationFormProps {
   }
 }
 
-const PlaceRegistrationForm: React.FC<PlaceRegistrationFormProps> = ({ data }) => {
+const PlaceForm = ({ data }: PlaceRegistrationFormProps) => {
   //港情報登録
   const [createPlace] = useMutation(CREATE_PLACE)
   const [prefectures, setPrefectures] = useState<Prefecture[]>([])
@@ -31,39 +31,21 @@ const PlaceRegistrationForm: React.FC<PlaceRegistrationFormProps> = ({ data }) =
     formState: { errors },
   } = useForm<InputPlace>()
 
-  //[data]が変更された時だけ関数が発火する
-  useEffect(() => {
-    //初期位置データを取得
-    const fetchInitialPrefectures = async () => {
-      // データが prefecture プロパティを持つオブジェクトであると仮定
-      const resultPrefectures: Prefecture[] = data?.prefectures || []
-      // 取得した都道府県を状態に設定
-      setPrefectures(resultPrefectures)
-    }
-    // コンポーネントがマウントされたとき、prefecture が変更されたときに fetchInitialPrefecture 関数を呼び出す
-    fetchInitialPrefectures()
-  }, [data])
-
   //完了ボタンを押したらデータ追加、画面遷移
   const onSubmit: SubmitHandler<InputPlace> = async (formData) => {
+    // selectedPrefecture が undefined の場合の処理
+    if (!setPrefectures) {
+      console.error('Selected prefecture not found.')
+      return // 処理を中断
+    }
+
     try {
-      //選択されたprefectureを取り出す
-      const selectedPrefecture = data?.prefectures.find(
-        (prefecture: Prefecture) => prefecture.id == formData.prefectureId,
-      )
-
-      // selectedPrefecture が undefined の場合の処理
-      if (!selectedPrefecture) {
-        console.error('Selected prefecture not found.')
-        return // 処理を中断
-      }
-
-      // データ追加s
-      createPlace({
+      // データ追加
+      await createPlace({
         variables: {
           create: {
             name: formData.name,
-            prefectureId: Number(selectedPrefecture.id),
+            prefectureId: Number(formData.prefectureId),
           },
         },
         // サーバーに変更を加えた後に UI を最新のデータで更新
@@ -92,7 +74,6 @@ const PlaceRegistrationForm: React.FC<PlaceRegistrationFormProps> = ({ data }) =
         <h1 style={{ textAlign: 'center', width: '100%', fontSize: '24px' }}>釣り場登録</h1>
         <div className='flex w-full flex-wrap md:flex-nowrap gap-4'>
           <label style={{ fontSize: '18px', display: 'block' }}>港名</label>
-
           {errors.name && <span style={{ color: 'red' }}>{errors.name.message}</span>}
           <Input
             {...register('name', {
@@ -117,7 +98,7 @@ const PlaceRegistrationForm: React.FC<PlaceRegistrationFormProps> = ({ data }) =
           className='max-w-xs'
           {...register('prefectureId', { required: '都道府県は必須です' })}
         >
-          {(data?.prefectures! || []).map((prefecture: Prefecture) => (
+          {data.prefectures.map((prefecture) => (
             //prefecturesData?.prefecturesがundefinedの場合、空の配列を返す
             <SelectItem key={prefecture.id} value={prefecture.id}>
               {prefecture.name}
@@ -153,4 +134,4 @@ export const getStaticProps: GetStaticProps<PlaceRegistrationFormProps> = async 
   }
 }
 
-export default PlaceRegistrationForm
+export default PlaceForm
