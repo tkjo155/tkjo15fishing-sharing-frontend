@@ -3,8 +3,9 @@ import { PlacesResponse } from '@/Types'
 import { GET_PLACES } from '../../graphql/getPlaces'
 import { Card, CardBody, Navbar, NavbarBrand, NavbarItem } from '@nextui-org/react'
 import { Button } from '@nextui-org/react'
-import { client } from '../_app'
 import Link from 'next/link'
+import { GetServerSideProps } from 'next'
+import { createApolloClient } from '@/libs/client'
 
 interface PlacesListProps {
   placesData: PlacesResponse
@@ -44,16 +45,27 @@ const PlacesList = ({ placesData }: PlacesListProps) => {
   )
 }
 
-export async function getStaticProps() {
-  const { data } = await client.query({
-    query: GET_PLACES,
-  })
+export const getServerSideProps: GetServerSideProps = async () => {
+  const apolloClient = createApolloClient()
 
-  return {
-    props: {
-      placesData: data,
-    },
-    revalidate: 60,
+  try {
+    const { data } = await apolloClient.query({
+      query: GET_PLACES,
+    })
+
+    return {
+      props: {
+        placesData: data,
+      },
+    }
+  } catch (error) {
+    console.error('Error fetching data:', error)
+
+    return {
+      props: {
+        placesData: null,
+      },
+    }
   }
 }
 
