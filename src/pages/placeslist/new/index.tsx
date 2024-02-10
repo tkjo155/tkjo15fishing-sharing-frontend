@@ -1,23 +1,22 @@
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { useState } from 'react'
-import { InputPlace, Prefecture } from '@/Types'
 import { useMutation } from '@apollo/client'
 import { Button, Input, Navbar, NavbarBrand, Select, SelectItem } from '@nextui-org/react'
-import { CREATE_PLACE } from '@/graphql/createPlaces'
+import Link from 'next/link'
 import router from 'next/router'
+import { useState } from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { InputPlace, Prefecture } from '@/Types'
+import { CREATE_PLACE } from '@/graphql/createPlaces'
 import { GET_PLACES } from '@/graphql/getPlaces'
 import { GET_PREFECTURES } from '@/graphql/getPrefecture'
 import { createApolloClient } from '@/libs/client'
-import Link from 'next/link'
-import { GetStaticProps } from 'next'
 
-interface PlaceRegistrationFormProps {
+interface PlaceFormProps {
   data: {
     prefectures: Prefecture[]
   }
 }
 
-const PlaceForm = ({ data }: PlaceRegistrationFormProps) => {
+const PlaceForm = ({ data }: PlaceFormProps) => {
   //港情報登録
   const [createPlace] = useMutation(CREATE_PLACE)
   //港名の状態管理
@@ -57,7 +56,7 @@ const PlaceForm = ({ data }: PlaceRegistrationFormProps) => {
   return (
     <form>
       <div>
-        <header className='text-gray-600 body-font'>
+        <header className='text-gray-600'>
           <Navbar style={{ backgroundColor: '#3498db' }}>
             <NavbarBrand style={{ textAlign: 'center', width: '100%' }}>
               <p className='font-bold text-white' style={{ fontSize: '30px' }}>
@@ -67,7 +66,7 @@ const PlaceForm = ({ data }: PlaceRegistrationFormProps) => {
           </Navbar>
         </header>
         <h1 style={{ textAlign: 'center', width: '100%', fontSize: '24px' }}>釣り場登録</h1>
-        <div className='flex w-full flex-wrap md:flex-nowrap gap-4'>
+        <div className='flex w-full flex-wrap gap-4 md:flex-nowrap'>
           <label style={{ fontSize: '18px', display: 'block' }}>港名</label>
           {errors.name && <span style={{ color: 'red' }}>{errors.name.message}</span>}
           <Input
@@ -87,7 +86,7 @@ const PlaceForm = ({ data }: PlaceRegistrationFormProps) => {
       </div>
       <label style={{ fontSize: '18px', display: 'block', marginTop: '30px' }}>都道府県</label>
       {errors.prefectureId && <span style={{ color: 'red' }}>{errors.prefectureId.message}</span>}
-      <div className='flex w-full flex-wrap md:flex-nowrap gap-4'>
+      <div className='flex w-full flex-wrap gap-4 md:flex-nowrap'>
         <Select
           label='Select prefecture'
           className='max-w-xs'
@@ -116,10 +115,10 @@ const PlaceForm = ({ data }: PlaceRegistrationFormProps) => {
 }
 
 //ビルド時にページを事前レンダリング
-export const getStaticProps: GetStaticProps<PlaceRegistrationFormProps> = async () => {
+export const getStaticProps = async () => {
   const client = createApolloClient()
   //GraphQL クエリ ( GET_PREFECTURES) をサーバーに送信
-  const { data } = await client.query({
+  const { data } = await client.query<PlaceFormProps>({
     query: GET_PREFECTURES,
   })
   return {

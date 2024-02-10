@@ -1,22 +1,18 @@
-import React from 'react'
-import { PlacesResponse } from '@/Types'
-import { GET_PLACES } from '../../graphql/getPlaces'
-import { Card, CardBody, Navbar, NavbarBrand, NavbarItem } from '@nextui-org/react'
-import { Button } from '@nextui-org/react'
+import { Card, CardBody, Navbar, NavbarBrand, NavbarItem, Button } from '@nextui-org/react'
 import Link from 'next/link'
-import { GetServerSideProps } from 'next'
+import React from 'react'
+import { GET_PLACES } from '../../graphql/getPlaces'
+import { PlacesResponse } from '@/Types'
 import { createApolloClient } from '@/libs/client'
 
 interface PlacesListProps {
-  placesData: PlacesResponse
+  data: PlacesResponse
 }
 
-const PlacesList = ({ placesData }: PlacesListProps) => {
-  const placesListData = placesData?.places || []
-
+const PlacesList = ({ data }: PlacesListProps) => {
   return (
     <div>
-      <header className='text-gray-600 body-font'>
+      <header className='text-gray-600'>
         <Navbar style={{ backgroundColor: '#3498db' }}>
           <NavbarBrand style={{ textAlign: 'center', width: '100%' }}>
             <p className='font-bold text-white' style={{ fontSize: '30px' }}>
@@ -33,7 +29,7 @@ const PlacesList = ({ placesData }: PlacesListProps) => {
         </Navbar>
       </header>
       <h1 style={{ textAlign: 'center', width: '100%', fontSize: '24px' }}>釣り場一覧</h1>
-      {placesListData.map((place) => (
+      {data.places.map((place) => (
         <Card key={place.id}>
           <CardBody>
             <strong>{place.name}</strong>
@@ -44,20 +40,23 @@ const PlacesList = ({ placesData }: PlacesListProps) => {
     </div>
   )
 }
-
-export const getServerSideProps: GetServerSideProps = async () => {
+//GetServerSideProps型にすることで、関数がサーバーサイドでデータを取得するためにNext.jsで定義された予測される形式に従う
+export const getServerSideProps = async () => {
+  //Apollo クライアント インスタンスを作成
   const apolloClient = createApolloClient()
 
   try {
-    const { data } = await apolloClient.query({
+    //データのフェッチ
+    const { data } = await apolloClient.query<PlacesListProps>({
       query: GET_PLACES,
     })
-
+    //取得したデータを props として返す
     return {
       props: {
-        placesData: data,
+        data,
       },
     }
+    //データの取得中にエラーが発生した場合、エラーをログに記録し、null データを props として返す
   } catch (error) {
     console.error('Error fetching data:', error)
 
