@@ -4,7 +4,7 @@ import Link from 'next/link'
 import router from 'next/router'
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { InputPlace, Prefecture } from '@/Types'
+import { InputPlace, PlacesResponse, Prefecture } from '@/Types'
 import { CREATE_PLACE } from '@/graphql/createPlaces'
 import { GET_PLACES } from '@/graphql/getPlaces'
 import { GET_PREFECTURES } from '@/graphql/getPrefecture'
@@ -118,9 +118,10 @@ const PlaceForm = ({ data }: PlaceFormProps) => {
 export const getStaticProps = async () => {
   const client = createApolloClient()
   //GraphQL クエリ ( GET_PREFECTURES) をサーバーに送信
-  const { data } = await client.query<PlaceFormProps>({
+  const { data } = await client.query<PlacesResponse>({
     query: GET_PREFECTURES,
   })
+  console.log(data)
   return {
     props: {
       data,

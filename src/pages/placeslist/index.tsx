@@ -4,6 +4,7 @@ import React from 'react'
 import { GET_PLACES } from '../../graphql/getPlaces'
 import { PlacesResponse } from '@/Types'
 import { createApolloClient } from '@/libs/client'
+import { gql } from '@apollo/client'
 
 interface PlacesListProps {
   data: PlacesResponse
@@ -45,27 +46,18 @@ export const getServerSideProps = async () => {
   //Apollo クライアント インスタンスを作成
   const apolloClient = createApolloClient()
 
-  try {
     //データのフェッチ
-    const { data } = await apolloClient.query<PlacesListProps>({
+    const { data, error } = await apolloClient.query<PlacesListProps>({
       query: GET_PLACES,
     })
+    console.error('Error fetching data:', error)
+
     //取得したデータを props として返す
     return {
       props: {
         data,
       },
     }
-    //データの取得中にエラーが発生した場合、エラーをログに記録し、null データを props として返す
-  } catch (error) {
-    console.error('Error fetching data:', error)
-
-    return {
-      props: {
-        placesData: null,
-      },
-    }
-  }
 }
 
 export default PlacesList
