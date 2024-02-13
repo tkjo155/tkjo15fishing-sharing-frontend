@@ -118,10 +118,10 @@ const PlaceForm = ({ data }: PlaceFormProps) => {
 export const getStaticProps = async () => {
   const client = createApolloClient()
   //GraphQL クエリ ( GET_PREFECTURES) をサーバーに送信
-  const { data } = await client.query<PlacesResponse>({
+  const { data, error } = await client.query<PlacesResponse>({
     query: GET_PREFECTURES,
   })
-  console.log(data)
+  console.error('Error fetching data:', error)
   return {
     props: {
       data,
