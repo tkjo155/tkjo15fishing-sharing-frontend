@@ -1,6 +1,8 @@
 import '@/styles/globals.css'
+import { ApolloClient, InMemoryCache } from '@apollo/client'
 import type { AppProps } from 'next/app'
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
+
+import { WithApolloProvider } from '../libs/provider'
 
 const client = new ApolloClient({
   //バックエンドURLを指定
@@ -11,9 +13,9 @@ const client = new ApolloClient({
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <ApolloProvider client={client}>
+    <WithApolloProvider>
       <Component {...pageProps} />
-    </ApolloProvider>
+    </WithApolloProvider>
   )
 }
 
