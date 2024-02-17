@@ -1,10 +1,10 @@
 import { Card, CardBody, Navbar, NavbarBrand, NavbarItem, Button } from '@nextui-org/react'
 import Link from 'next/link'
+import router from 'next/router'
 import React from 'react'
 import { GET_PLACES } from '../../graphql/getPlaces'
 import { PlacesResponse } from '@/Types'
 import { createApolloClient } from '@/libs/client'
-import { gql } from '@apollo/client'
 
 interface PlacesListProps {
   data: PlacesResponse
@@ -32,10 +32,12 @@ const PlacesList = ({ data }: PlacesListProps) => {
       <h1 style={{ textAlign: 'center', width: '100%', fontSize: '24px' }}>釣り場一覧</h1>
       {data.places.map((place) => (
         <Card key={place.id}>
-          <CardBody>
-            <strong>{place.name}</strong>
-            <p>{place.prefecture}</p>
-          </CardBody>
+          <Link href={'/fishlogslist'} passHref legacyBehavior>
+            <CardBody>
+              <strong>{place.name}</strong>
+              <p>{place.prefecture}</p>
+            </CardBody>
+          </Link>
         </Card>
       ))}
     </div>
@@ -46,18 +48,18 @@ export const getServerSideProps = async () => {
   //Apollo クライアント インスタンスを作成
   const apolloClient = createApolloClient()
 
-    //データのフェッチ
-    const { data, error } = await apolloClient.query<PlacesListProps>({
-      query: GET_PLACES,
-    })
-    console.error('Error fetching data:', error)
+  //データのフェッチ
+  const { data, error } = await apolloClient.query<PlacesListProps>({
+    query: GET_PLACES,
+  })
+  console.error('Error fetching data:', error)
 
-    //取得したデータを props として返す
-    return {
-      props: {
-        data,
-      },
-    }
+  //取得したデータを props として返す
+  return {
+    props: {
+      data,
+    },
+  }
 }
 
 export default PlacesList

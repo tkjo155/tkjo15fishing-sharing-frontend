@@ -14,5 +14,6 @@
   "eslint.options": {
     "extensions": [".js", ".jsx", ".md", ".mdx", ".ts", ".tsx"]
   },
-  "auto-close-tag.activationOnLanguage": ["xml", "php", "...", "mdx"]
+  "auto-close-tag.activationOnLanguage": ["xml", "php", "...", "mdx"],
+  "cSpell.words": ["fishlogdetail", "fishlogslist"]
 }

@@ -14,5 +14,26 @@
         }
       }
     ]
-  }
+  },
+  "plugins": ["tailwindcss", "import"],
+  "settings": {
+    "tailwindcss": {
+      "config": "./tailwind.config.js"
+    }
+  },
+  "overrides": [
+    {
+      "files": ["**/*.js", "**/*.jsx"],
+      "rules": {
+        "import/order": [
+          "error",
+          {
+            "alphabetize": {
+              "order": "asc"
+            }
+          }
+        ]
+      }
+    }
+  ]
 }
