@@ -8,7 +8,7 @@
   },
   "editor.formatOnSave": true, // ファイル保存時にPrettierでフォーマット
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll.eslint": "explicit"
   },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "eslint.options": {
