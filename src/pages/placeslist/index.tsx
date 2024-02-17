@@ -11,6 +11,7 @@ interface PlacesListProps {
 }
 
 const PlacesList = ({ data }: PlacesListProps) => {
+  console.log(data)
   return (
     <div>
       <header className='text-gray-600'>
@@ -32,7 +33,11 @@ const PlacesList = ({ data }: PlacesListProps) => {
       <h1 style={{ textAlign: 'center', width: '100%', fontSize: '24px' }}>釣り場一覧</h1>
       {data.places.map((place) => (
         <Card key={place.id}>
-          <Link href={'/fishlogslist'} passHref legacyBehavior>
+          <Link
+            href={`/fishlogslist?placeName=${encodeURIComponent(place.name)}`}
+            passHref
+            legacyBehavior
+          >
             <CardBody>
               <strong>{place.name}</strong>
               <p>{place.prefecture}</p>

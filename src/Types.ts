@@ -1,5 +1,5 @@
 //釣行記録
-export type FishLogs = {
+export type FishLog = {
   id: number
   placeId: number
   date: string

@@ -1,5 +1,6 @@
 import { Card, CardBody, Navbar, NavbarBrand, NavbarItem, Button } from '@nextui-org/react'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import React from 'react'
 import { PlacesResponse } from '@/Types'
 import { GET_PLACES } from '@/graphql/getPlaces'
@@ -20,6 +21,9 @@ const dummyFishLogs = [
 ]
 
 const PlacesDetail = ({ data }: PlacesListProps) => {
+  const router = useRouter()
+  const { placeName } = router.query
+
   return (
     <div>
       <header className='text-gray-600'>
@@ -31,11 +35,11 @@ const PlacesDetail = ({ data }: PlacesListProps) => {
           </NavbarBrand>
         </Navbar>
       </header>
-
       <h1 style={{ textAlign: 'center', width: '100%', fontSize: '24px' }}>釣行記録</h1>
+      <h1 style={{ fontSize: '24px' }}>{placeName}</h1>
       {dummyFishLogs.map((dummyFishLog) => (
         <Card key={dummyFishLog.id}>
-          <Link href={'/fishlogslist/fishlogdetail'} passHref legacyBehavior>
+          <Link href={'/fishlogslist/detail'} passHref legacyBehavior>
             <CardBody>
               <p>{dummyFishLog.date}</p>
               <p>{dummyFishLog.image}</p>
@@ -44,6 +48,7 @@ const PlacesDetail = ({ data }: PlacesListProps) => {
           </Link>
         </Card>
       ))}
+      ;
       <div style={{ marginTop: '100px', textAlign: 'center' }}>
         <Link href={'/placeslist'} passHref legacyBehavior>
           <Button color='default' variant='shadow' size='lg' style={{ marginRight: '50px' }}>
