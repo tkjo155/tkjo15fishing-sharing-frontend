@@ -20,7 +20,7 @@ const dummyFishLogs = [
   },
 ]
 
-const PlacesDetail = ({ data }: PlacesListProps) => {
+const FishlogsList = ({ data }: PlacesListProps) => {
   const router = useRouter()
   const { placeName } = router.query
 
@@ -39,7 +39,7 @@ const PlacesDetail = ({ data }: PlacesListProps) => {
       <h1 style={{ fontSize: '24px' }}>{placeName}</h1>
       {dummyFishLogs.map((dummyFishLog) => (
         <Card key={dummyFishLog.id}>
-          <Link href={'/fishlogslist/detail'} passHref legacyBehavior>
+          <Link href={`/fishlogslist/detail?placeName=${placeName}`} passHref legacyBehavior>
             <CardBody>
               <p>{dummyFishLog.date}</p>
               <p>{dummyFishLog.image}</p>
@@ -48,7 +48,6 @@ const PlacesDetail = ({ data }: PlacesListProps) => {
           </Link>
         </Card>
       ))}
-      ;
       <div style={{ marginTop: '100px', textAlign: 'center' }}>
         <Link href={'/placeslist'} passHref legacyBehavior>
           <Button color='default' variant='shadow' size='lg' style={{ marginRight: '50px' }}>
@@ -60,4 +59,4 @@ const PlacesDetail = ({ data }: PlacesListProps) => {
   )
 }
 
-export default PlacesDetail
+export default FishlogsList

@@ -1,6 +1,6 @@
 import { Card, CardBody, Navbar, NavbarBrand, NavbarItem, Button } from '@nextui-org/react'
 import Link from 'next/link'
-import router from 'next/router'
+import { useRouter } from 'next/router'
 import React from 'react'
 import { PlacesResponse } from '@/Types'
 import { GET_PLACES } from '@/graphql/getPlaces'
@@ -20,7 +20,10 @@ const dummyFishLogs = {
   isWakashio: false,
 }
 
-const PlacesDetail = () => {
+const FishlogDetail = () => {
+  const router = useRouter()
+  const { placeName } = router.query
+
   return (
     <div>
       <header className='text-gray-600'>
@@ -33,7 +36,7 @@ const PlacesDetail = () => {
         </Navbar>
       </header>
       <h1 style={{ textAlign: 'center', width: '100%', fontSize: '20px', marginBottom: '30px' }}>
-        釣行詳細記録
+        {placeName} 釣行詳細記録
       </h1>
       <div style={{ textAlign: 'center' }}>
         <h2 style={{ fontSize: '24px', fontWeight: 'bold', color: 'blue', marginBottom: '80px' }}>
@@ -70,7 +73,7 @@ const PlacesDetail = () => {
         </tbody>
       </table>
       <div style={{ marginTop: '100px', textAlign: 'center' }}>
-        <Link href={'/fishlogslist'} passHref legacyBehavior>
+        <Link href={`/fishlogslist?placeName=${placeName}`} passHref legacyBehavior>
           <Button color='default' variant='shadow' size='lg' style={{ marginRight: '50px' }}>
             戻る
           </Button>
@@ -83,4 +86,4 @@ const PlacesDetail = () => {
   )
 }
 
-export default PlacesDetail
+export default FishlogDetail
