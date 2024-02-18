@@ -1,10 +1,7 @@
-import { Card, CardBody, Navbar, NavbarBrand, NavbarItem, Button } from '@nextui-org/react'
+import { Navbar, NavbarBrand, Button } from '@nextui-org/react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
-import { PlacesResponse } from '@/Types'
-import { GET_PLACES } from '@/graphql/getPlaces'
-import { createApolloClient } from '@/libs/client'
 
 const dummyFishLogs = {
   id: 1,

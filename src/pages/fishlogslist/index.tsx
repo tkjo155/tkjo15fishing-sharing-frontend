@@ -1,10 +1,8 @@
-import { Card, CardBody, Navbar, NavbarBrand, NavbarItem, Button } from '@nextui-org/react'
+import { Card, CardBody, Navbar, NavbarBrand, Button, CardHeader } from '@nextui-org/react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { PlacesResponse } from '@/Types'
-import { GET_PLACES } from '@/graphql/getPlaces'
-import { createApolloClient } from '@/libs/client'
 
 interface PlacesListProps {
   data: PlacesResponse
@@ -35,15 +33,18 @@ const FishlogsList = ({ data }: PlacesListProps) => {
           </NavbarBrand>
         </Navbar>
       </header>
-      <h1 style={{ textAlign: 'center', width: '100%', fontSize: '24px' }}>釣行記録</h1>
-      <h1 style={{ fontSize: '24px' }}>{placeName}</h1>
+      <h1 style={{ textAlign: 'center', width: '100%', fontSize: '24px' }}>{placeName} 釣行記録</h1>
       {dummyFishLogs.map((dummyFishLog) => (
         <Card key={dummyFishLog.id}>
-          <Link href={`/fishlogslist/detail?placeName=${placeName}`} passHref legacyBehavior>
-            <CardBody>
-              <p>{dummyFishLog.date}</p>
+          <CardHeader>
+            <Link href={`/fishlogslist/detail?placeName=${placeName}`} passHref>
+              <p className='text-tiny uppercase font-bold'>{dummyFishLog.date}</p>
+              <h4 className='font-bold text-large'>{dummyFishLog.fishName}</h4>
+            </Link>
+          </CardHeader>
+          <Link href={`/fishlogslist/detail?placeName=${placeName}`} passHref>
+            <CardBody className='overflow-visible py-2'>
               <p>{dummyFishLog.image}</p>
-              <p>{dummyFishLog.fishName}</p>
             </CardBody>
           </Link>
         </Card>
