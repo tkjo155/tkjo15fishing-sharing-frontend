@@ -17,6 +17,7 @@ interface PlaceFormProps {
 }
 
 const PlaceForm = ({ data }: PlaceFormProps) => {
+  console.log(data)
   //港情報登録
   const [createPlace] = useMutation(CREATE_PLACE)
   //港名の状態管理

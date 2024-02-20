@@ -1,27 +1,18 @@
 import { Card, CardBody, Navbar, NavbarBrand, Button, CardHeader } from '@nextui-org/react'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 import React from 'react'
-import { PlacesResponse } from '@/Types'
-
-interface PlacesListProps {
-  data: PlacesResponse
-}
 
 const dummyFishLogs = [
   {
     id: 1,
     placeId: 1,
+    name: '北海道港',
     date: '2024-02-16',
-    image: 'image1.jpg',
     fishName: 'Dummy Fish 1',
   },
 ]
 
-const FishlogsList = ({ data }: PlacesListProps) => {
-  const router = useRouter()
-  const { placeName } = router.query
-
+const FishlogsList = () => {
   return (
     <div>
       <header className='text-gray-600'>
@@ -33,21 +24,22 @@ const FishlogsList = ({ data }: PlacesListProps) => {
           </NavbarBrand>
         </Navbar>
       </header>
-      <h1 style={{ textAlign: 'center', width: '100%', fontSize: '24px' }}>{placeName} 釣行記録</h1>
       {dummyFishLogs.map((dummyFishLog) => (
-        <Card key={dummyFishLog.id}>
-          <CardHeader>
-            <Link href={`/fishlogslist/detail?placeName=${placeName}`} passHref>
+        <h1 key={dummyFishLog.id} style={{ textAlign: 'center', width: '100%', fontSize: '24px' }}>
+          {dummyFishLog.name} 釣行記録
+        </h1>
+      ))}
+      {dummyFishLogs.map((dummyFishLog) => (
+        <Link href={`/fishlogslist/detail`} passHref>
+          <Card key={dummyFishLog.id}>
+            <CardHeader>
               <p className='text-tiny uppercase font-bold'>{dummyFishLog.date}</p>
-              <h4 className='font-bold text-large'>{dummyFishLog.fishName}</h4>
-            </Link>
-          </CardHeader>
-          <Link href={`/fishlogslist/detail?placeName=${placeName}`} passHref>
-            <CardBody className='overflow-visible py-2'>
-              <p>{dummyFishLog.image}</p>
-            </CardBody>
-          </Link>
-        </Card>
+            </CardHeader>
+            <h4 className='font-bold text-large' style={{ padding: '10px' }}>
+              {dummyFishLog.fishName}
+            </h4>
+          </Card>
+        </Link>
       ))}
       <div style={{ marginTop: '100px', textAlign: 'center' }}>
         <Link href={'/placeslist'} passHref legacyBehavior>
