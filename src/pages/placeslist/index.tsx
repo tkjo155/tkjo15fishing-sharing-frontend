@@ -2,15 +2,22 @@ import { Card, CardBody, Navbar, NavbarBrand, NavbarItem, Button } from '@nextui
 import Link from 'next/link'
 import React from 'react'
 import { GET_PLACES } from '../../graphql/getPlaces'
-import { PlacesResponse } from '@/Types'
+import { Place, PlacesResponse } from '@/Types'
 import { createApolloClient } from '@/libs/client'
+import { useRouter } from 'next/router'
 
 interface PlacesListProps {
   data: PlacesResponse
 }
 
 const PlacesList = ({ data }: PlacesListProps) => {
-  console.log(data)
+  const router = useRouter()
+  const handleCardClick = (place: Place) => {
+    router.push({
+      pathname: '/fishlogslist',
+      query: { placeName: place.name },
+    })
+  }
   return (
     <div>
       <header className='text-gray-600'>
@@ -31,14 +38,18 @@ const PlacesList = ({ data }: PlacesListProps) => {
       </header>
       <h1 style={{ textAlign: 'center', width: '100%', fontSize: '24px' }}>釣り場一覧</h1>
       {data.places.map((place) => (
-        <Card key={place.id}>
-          <Link href={`/fishlogslist`} passHref legacyBehavior>
+        <Link
+          href={`/fishlogslist?placeName=${encodeURIComponent(place.name)}`}
+          passHref
+          key={place.id}
+        >
+          <Card key={place.id} onClick={() => handleCardClick(place)}>
             <CardBody>
               <strong>{place.name}</strong>
               <p>{place.prefecture}</p>
             </CardBody>
-          </Link>
-        </Card>
+          </Card>
+        </Link>
       ))}
     </div>
   )
