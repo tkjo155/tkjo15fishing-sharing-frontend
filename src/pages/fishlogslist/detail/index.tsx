@@ -1,4 +1,15 @@
-import { Navbar, NavbarBrand, Button } from '@nextui-org/react'
+import {
+  Navbar,
+  NavbarBrand,
+  Button,
+  Table,
+  TableBody,
+  TableRow,
+  TableHeader,
+  TableColumn,
+  TableCell,
+} from '@nextui-org/react'
+
 import Link from 'next/link'
 import React from 'react'
 
@@ -36,44 +47,48 @@ const FishlogDetail = () => {
           {dummyFishLogs.fishName}
         </h2>
       </div>
-      <table
-        style={{ margin: '0 auto', width: '80%', maxWidth: '800px', borderCollapse: 'collapse' }}
-      >
-        <tbody>
-          <tr>
-            <th style={{ padding: '10px', border: '1px solid #ddd', textAlign: 'left' }}>日にち</th>
-            <td style={{ padding: '10px', border: '1px solid #ddd' }}>{dummyFishLogs.date}</td>
-          </tr>
-          <tr>
-            <th style={{ padding: '10px', border: '1px solid #ddd', textAlign: 'left' }}>天気</th>
-            <td style={{ padding: '10px', border: '1px solid #ddd' }}>{dummyFishLogs.weather}</td>
-          </tr>
-          <tr>
-            <th style={{ padding: '10px', border: '1px solid #ddd', textAlign: 'left' }}>
-              サイズ(cm)
-            </th>
-            <td style={{ padding: '10px', border: '1px solid #ddd' }}>{dummyFishLogs.size}</td>
-          </tr>
-          <tr>
-            <th style={{ padding: '10px', border: '1px solid #ddd', textAlign: 'left' }}>
-              潮汐情報
-            </th>
-            <td style={{ padding: '10px', border: '1px solid #ddd' }}>
-              {dummyFishLogs.isSpringTide && '大潮'}
-              {dummyFishLogs.isMiddleTide && '中潮'}
-              {dummyFishLogs.isNeapTide && '小潮'}
-              {dummyFishLogs.isNagashio && '長潮'}
-              {dummyFishLogs.isWakashio && '若潮'}
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <div style={{ marginTop: '100px', textAlign: 'center' }}>
-        <Link href={`/fishlogslist`} passHref legacyBehavior>
-          <Button color='default' variant='shadow' size='lg' style={{ marginRight: '50px' }}>
-            戻る
-          </Button>
-        </Link>
+      <div>
+        <Table hideHeader removeWrapper aria-label='Example static collection table'>
+          <TableHeader>
+            <TableColumn>項目</TableColumn>
+            <TableColumn>情報</TableColumn>
+          </TableHeader>
+          <TableBody>
+            <TableRow key='1'>
+              <TableCell style={{ border: '1px solid #ccc', fontWeight: 'bold' }}>日にち</TableCell>
+              <TableCell style={{ border: '1px solid #ccc' }}>{dummyFishLogs.date}</TableCell>
+            </TableRow>
+            <TableRow key='2'>
+              <TableCell style={{ border: '1px solid #ccc', fontWeight: 'bold' }}>天気</TableCell>
+              <TableCell style={{ border: '1px solid #ccc' }}>{dummyFishLogs.weather}</TableCell>
+            </TableRow>
+            <TableRow key='3'>
+              <TableCell style={{ border: '1px solid #ccc', fontWeight: 'bold' }}>
+                サイズ(cm)
+              </TableCell>
+              <TableCell style={{ border: '1px solid #ccc' }}> {dummyFishLogs.size}cm </TableCell>
+            </TableRow>
+            <TableRow key='4'>
+              <TableCell style={{ border: '1px solid #ccc', fontWeight: 'bold' }}>
+                潮汐情報
+              </TableCell>
+              <TableCell style={{ border: '1px solid #ccc' }}>
+                {dummyFishLogs.isSpringTide && '大潮'}
+                {dummyFishLogs.isMiddleTide && '中潮'}
+                {dummyFishLogs.isNeapTide && '小潮'}
+                {dummyFishLogs.isNagashio && '長潮'}
+                {dummyFishLogs.isWakashio && '若潮'}
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+        <div style={{ marginTop: '100px', textAlign: 'center' }}>
+          <Link href={`/fishlogslist`} passHref legacyBehavior>
+            <Button color='default' variant='shadow' size='lg' style={{ marginRight: '50px' }}>
+              戻る
+            </Button>
+          </Link>
+        </div>
       </div>
     </div>
   )

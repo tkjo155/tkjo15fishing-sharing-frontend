@@ -24,23 +24,19 @@ const FishlogsList = () => {
           </NavbarBrand>
         </Navbar>
       </header>
-      {dummyFishLogs.map((dummyFishLog) => (
-        <h1 key={dummyFishLog.id} style={{ textAlign: 'center', width: '100%', fontSize: '24px' }}>
-          {dummyFishLog.name} 釣行記録
-        </h1>
-      ))}
-      {dummyFishLogs.map((dummyFishLog) => (
-        <Link href={`/fishlogslist/detail`} passHref>
-          <Card key={dummyFishLog.id}>
-            <CardHeader>
-              <p className='text-tiny uppercase font-bold'>{dummyFishLog.date}</p>
-            </CardHeader>
-            <h4 className='font-bold text-large' style={{ padding: '10px' }}>
-              {dummyFishLog.fishName}
-            </h4>
+      <h1 style={{ textAlign: 'center', width: '100%', fontSize: '24px' }}>
+        {dummyFishLogs[0].name} 釣行記録
+      </h1>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        {dummyFishLogs.map((dummyFishLog) => (
+          <Card key={dummyFishLog.id} style={{ width: '800px', padding: '15px' }}>
+            <Link href={`/fishlogslist/detail`} passHref>
+              <CardHeader style={{ fontSize: '20px' }}>{dummyFishLog.fishName}</CardHeader>
+              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>{dummyFishLog.date}</div>
+            </Link>
           </Card>
-        </Link>
-      ))}
+        ))}
+      </div>
       <div style={{ marginTop: '100px', textAlign: 'center' }}>
         <Link href={'/placeslist'} passHref legacyBehavior>
           <Button color='default' variant='shadow' size='lg' style={{ marginRight: '50px' }}>

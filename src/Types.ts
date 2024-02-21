@@ -1,7 +1,7 @@
 //釣行記録
 export type FishLog = {
   id: number
-  placeId: number
+  placeName: string
   date: string
   image: string
   fishName: string
