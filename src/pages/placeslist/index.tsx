@@ -38,11 +38,7 @@ const PlacesList = ({ data }: PlacesListProps) => {
       </header>
       <h1 style={{ textAlign: 'center', width: '100%', fontSize: '24px' }}>釣り場一覧</h1>
       {data.places.map((place) => (
-        <Link
-          href={`/fishlogslist?placeName=${encodeURIComponent(place.name)}`}
-          passHref
-          key={place.id}
-        >
+        <Link href={`/fishlogslist`} passHref key={place.id}>
           <Card key={place.id} onClick={() => handleCardClick(place)}>
             <CardBody>
               <strong>{place.name}</strong>
@@ -54,8 +50,8 @@ const PlacesList = ({ data }: PlacesListProps) => {
     </div>
   )
 }
-//GetServerSideProps型にすることで、関数がサーバーサイドでデータを取得するためにNext.jsで定義された予測される形式に従う
-export const getServerSideProps = async () => {
+//getStaticProps型にすることで、関数がサーバーサイドでデータを取得するためにNext.jsで定義された予測される形式に従う
+export const getStaticProps = async () => {
   //Apollo クライアント インスタンスを作成
   const apolloClient = createApolloClient()
 
@@ -70,6 +66,8 @@ export const getServerSideProps = async () => {
     props: {
       data,
     },
+    //１時間に一回更新できるようにする
+    revalidate: 3600,
   }
 }
 

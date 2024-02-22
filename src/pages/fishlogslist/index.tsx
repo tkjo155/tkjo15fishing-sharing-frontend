@@ -1,7 +1,6 @@
-import { Card, Navbar, NavbarBrand, Button, CardHeader } from '@nextui-org/react'
+import { Card, CardBody, Navbar, NavbarBrand, Button, CardHeader } from '@nextui-org/react'
 import Link from 'next/link'
 import React from 'react'
-import { useRouter } from 'next/router'
 
 const dummyFishLogs = [
   {
@@ -14,8 +13,6 @@ const dummyFishLogs = [
 ]
 
 const FishlogsList = () => {
-  const router = useRouter()
-  const { placeName } = router.query
   return (
     <div>
       <header className='text-gray-600'>
@@ -27,7 +24,9 @@ const FishlogsList = () => {
           </NavbarBrand>
         </Navbar>
       </header>
-      <h1 style={{ textAlign: 'center', width: '100%', fontSize: '24px' }}>{placeName}釣行記録</h1>
+      <h1 style={{ textAlign: 'center', width: '100%', fontSize: '24px' }}>
+        {dummyFishLogs[0].name} 釣行記録
+      </h1>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         {dummyFishLogs.map((dummyFishLog) => (
           <Card key={dummyFishLog.id} style={{ width: '800px', padding: '15px' }}>
