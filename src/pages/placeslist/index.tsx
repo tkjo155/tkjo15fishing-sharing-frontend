@@ -37,16 +37,17 @@ const PlacesList = ({ data }: PlacesListProps) => {
         </Navbar>
       </header>
       <h1 style={{ textAlign: 'center', width: '100%', fontSize: '24px' }}>釣り場一覧</h1>
-      {data.places.map((place) => (
-        <Link href={`/fishlogslist`} passHref key={place.id}>
-          <Card key={place.id} onClick={() => handleCardClick(place)}>
-            <CardBody>
-              <strong>{place.name}</strong>
-              <p>{place.prefecture}</p>
-            </CardBody>
-          </Card>
-        </Link>
-      ))}
+      {data &&
+        data.getAllPlaces.map((getAllPlace) => (
+          <Link href={`/fishlogslist`} passHref key={getAllPlace.id}>
+            <Card key={getAllPlace.id} onClick={() => handleCardClick(getAllPlace)}>
+              <CardBody>
+                <strong>{getAllPlace.name}</strong>
+                <p>{getAllPlace.prefecture}</p>
+              </CardBody>
+            </Card>
+          </Link>
+        ))}
     </div>
   )
 }

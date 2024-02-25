@@ -27,7 +27,7 @@ export type InputPlace = {
 }
 
 export type PlacesResponse = {
-  places: Place[]
+  getAllPlaces: Place[]
 }
 
 export type Prefecture = {
