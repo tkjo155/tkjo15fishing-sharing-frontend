@@ -67,8 +67,8 @@ export const getStaticProps = async () => {
     props: {
       data,
     },
-    //５分に一回更新できるようにする
-    revalidate: 300,
+    //30秒に一回更新できるようにする
+    revalidate: 30,
   }
 }
 
