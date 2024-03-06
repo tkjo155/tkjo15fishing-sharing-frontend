@@ -1,7 +1,7 @@
 //釣行記録
-export type FishLogs = {
+export type FishLog = {
   id: number
-  placeId: number
+  placeName: string
   date: string
   image: string
   fishName: string
@@ -27,7 +27,7 @@ export type InputPlace = {
 }
 
 export type PlacesResponse = {
-  places: Place[]
+  getAllPlaces: Place[]
 }
 
 export type Prefecture = {

@@ -2,7 +2,7 @@ import { gql } from '@apollo/client'
 
 export const GET_PLACES = gql`
   query {
-    places {
+    getAllPlaces {
       id
       name
       prefecture

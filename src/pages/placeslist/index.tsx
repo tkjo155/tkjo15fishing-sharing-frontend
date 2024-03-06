@@ -2,15 +2,22 @@ import { Card, CardBody, Navbar, NavbarBrand, NavbarItem, Button } from '@nextui
 import Link from 'next/link'
 import React from 'react'
 import { GET_PLACES } from '../../graphql/getPlaces'
-import { PlacesResponse } from '@/Types'
+import { Place, PlacesResponse } from '@/Types'
 import { createApolloClient } from '@/libs/client'
-import { gql } from '@apollo/client'
+import { useRouter } from 'next/router'
 
 interface PlacesListProps {
   data: PlacesResponse
 }
 
 const PlacesList = ({ data }: PlacesListProps) => {
+  const router = useRouter()
+  const handleCardClick = (place: Place) => {
+    router.push({
+      pathname: '/fishlogslist',
+      query: { placeName: place.name },
+    })
+  }
   return (
     <div>
       <header className='text-gray-600'>
@@ -30,34 +37,39 @@ const PlacesList = ({ data }: PlacesListProps) => {
         </Navbar>
       </header>
       <h1 style={{ textAlign: 'center', width: '100%', fontSize: '24px' }}>釣り場一覧</h1>
-      {data.places.map((place) => (
-        <Card key={place.id}>
-          <CardBody>
-            <strong>{place.name}</strong>
-            <p>{place.prefecture}</p>
-          </CardBody>
-        </Card>
-      ))}
+      {data &&
+        data.getAllPlaces.map((getAllPlace) => (
+          <Link href={`/fishlogslist`} passHref key={getAllPlace.id}>
+            <Card key={getAllPlace.id} onClick={() => handleCardClick(getAllPlace)}>
+              <CardBody>
+                <strong>{getAllPlace.name}</strong>
+                <p>{getAllPlace.prefecture}</p>
+              </CardBody>
+            </Card>
+          </Link>
+        ))}
     </div>
   )
 }
-//GetServerSideProps型にすることで、関数がサーバーサイドでデータを取得するためにNext.jsで定義された予測される形式に従う
-export const getServerSideProps = async () => {
+//getStaticProps型にすることで、関数がサーバーサイドでデータを取得するためにNext.jsで定義された予測される形式に従う
+export const getStaticProps = async () => {
   //Apollo クライアント インスタンスを作成
   const apolloClient = createApolloClient()
 
-    //データのフェッチ
-    const { data, error } = await apolloClient.query<PlacesListProps>({
-      query: GET_PLACES,
-    })
-    console.error('Error fetching data:', error)
+  //データのフェッチ
+  const { data, error } = await apolloClient.query<PlacesListProps>({
+    query: GET_PLACES,
+  })
+  console.error('Error fetching data:', error)
 
-    //取得したデータを props として返す
-    return {
-      props: {
-        data,
-      },
-    }
+  //取得したデータを props として返す
+  return {
+    props: {
+      data,
+    },
+    //30秒に一回更新できるようにする
+    revalidate: 30,
+  }
 }
 
 export default PlacesList
