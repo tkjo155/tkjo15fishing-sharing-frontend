@@ -12,7 +12,6 @@ import {
 import { FISHLOGS } from '@/graphql/getFishlogs'
 import Link from 'next/link'
 import React from 'react'
-import { useQuery } from '@apollo/client'
 import { createApolloClient } from '@/libs/client'
 import { FishLog, FishLogsResponse } from '@/Types'
 import { useRouter } from 'next/router'
@@ -23,7 +22,7 @@ interface FishLogsListProps {
 
 const FishlogDetail = ({data}: FishLogsListProps ) => {
   const router = useRouter()
-  const { placeName,fishName,date,weather,size,isSpringTide,isMiddleTide,isNeapTide,isNagashio,isWakashio} = router.query
+  const { placeName,fishName} = router.query
  
   return (
     <div>
