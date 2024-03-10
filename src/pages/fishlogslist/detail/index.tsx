@@ -9,25 +9,22 @@ import {
   TableColumn,
   TableCell,
 } from '@nextui-org/react'
-
+import { FISHLOGS } from '@/graphql/getFishlogs'
 import Link from 'next/link'
 import React from 'react'
+import { useQuery } from '@apollo/client'
 
-const dummyFishLogs = {
-  id: 1,
-  name: '北海道港',
-  date: '2024-02-16',
-  fishName: 'Dummy Fish 1',
-  weather: 'Sunny',
-  size: 10,
-  isSpringTide: true,
-  isMiddleTide: false,
-  isNeapTide: false,
-  isNagashio: false,
-  isWakashio: false,
-}
+
 
 const FishlogDetail = () => {
+   // useQuery フックを使用してデータを取得
+   const { loading, error, data } = useQuery(FISHLOGS);
+
+   if (loading) return <p>Loading...</p>;
+   if (error) return <p>Error: {error.message}</p>;
+ 
+   const fishLogs = data.fishLogs; // データから fishLogs を取り出す
+
   return (
     <div>
       <header className='text-gray-600'>
@@ -40,11 +37,11 @@ const FishlogDetail = () => {
         </Navbar>
       </header>
       <h1 style={{ textAlign: 'center', width: '100%', fontSize: '20px', marginBottom: '30px' }}>
-        {dummyFishLogs.name} 釣行詳細記録
+        {fishLogs.name} 釣行詳細記録
       </h1>
       <div style={{ textAlign: 'center' }}>
         <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '80px' }}>
-          {dummyFishLogs.fishName}
+          {fishLogs.fishName}
         </h2>
       </div>
       <div>
@@ -56,28 +53,28 @@ const FishlogDetail = () => {
           <TableBody>
             <TableRow key='1'>
               <TableCell style={{ border: '1px solid #ccc', fontWeight: 'bold' }}>日にち</TableCell>
-              <TableCell style={{ border: '1px solid #ccc' }}>{dummyFishLogs.date}</TableCell>
+              <TableCell style={{ border: '1px solid #ccc' }}>{fishLogs.date}</TableCell>
             </TableRow>
             <TableRow key='2'>
               <TableCell style={{ border: '1px solid #ccc', fontWeight: 'bold' }}>天気</TableCell>
-              <TableCell style={{ border: '1px solid #ccc' }}>{dummyFishLogs.weather}</TableCell>
+              <TableCell style={{ border: '1px solid #ccc' }}>{fishLogs.weather}</TableCell>
             </TableRow>
             <TableRow key='3'>
               <TableCell style={{ border: '1px solid #ccc', fontWeight: 'bold' }}>
                 サイズ(cm)
               </TableCell>
-              <TableCell style={{ border: '1px solid #ccc' }}> {dummyFishLogs.size}cm </TableCell>
+              <TableCell style={{ border: '1px solid #ccc' }}> {fishLogs.size}cm </TableCell>
             </TableRow>
             <TableRow key='4'>
               <TableCell style={{ border: '1px solid #ccc', fontWeight: 'bold' }}>
                 潮汐情報
               </TableCell>
               <TableCell style={{ border: '1px solid #ccc' }}>
-                {dummyFishLogs.isSpringTide && '大潮'}
-                {dummyFishLogs.isMiddleTide && '中潮'}
-                {dummyFishLogs.isNeapTide && '小潮'}
-                {dummyFishLogs.isNagashio && '長潮'}
-                {dummyFishLogs.isWakashio && '若潮'}
+                {fishLogs.isSpringTide && '大潮'}
+                {fishLogs.isMiddleTide && '中潮'}
+                {fishLogs.isNeapTide && '小潮'}
+                {fishLogs.isNagashio && '長潮'}
+                {fishLogs.isWakashio && '若潮'}
               </TableCell>
             </TableRow>
           </TableBody>

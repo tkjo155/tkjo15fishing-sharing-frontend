@@ -30,6 +30,10 @@ export type PlacesResponse = {
   getAllPlaces: Place[]
 }
 
+export type FishLogsResponse = {
+  getFishLogs: FishLog[]
+}
+
 export type Prefecture = {
   id: number
   name: string

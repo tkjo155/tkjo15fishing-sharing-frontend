@@ -1,18 +1,19 @@
 import { Card, CardBody, Navbar, NavbarBrand, Button, CardHeader } from '@nextui-org/react'
 import Link from 'next/link'
+import { FISHLOGS } from '@/graphql/getFishlogs'
 import React from 'react'
+import { createApolloClient } from '@/libs/client'
+import { FishLog, FishLogsResponse } from '@/Types'
+import { useRouter } from 'next/router'
 
-const dummyFishLogs = [
-  {
-    id: 1,
-    placeId: 1,
-    name: '北海道港',
-    date: '2024-02-16',
-    fishName: 'Dummy Fish 1',
-  },
-]
+interface FishLogsListProps {
+  data: FishLogsResponse
+}
 
-const FishlogsList = () => {
+const FishlogsList = ({ data}: FishLogsListProps ) => {
+  const { query } = useRouter();
+  const placeName = query.placeName as string;
+
   return (
     <div>
       <header className='text-gray-600'>
@@ -24,15 +25,17 @@ const FishlogsList = () => {
           </NavbarBrand>
         </Navbar>
       </header>
+      {placeName &&(
       <h1 style={{ textAlign: 'center', width: '100%', fontSize: '24px' }}>
-        {dummyFishLogs[0].name} 釣行記録
-      </h1>
+      {placeName}釣行記録
+      </h1>)}
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-        {dummyFishLogs.map((dummyFishLog) => (
-          <Card key={dummyFishLog.id} style={{ width: '800px', padding: '15px' }}>
+      {data && data.fishLogs &&
+    data.fishLogs.map((getFishLog: FishLog) => (
+                  <Card key={getFishLog.id} style={{ width: '800px', padding: '15px' }}>
             <Link href={`/fishlogslist/detail`} passHref>
-              <CardHeader style={{ fontSize: '20px' }}>{dummyFishLog.fishName}</CardHeader>
-              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>{dummyFishLog.date}</div>
+              <CardHeader style={{ fontSize: '20px' }}>{getFishLog.fishName}</CardHeader>
+              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>{getFishLog.date}</div>
             </Link>
           </Card>
         ))}
@@ -44,8 +47,41 @@ const FishlogsList = () => {
           </Button>
         </Link>
       </div>
+      
     </div>
   )
 }
+
+export const getServerSideProps = async () => {
+  try {
+    const apolloClient = createApolloClient();
+    const { data, error } = await apolloClient.query<FishLogsListProps>({
+      query: FISHLOGS,
+      
+    });
+
+    if (error) {
+      console.error('Error fetching data:', error);
+      throw new Error('Failed to fetch data');
+    }
+
+    return {
+      props: {
+        data,
+      },
+    };
+  } catch (error) {
+    console.error('Error fetching data:', error);
+
+    // Return an empty dataset or handle the error as needed
+    return {
+      props: {
+        data: { getFishLogs: [] },
+      },
+    };
+  }
+};
+
+
 
 export default FishlogsList
