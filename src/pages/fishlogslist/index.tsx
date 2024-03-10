@@ -11,8 +11,9 @@ interface FishLogsListProps {
 }
 
 const FishlogsList = ({ data}: FishLogsListProps ) => {
-  const { query } = useRouter();
-  const placeName = query.placeName as string;
+  const router = useRouter()
+  const { placeName } = router.query
+ 
 
   return (
     <div>
@@ -30,11 +31,9 @@ const FishlogsList = ({ data}: FishLogsListProps ) => {
       {placeName}釣行記録
       </h1>)}
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-      {data && data.fishLogs &&
-    data.fishLogs.map((getFishLog: FishLog) => (
+       {data?.fishLogs?.map((getFishLog: FishLog) => (
                   <Card key={getFishLog.id} style={{ width: '800px', padding: '15px' }}>
-            <Link href={`/fishlogslist/detail`} passHref>
-              <CardHeader style={{ fontSize: '20px' }}>{getFishLog.fishName}</CardHeader>
+            <Link href={`/fishlogslist/detail?id=${getFishLog.id}`} passHref>              <CardHeader style={{ fontSize: '20px' }}>{getFishLog.fishName}</CardHeader>
               <div style={{ display: 'flex', justifyContent: 'flex-end' }}>{getFishLog.date}</div>
             </Link>
           </Card>
