@@ -24,6 +24,8 @@ const FishlogDetail = ({data}: FishLogsListProps ) => {
   const router = useRouter()
   const { placeName,fishName} = router.query
  
+  const filteredFishLogs = data?.fishLogs?.filter((getFishLog: FishLog) => getFishLog.placeName === placeName);
+
   return (
     <div>
       <header className='text-gray-600'>
@@ -44,30 +46,28 @@ const FishlogDetail = ({data}: FishLogsListProps ) => {
         </h2>
       </div>
       <div>
-      {data?.fishLogs
-    ?.filter((getFishLog: FishLog) => getFishLog.placeName === placeName)
-    .map((filteredFishLog: FishLog) => (
+      {filteredFishLogs .map((filteredFishLog: FishLog) => (
         <Table key={filteredFishLog.id} hideHeader removeWrapper aria-label='Example static collection table'>
           <TableHeader>
             <TableColumn>項目</TableColumn>
             <TableColumn>情報</TableColumn>
           </TableHeader>
-          <TableBody>
-            <TableRow key='1'>
+          <TableBody >
+            <TableRow key={`date-${filteredFishLog.id}`}>
               <TableCell style={{ border: '1px solid #ccc', fontWeight: 'bold' }}>日にち</TableCell>
               <TableCell style={{ border: '1px solid #ccc' }}>{filteredFishLog.date}</TableCell>
             </TableRow>
-            <TableRow key='2'>
+            <TableRow key={`weather-${filteredFishLog.id}`}>
               <TableCell style={{ border: '1px solid #ccc', fontWeight: 'bold' }}>天気</TableCell>
               <TableCell style={{ border: '1px solid #ccc' }}>{filteredFishLog.weather}</TableCell>
             </TableRow>
-            <TableRow key='3'>
+            <TableRow key={`size-${filteredFishLog.id}`}>
               <TableCell style={{ border: '1px solid #ccc', fontWeight: 'bold' }}>
                 サイズ(cm)
               </TableCell>
               <TableCell style={{ border: '1px solid #ccc' }}> {filteredFishLog.size}cm </TableCell>
             </TableRow>
-            <TableRow key='4'>
+            <TableRow key={`tide-${filteredFishLog.id}`}>
               <TableCell style={{ border: '1px solid #ccc', fontWeight: 'bold' }}>
                 潮汐情報
               </TableCell>
@@ -82,14 +82,15 @@ const FishlogDetail = ({data}: FishLogsListProps ) => {
           </TableBody>
         </Table>
       ))}
-        <div style={{ marginTop: '100px', textAlign: 'center' }}>
-          <Link href={`/fishlogslist`} passHref legacyBehavior>
+        {filteredFishLogs .map((filteredFishLog: FishLog) => (
+        <div key={filteredFishLog.id}  style={{ marginTop: '100px', textAlign: 'center' }}>
+        <Link href={`/fishlogslist?placeName=${encodeURIComponent(filteredFishLog.placeName)}`} passHref>            
             <Button color='default' variant='shadow' size='lg' style={{ marginRight: '50px' }}>
               戻る
-            </Button>
-          </Link>
-          
+           </Button>
+        </Link>
         </div>
+    ))}
       </div>
     </div>
 )}

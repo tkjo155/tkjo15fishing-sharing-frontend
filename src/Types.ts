@@ -31,7 +31,7 @@ export type PlacesResponse = {
 }
 
 export type FishLogsResponse = {
-  getFishLogs: FishLog[]
+  fishLogs: FishLog[]
 }
 
 export type Prefecture = {
