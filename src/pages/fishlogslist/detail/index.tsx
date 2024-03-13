@@ -44,8 +44,10 @@ const FishlogDetail = ({data}: FishLogsListProps ) => {
         </h2>
       </div>
       <div>
-      {data?.fishLogs?.map((getFishLog: FishLog) => (
-        <Table hideHeader removeWrapper aria-label='Example static collection table'>
+      {data?.fishLogs
+    ?.filter((getFishLog: FishLog) => getFishLog.placeName === placeName)
+    .map((filteredFishLog: FishLog) => (
+        <Table key={filteredFishLog.id} hideHeader removeWrapper aria-label='Example static collection table'>
           <TableHeader>
             <TableColumn>項目</TableColumn>
             <TableColumn>情報</TableColumn>
@@ -53,28 +55,28 @@ const FishlogDetail = ({data}: FishLogsListProps ) => {
           <TableBody>
             <TableRow key='1'>
               <TableCell style={{ border: '1px solid #ccc', fontWeight: 'bold' }}>日にち</TableCell>
-              <TableCell style={{ border: '1px solid #ccc' }}>{getFishLog.date}</TableCell>
+              <TableCell style={{ border: '1px solid #ccc' }}>{filteredFishLog.date}</TableCell>
             </TableRow>
             <TableRow key='2'>
               <TableCell style={{ border: '1px solid #ccc', fontWeight: 'bold' }}>天気</TableCell>
-              <TableCell style={{ border: '1px solid #ccc' }}>{getFishLog.weather}</TableCell>
+              <TableCell style={{ border: '1px solid #ccc' }}>{filteredFishLog.weather}</TableCell>
             </TableRow>
             <TableRow key='3'>
               <TableCell style={{ border: '1px solid #ccc', fontWeight: 'bold' }}>
                 サイズ(cm)
               </TableCell>
-              <TableCell style={{ border: '1px solid #ccc' }}> {getFishLog.size}cm </TableCell>
+              <TableCell style={{ border: '1px solid #ccc' }}> {filteredFishLog.size}cm </TableCell>
             </TableRow>
             <TableRow key='4'>
               <TableCell style={{ border: '1px solid #ccc', fontWeight: 'bold' }}>
                 潮汐情報
               </TableCell>
               <TableCell style={{ border: '1px solid #ccc' }}>
-                {getFishLog.isSpringTide && '大潮'}
-                {getFishLog.isMiddleTide && '中潮'}
-                {getFishLog.isNeapTide && '小潮'}
-                {getFishLog.isNagashio && '長潮'}
-                {getFishLog.isWakashio && '若潮'}
+                {filteredFishLog.isSpringTide && '大潮'}
+                {filteredFishLog.isMiddleTide && '中潮'}
+                {filteredFishLog.isNeapTide && '小潮'}
+                {filteredFishLog.isNagashio && '長潮'}
+                {filteredFishLog.isWakashio && '若潮'}
               </TableCell>
             </TableRow>
           </TableBody>
@@ -113,7 +115,6 @@ export const getServerSideProps = async () => {
   } catch (error) {
     console.error('Error fetching data:', error);
 
-    // Return an empty dataset or handle the error as needed
     return {
       props: {
         data: { getFishLogs: [] },

@@ -31,10 +31,13 @@ const FishlogsList = ({ data}: FishLogsListProps ) => {
       {placeName}釣行記録
       </h1>)}
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-       {data?.fishLogs?.map((getFishLog: FishLog) => (
-                  <Card key={getFishLog.id} style={{ width: '800px', padding: '15px' }}>
-            <Link href={`/fishlogslist/detail?id=${getFishLog.id}`} passHref>              <CardHeader style={{ fontSize: '20px' }}>{getFishLog.fishName}</CardHeader>
-              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>{getFishLog.date}</div>
+      {data?.fishLogs
+    ?.filter((getFishLog: FishLog) => getFishLog.placeName === placeName)
+    .map((filteredFishLog: FishLog) => (
+           <Card key={filteredFishLog.id}  style={{ width: '800px', padding: '15px' }}>
+           <Link href={`/fishlogslist/detail?placeName=${encodeURIComponent(filteredFishLog.placeName)}`} passHref key={filteredFishLog.id}>            
+           <CardHeader style={{ fontSize: '20px' }}>{filteredFishLog.fishName}</CardHeader>
+              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>{filteredFishLog.date}</div>
             </Link>
           </Card>
         ))}
@@ -72,7 +75,6 @@ export const getServerSideProps = async () => {
   } catch (error) {
     console.error('Error fetching data:', error);
 
-    // Return an empty dataset or handle the error as needed
     return {
       props: {
         data: { getFishLogs: [] },
