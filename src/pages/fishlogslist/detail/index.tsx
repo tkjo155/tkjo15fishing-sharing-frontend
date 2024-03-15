@@ -24,7 +24,6 @@ const FishlogDetail = ({data}: FishLogsListProps ) => {
   const router = useRouter()
   const { placeName,fishName} = router.query
  
-  const filteredFishLogs = data?.fishLogs?.filter((getFishLog: FishLog) => getFishLog.placeName === placeName);
 
   return (
     <div>
@@ -46,45 +45,49 @@ const FishlogDetail = ({data}: FishLogsListProps ) => {
         </h2>
       </div>
       <div>
-      {filteredFishLogs .map((filteredFishLog: FishLog) => (
-        <Table key={filteredFishLog.id} hideHeader removeWrapper aria-label='Example static collection table'>
+      {data && data.fishLogs && data.fishLogs
+        .filter((fishLog: FishLog) => fishLog.placeName === placeName)
+        .map((fishLog: FishLog) => (
+        <Table key={fishLog.id} hideHeader removeWrapper aria-label='Example static collection table'>
           <TableHeader>
             <TableColumn>項目</TableColumn>
             <TableColumn>情報</TableColumn>
           </TableHeader>
           <TableBody >
-            <TableRow key={`date-${filteredFishLog.id}`}>
+            <TableRow key={`date-${fishLog.id}`}>
               <TableCell style={{ border: '1px solid #ccc', fontWeight: 'bold' }}>日にち</TableCell>
-              <TableCell style={{ border: '1px solid #ccc' }}>{filteredFishLog.date}</TableCell>
+              <TableCell style={{ border: '1px solid #ccc' }}>{fishLog.date}</TableCell>
             </TableRow>
-            <TableRow key={`weather-${filteredFishLog.id}`}>
+            <TableRow key={`weather-${fishLog.id}`}>
               <TableCell style={{ border: '1px solid #ccc', fontWeight: 'bold' }}>天気</TableCell>
-              <TableCell style={{ border: '1px solid #ccc' }}>{filteredFishLog.weather}</TableCell>
+              <TableCell style={{ border: '1px solid #ccc' }}>{fishLog.weather}</TableCell>
             </TableRow>
-            <TableRow key={`size-${filteredFishLog.id}`}>
+            <TableRow key={`size-${fishLog.id}`}>
               <TableCell style={{ border: '1px solid #ccc', fontWeight: 'bold' }}>
                 サイズ(cm)
               </TableCell>
-              <TableCell style={{ border: '1px solid #ccc' }}> {filteredFishLog.size}cm </TableCell>
+              <TableCell style={{ border: '1px solid #ccc' }}> {fishLog.size}cm </TableCell>
             </TableRow>
-            <TableRow key={`tide-${filteredFishLog.id}`}>
+            <TableRow key={`tide-${fishLog.id}`}>
               <TableCell style={{ border: '1px solid #ccc', fontWeight: 'bold' }}>
                 潮汐情報
               </TableCell>
               <TableCell style={{ border: '1px solid #ccc' }}>
-                {filteredFishLog.isSpringTide && '大潮'}
-                {filteredFishLog.isMiddleTide && '中潮'}
-                {filteredFishLog.isNeapTide && '小潮'}
-                {filteredFishLog.isNagashio && '長潮'}
-                {filteredFishLog.isWakashio && '若潮'}
+                {fishLog.isSpringTide && '大潮'}
+                {fishLog.isMiddleTide && '中潮'}
+                {fishLog.isNeapTide && '小潮'}
+                {fishLog.isNagashio && '長潮'}
+                {fishLog.isWakashio && '若潮'}
               </TableCell>
             </TableRow>
           </TableBody>
         </Table>
       ))}
-        {filteredFishLogs .map((filteredFishLog: FishLog) => (
-        <div key={filteredFishLog.id}  style={{ marginTop: '100px', textAlign: 'center' }}>
-        <Link href={`/fishlogslist?placeName=${encodeURIComponent(filteredFishLog.placeName)}`} passHref>            
+        {data && data.fishLogs && data.fishLogs
+        .filter((fishLog: FishLog) => fishLog.placeName === placeName)
+        .map((fishLog: FishLog) => (
+        <div key={fishLog.id}  style={{ marginTop: '100px', textAlign: 'center' }}>
+        <Link href={`/fishlogslist?placeName=${encodeURIComponent(fishLog.placeName)}`} passHref>            
             <Button color='default' variant='shadow' size='lg' style={{ marginRight: '50px' }}>
               戻る
            </Button>

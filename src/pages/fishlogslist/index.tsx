@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { FISHLOGS } from '@/graphql/getFishlogs'
 import React from 'react'
 import { createApolloClient } from '@/libs/client'
-import { FishLog, FishLogsResponse } from '@/Types'
+import {  FishLog, FishLogsResponse } from '@/Types'
 import { useRouter } from 'next/router'
 
 interface FishLogsListProps {
@@ -13,7 +13,7 @@ interface FishLogsListProps {
 const FishlogsList = ({ data}: FishLogsListProps ) => {
   const router = useRouter()
   const { placeName } = router.query
- 
+  
 
   return (
     <div>
@@ -28,16 +28,19 @@ const FishlogsList = ({ data}: FishLogsListProps ) => {
       </header>
       {placeName &&(
       <h1 style={{ textAlign: 'center', width: '100%', fontSize: '24px' }}>
-      {placeName}釣行記録
+       {placeName}釣行記録
       </h1>)}
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-      {data?.fishLogs
-    ?.filter((getFishLog: FishLog) => getFishLog.placeName === placeName)
-    .map((filteredFishLog: FishLog) => (
-           <Card key={filteredFishLog.id}  style={{ width: '800px', padding: '15px' }}>
-           <Link href={`/fishlogslist/detail?placeName=${encodeURIComponent(filteredFishLog.placeName)}`} passHref key={filteredFishLog.id}>            
-           <CardHeader style={{ fontSize: '20px' }}>{filteredFishLog.fishName}</CardHeader>
-              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>{filteredFishLog.date}</div>
+      {data && data.fishLogs && data.fishLogs
+        .filter((fishLog: FishLog) => fishLog.placeName === placeName)
+        .map((fishLog: FishLog) => (
+            <Card key={fishLog.id}  style={{ width: '800px', padding: '15px' }}>
+          <Link href={`/fishlogslist/detail?placeId=${encodeURIComponent(fishLog.id)}&placeName=${encodeURIComponent(fishLog.placeName)}`}
+          key={fishLog.id}
+          passHref
+        >          
+           <CardHeader style={{ fontSize: '20px' }}>{fishLog.fishName}</CardHeader>
+              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>{fishLog.date}</div>
             </Link>
           </Card>
         ))}
@@ -54,35 +57,25 @@ const FishlogsList = ({ data}: FishLogsListProps ) => {
   )
 }
 
-export const getServerSideProps = async () => {
-  try {
-    const apolloClient = createApolloClient();
-    const { data, error } = await apolloClient.query<FishLogsListProps>({
-      query: FISHLOGS,
-      
-    });
+export const getStaticProps = async () => {
+  //Apollo クライアント インスタンスを作成
+  const apolloClient = createApolloClient()
 
-    if (error) {
-      console.error('Error fetching data:', error);
-      throw new Error('Failed to fetch data');
-    }
+  //データのフェッチ
+  const { data, error } = await apolloClient.query<FishLogsListProps>({
+    query: FISHLOGS,
+  })
+  console.error('Error fetching data:', error)
 
-    return {
-      props: {
-        data,
-      },
-    };
-  } catch (error) {
-    console.error('Error fetching data:', error);
-
-    return {
-      props: {
-        data: { getFishLogs: [] },
-      },
-    };
+  //取得したデータを props として返す
+  return {
+    props: {
+      data,
+    },
+    //30秒に一回更新できるようにする
+    revalidate: 30,
   }
-};
-
+}
 
 
 export default FishlogsList

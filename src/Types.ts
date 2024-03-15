@@ -1,4 +1,4 @@
-//釣行記録
+
 export type FishLog = {
   id: number
   placeName: string
@@ -13,6 +13,8 @@ export type FishLog = {
   isNagashio: boolean
   isWakashio: boolean
 }
+
+
 
 export type Place = {
   id: number
