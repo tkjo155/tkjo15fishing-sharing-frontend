@@ -15,14 +15,26 @@ import React from 'react'
 import { createApolloClient } from '@/libs/client'
 import { FishLog, FishLogsResponse } from '@/Types'
 import { useRouter } from 'next/router'
+import { useQuery } from '@apollo/client'
 
 interface FishLogsListProps {
   data: FishLogsResponse
 }
 
-const FishlogDetail = ({data}: FishLogsListProps ) => {
+const FishlogDetail = ( ) => {
   const router = useRouter()
-  const { placeName,fishName} = router.query
+  const {placeName,placeId,fishName} = router.query
+
+
+  const { data } = useQuery<FishLogsResponse>(FISHLOGS);
+  // クリックされたカードのplaceIdを取得
+ const clickedPlaceId = Number(placeId);
+
+ // フィッシュログをフィルタリングする関数
+ const filterFishLogs = (fishLogs: FishLog[] | undefined) => {
+   
+   return fishLogs?.filter(fishLog => fishLog.placeId == clickedPlaceId) || [];
+ };
  
 
   return (
@@ -36,18 +48,20 @@ const FishlogDetail = ({data}: FishLogsListProps ) => {
           </NavbarBrand>
         </Navbar>
       </header>
+      {placeName &&
       <h1 style={{ textAlign: 'center', width: '100%', fontSize: '20px', marginBottom: '30px' }}>
       {placeName} 釣行詳細記録
       </h1>
+}
       <div style={{ textAlign: 'center' }}>
         <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '80px' }}>
           {fishName}
         </h2>
       </div>
       <div>
-      {data && data.fishLogs && data.fishLogs
-        .filter((fishLog: FishLog) => fishLog.placeName === placeName)
-        .map((fishLog: FishLog) => (
+      {data &&
+          data.fishLogs &&
+          filterFishLogs(data.fishLogs).map((fishLog: FishLog) => (
         <Table key={fishLog.id} hideHeader removeWrapper aria-label='Example static collection table'>
           <TableHeader>
             <TableColumn>項目</TableColumn>
@@ -83,48 +97,40 @@ const FishlogDetail = ({data}: FishLogsListProps ) => {
           </TableBody>
         </Table>
       ))}
-        {data && data.fishLogs && data.fishLogs
-        .filter((fishLog: FishLog) => fishLog.placeName === placeName)
-        .map((fishLog: FishLog) => (
-        <div key={fishLog.id}  style={{ marginTop: '100px', textAlign: 'center' }}>
-        <Link href={`/fishlogslist?placeName=${encodeURIComponent(fishLog.placeName)}`} passHref>            
+      {data &&
+          data.fishLogs &&
+          filterFishLogs(data.fishLogs).map((fishLog: FishLog) => (
+        <div  key={fishLog.id}  style={{ marginTop: '100px', textAlign: 'center' }}>
+           <Link href={`/fishlogslist?placeId=${encodeURIComponent(fishLog.placeId)}&placeName=${encodeURIComponent(Array.isArray(placeName) )}`} passHref>
             <Button color='default' variant='shadow' size='lg' style={{ marginRight: '50px' }}>
               戻る
            </Button>
         </Link>
         </div>
-    ))}
+         ))}
       </div>
+         
     </div>
 )}
 
-export const getServerSideProps = async () => {
-  try {
-    const apolloClient = createApolloClient();
-    const { data, error } = await apolloClient.query<FishLogsListProps>({
-      query: FISHLOGS,
-      
-    });
+export const getStaticProps = async () => {
+  //Apollo クライアント インスタンスを作成
+  const apolloClient = createApolloClient()
 
-    if (error) {
-      console.error('Error fetching data:', error);
-      throw new Error('Failed to fetch data');
-    }
+  //データのフェッチ
+  const { data, error } = await apolloClient.query<FishLogsListProps>({
+    query: FISHLOGS,
+  })
+  console.error('Error fetching data:', error)
 
-    return {
-      props: {
-        data,
-      },
-    };
-  } catch (error) {
-    console.error('Error fetching data:', error);
-
-    return {
-      props: {
-        data: { getFishLogs: [] },
-      },
-    };
+  //取得したデータを props として返す
+  return {
+    props: {
+      data,
+    },
+    //30秒に一回更新できるようにする
+    revalidate: 30,
   }
-};
+}
 
 export default FishlogDetail

@@ -43,7 +43,7 @@ const PlacesList = ({ data }: PlacesListProps) => {
           href={`/fishlogslist?placeId=${encodeURIComponent(place.id)}&placeName=${encodeURIComponent(place.name)}`}
           key={place.id}
           passHref
-        >    
+        >
          <Card key={place.id} onClick={() => handleCardClick(place)}>
               <CardBody>
                 <strong>{place.name}</strong>

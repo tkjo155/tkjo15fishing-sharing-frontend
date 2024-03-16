@@ -4,6 +4,7 @@ export const FISHLOGS = gql`
   query {
     fishLogs {
       id
+      placeId
       placeName
       date
       image

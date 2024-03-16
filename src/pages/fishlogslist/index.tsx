@@ -5,15 +5,26 @@ import React from 'react'
 import { createApolloClient } from '@/libs/client'
 import {  FishLog, FishLogsResponse } from '@/Types'
 import { useRouter } from 'next/router'
+import { useQuery } from '@apollo/client'
+
 
 interface FishLogsListProps {
   data: FishLogsResponse
 }
 
-const FishlogsList = ({ data}: FishLogsListProps ) => {
+const FishlogsList = ( ) => {
   const router = useRouter()
-  const { placeName } = router.query
+  const {placeId} = router.query
+
+  const { data } = useQuery<FishLogsResponse>(FISHLOGS);
+ // クリックされたカードのplaceIdを取得
+ const clickedPlaceId = Number(placeId);
+
+// フィッシュログをフィルタリングする関数
+const filterFishLogs = (fishLogs: FishLog[] | undefined) => {
   
+  return fishLogs?.filter(fishLog => fishLog.placeId == clickedPlaceId) || [];
+};
 
   return (
     <div>
@@ -26,24 +37,27 @@ const FishlogsList = ({ data}: FishLogsListProps ) => {
           </NavbarBrand>
         </Navbar>
       </header>
-      {placeName &&(
-      <h1 style={{ textAlign: 'center', width: '100%', fontSize: '24px' }}>
-       {placeName}釣行記録
-      </h1>)}
+      {data &&
+          data.fishLogs &&
+          filterFishLogs(data.fishLogs).map((fishLog: FishLog) => (
+      <h1 key={fishLog.id}  style={{ textAlign: 'center', width: '100%', fontSize: '24px' }}>
+       {fishLog.placeName}釣行記録
+      </h1>))}
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-      {data && data.fishLogs && data.fishLogs
-        .filter((fishLog: FishLog) => fishLog.placeName === placeName)
-        .map((fishLog: FishLog) => (
+      {data &&
+          data.fishLogs &&
+          filterFishLogs(data.fishLogs).map((fishLog: FishLog) => (
             <Card key={fishLog.id}  style={{ width: '800px', padding: '15px' }}>
-          <Link href={`/fishlogslist/detail?placeId=${encodeURIComponent(fishLog.id)}&placeName=${encodeURIComponent(fishLog.placeName)}`}
-          key={fishLog.id}
-          passHref
-        >          
-           <CardHeader style={{ fontSize: '20px' }}>{fishLog.fishName}</CardHeader>
+               <Link
+                 href={`/fishlogslist/detail?placeId=${encodeURIComponent(fishLog.placeId)}&placeName=${encodeURIComponent(fishLog.placeName)}&fishName=${encodeURIComponent(fishLog.fishName)}`}
+                 passHref
+               >        
+                 <CardHeader style={{ fontSize: '20px' }}>{fishLog.fishName}</CardHeader>
               <div style={{ display: 'flex', justifyContent: 'flex-end' }}>{fishLog.date}</div>
             </Link>
           </Card>
         ))}
+        
       </div>
       <div style={{ marginTop: '100px', textAlign: 'center' }}>
         <Link href={'/placeslist'} passHref legacyBehavior>

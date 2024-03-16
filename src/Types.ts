@@ -1,6 +1,7 @@
 
 export type FishLog = {
   id: number
+  placeId: number 
   placeName: string
   date: string
   image: string
