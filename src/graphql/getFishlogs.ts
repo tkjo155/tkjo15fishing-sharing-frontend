@@ -1,21 +1,13 @@
 import { gql } from '@apollo/client';
 
 export const FISHLOGS = gql`
-  query {
-    fishLogs {
+  query GetFishLogs($placeId: Int){
+    fishLogs(placeId: $placeId)  {
       id
       placeId
       placeName
       date
-      image
       fishName
-      weather
-      size
-      isSpringTide
-      isMiddleTide
-      isNeapTide
-      isNagashio
-      isWakashio
     }
   }
 `;

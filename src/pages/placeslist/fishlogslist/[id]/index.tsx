@@ -1,7 +1,6 @@
 import {
   Navbar,
   NavbarBrand,
-  Button,
   Table,
   TableBody,
   TableRow,
@@ -9,33 +8,21 @@ import {
   TableColumn,
   TableCell,
 } from '@nextui-org/react'
-import { FISHLOGS } from '@/graphql/getFishlogs'
-import Link from 'next/link'
 import React from 'react'
-import { createApolloClient } from '@/libs/client'
-import { FishLog, FishLogsResponse } from '@/Types'
 import { useRouter } from 'next/router'
 import { useQuery } from '@apollo/client'
+import { GET_FISHLOG } from '@/graphql/getFishlog'
+import { FishLog } from '@/Types'
 
-interface FishLogsListProps {
-  data: FishLogsResponse
-}
+const FishlogDetail = () => {
+    const router = useRouter();
+    const { fishLogId } = router.query;
+    const {data } = useQuery(GET_FISHLOG, {
+      variables: { id: Number(fishLogId) },
+    });
+    const fishLog: FishLog = data?.fishLog;
+    console.log('取得したデータ:', data);
 
-const FishlogDetail = ( ) => {
-  const router = useRouter()
-  const {placeName,placeId,fishName} = router.query
-
-
-  const { data } = useQuery<FishLogsResponse>(FISHLOGS);
-  // クリックされたカードのplaceIdを取得
- const clickedPlaceId = Number(placeId);
-
- // フィッシュログをフィルタリングする関数
- const filterFishLogs = (fishLogs: FishLog[] | undefined) => {
-   
-   return fishLogs?.filter(fishLog => fishLog.placeId == clickedPlaceId) || [];
- };
- 
 
   return (
     <div>
@@ -48,20 +35,19 @@ const FishlogDetail = ( ) => {
           </NavbarBrand>
         </Navbar>
       </header>
-      {placeName &&
+      {fishLog &&
       <h1 style={{ textAlign: 'center', width: '100%', fontSize: '20px', marginBottom: '30px' }}>
-      {placeName} 釣行詳細記録
-      </h1>
-}
+      {fishLog.placeName} 釣行詳細記録
+      </h1>}
       <div style={{ textAlign: 'center' }}>
+      {fishLog &&
         <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '80px' }}>
-          {fishName}
+          {fishLog.fishName}
         </h2>
+      }
       </div>
       <div>
-      {data &&
-          data.fishLogs &&
-          filterFishLogs(data.fishLogs).map((fishLog: FishLog) => (
+      {fishLog &&
         <Table key={fishLog.id} hideHeader removeWrapper aria-label='Example static collection table'>
           <TableHeader>
             <TableColumn>項目</TableColumn>
@@ -96,41 +82,14 @@ const FishlogDetail = ( ) => {
             </TableRow>
           </TableBody>
         </Table>
-      ))}
-      {data &&
-          data.fishLogs &&
-          filterFishLogs(data.fishLogs).map((fishLog: FishLog) => (
-        <div  key={fishLog.id}  style={{ marginTop: '100px', textAlign: 'center' }}>
-           <Link href={`/fishlogslist?placeId=${encodeURIComponent(fishLog.placeId)}&placeName=${encodeURIComponent(Array.isArray(placeName) )}`} passHref>
-            <Button color='default' variant='shadow' size='lg' style={{ marginRight: '50px' }}>
-              戻る
-           </Button>
-        </Link>
-        </div>
-         ))}
+      }
+ 
       </div>
          
     </div>
 )}
 
-export const getStaticProps = async () => {
-  //Apollo クライアント インスタンスを作成
-  const apolloClient = createApolloClient()
 
-  //データのフェッチ
-  const { data, error } = await apolloClient.query<FishLogsListProps>({
-    query: FISHLOGS,
-  })
-  console.error('Error fetching data:', error)
 
-  //取得したデータを props として返す
-  return {
-    props: {
-      data,
-    },
-    //30秒に一回更新できるようにする
-    revalidate: 30,
-  }
-}
 
 export default FishlogDetail
