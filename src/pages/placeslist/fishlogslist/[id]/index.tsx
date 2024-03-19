@@ -16,7 +16,7 @@ import { FishLog } from '@/Types'
 
 const FishlogDetail = () => {
     const router = useRouter();
-    const { fishLogId } = router.query;
+    const { fishLogId ,placeName} = router.query;
     const {data } = useQuery(GET_FISHLOG, {
       variables: { id: Number(fishLogId) },
     });
@@ -35,10 +35,9 @@ const FishlogDetail = () => {
           </NavbarBrand>
         </Navbar>
       </header>
-      {fishLog &&
       <h1 style={{ textAlign: 'center', width: '100%', fontSize: '20px', marginBottom: '30px' }}>
-      {fishLog.placeName} 釣行詳細記録
-      </h1>}
+      {placeName} 釣行詳細記録
+      </h1>
       <div style={{ textAlign: 'center' }}>
       {fishLog &&
         <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '80px' }}>

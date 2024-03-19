@@ -14,9 +14,8 @@ interface FishLogsListProps {
 const FishlogsList = ( { data }: FishLogsListProps) => {
   const router = useRouter()
   const placeId = Number(router.query.placeId)
+  const { placeName } = router.query;
   const fishLogs = data?.fishLogs || [];
- 
-
   // 取得した placeId と同じ placeId を持つ fishLog のみを取り出す
   const filteredFishLogs = fishLogs.filter(fishLog => fishLog.placeId === placeId);
 
@@ -31,14 +30,14 @@ const FishlogsList = ( { data }: FishLogsListProps) => {
           </NavbarBrand>
         </Navbar>
       </header>
-      {filteredFishLogs.map((fishLog) => (
-      <h1 key={fishLog.id} style={{ textAlign: 'center', width: '100%', fontSize: '24px' }}>
-       {fishLog.placeName}釣行記録
-      </h1>))}
+      <h1 style={{ textAlign: 'center', width: '100%', fontSize: '24px' }}>
+       {placeName}釣行記録
+      </h1>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
       {filteredFishLogs.map((fishLog) => (
             <Card  key={fishLog.id}  style={{ width: '800px', padding: '15px' }}>
-<Link href={`/fishlogslist/${fishLog.id}`}>              <CardHeader style={{ fontSize: '20px' }}>{fishLog.fishName}</CardHeader>
+            <Link href={`/fishlogslist/id/${fishLog.id}&placeName=${encodeURIComponent(fishLog.placeName)}`}>             
+             <CardHeader style={{ fontSize: '20px' }}>{fishLog.fishName}</CardHeader>
               <div style={{ display: 'flex', justifyContent: 'flex-end' }}>{fishLog.date}</div>
             </Link>
           </Card>
@@ -50,9 +49,10 @@ const FishlogsList = ( { data }: FishLogsListProps) => {
   export const getStaticProps = async ({ params }: any) => {
     const apolloClient = createApolloClient();
     const placeId = params?.place.id; 
+    const placeName = params?.place.name; 
     const { data, error } = await apolloClient.query<FishLogsListProps>({
       query: FISHLOGS,
-      variables: { placeId },
+      variables: { placeId,placeName },
     });
     console.error('Error fetching data:', error);
     return {
