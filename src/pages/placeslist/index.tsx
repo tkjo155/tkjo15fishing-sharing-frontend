@@ -15,7 +15,7 @@ const PlacesList = ({ data }: PlacesListProps) => {
   const handleCardClick = (place: Place) => {
     router.push({
       pathname: '/fishlogslist',
-      query: { placeName: place.name },
+      query: { placeId: place.id},
     })
   }
   return (
@@ -38,12 +38,16 @@ const PlacesList = ({ data }: PlacesListProps) => {
       </header>
       <h1 style={{ textAlign: 'center', width: '100%', fontSize: '24px' }}>釣り場一覧</h1>
       {data &&
-        data.getAllPlaces.map((getAllPlace) => (
-          <Link href={`/fishlogslist`} passHref key={getAllPlace.id}>
-            <Card key={getAllPlace.id} onClick={() => handleCardClick(getAllPlace)}>
+        data.getAllPlaces.map((place: Place) => (
+          <Link
+          href={`/placeslist/fishlogslist?placeId=${place.id}`} 
+          key={place.id}
+          passHref
+        >
+         <Card key={place.id} onClick={() => handleCardClick(place)}>
               <CardBody>
-                <strong>{getAllPlace.name}</strong>
-                <p>{getAllPlace.prefecture}</p>
+                <strong>{place.name}</strong>
+                <p>{place.prefecture}</p>
               </CardBody>
             </Card>
           </Link>
