@@ -1,6 +1,6 @@
 import { Card, CardBody, Navbar, NavbarBrand, Button, CardHeader } from '@nextui-org/react'
 import Link from 'next/link'
-import { FISHLOGS } from '@/graphql/getFishlogs'
+import { GET_FISHLOGS } from '@/graphql/getFishlogs'
 import React from 'react'
 import { createApolloClient } from '@/libs/client'
 import {   FishLogsResponse } from '@/Types'
@@ -12,12 +12,10 @@ interface FishLogsListProps {
 }
 
 const FishlogsList = ( { data }: FishLogsListProps) => {
-  const router = useRouter()
-  const placeId = Number(router.query.placeId)
-  const { placeName } = router.query;
-  const fishLogs = data?.fishLogs || [];
-  // 取得した placeId と同じ placeId を持つ fishLog のみを取り出す
-  const filteredFishLogs = fishLogs.filter(fishLog => fishLog.placeId === placeId);
+  const router = useRouter();
+  const { placeName, placeId} = router.query;
+  console.log('placeId:', placeId); 
+  console.log(data)
 
   return (
     <div>
@@ -31,12 +29,12 @@ const FishlogsList = ( { data }: FishLogsListProps) => {
         </Navbar>
       </header>
       <h1 style={{ textAlign: 'center', width: '100%', fontSize: '24px' }}>
-       {placeName}釣行記録
+      {placeName}釣行記録
       </h1>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-      {filteredFishLogs.map((fishLog) => (
+      {data?.fishLogs?.map((fishLog) => (
             <Card  key={fishLog.id}  style={{ width: '800px', padding: '15px' }}>
-            <Link href={`/fishlogslist/id/${fishLog.id}&placeName=${encodeURIComponent(fishLog.placeName)}`}>             
+            <Link href={`/fishlogslist/`}>             
              <CardHeader style={{ fontSize: '20px' }}>{fishLog.fishName}</CardHeader>
               <div style={{ display: 'flex', justifyContent: 'flex-end' }}>{fishLog.date}</div>
             </Link>
@@ -48,12 +46,13 @@ const FishlogsList = ( { data }: FishLogsListProps) => {
 
   export const getStaticProps = async ({ params }: any) => {
     const apolloClient = createApolloClient();
-    const placeId = params?.place.id; 
-    const placeName = params?.place.name; 
+    const placeId = params?.placeId;
     const { data, error } = await apolloClient.query<FishLogsListProps>({
-      query: FISHLOGS,
-      variables: { placeId,placeName },
+      query: GET_FISHLOGS,
+      variables: { placeId }
     });
+    console.log('placeId:', placeId); 
+
     console.error('Error fetching data:', error);
     return {
       props: {

@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
-export const FISHLOGS = gql`
-  query GetFishLogs($placeId: Int){
-    fishLogs(placeId: $placeId)  {
+export const GET_FISHLOGS = gql`
+  query  {
+    getFishLogs {
       id
       placeId
       placeName

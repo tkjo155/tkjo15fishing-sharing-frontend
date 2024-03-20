@@ -40,7 +40,7 @@ const PlacesList = ({ data }: PlacesListProps) => {
       {data &&
         data.getAllPlaces.map((place: Place) => (
           <Link
-          href={`/placeslist/fishlogslist?placeId=${encodeURIComponent(place.id)}&placeName=${encodeURIComponent(place.name)}`}          
+          href={`/placeslist/fishlogslist?placeId=${place.id}`} 
           key={place.id}
           passHref
         >
