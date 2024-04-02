@@ -5,6 +5,7 @@ import { GET_PLACES } from '../../graphql/getPlaces'
 import { Place, PlacesResponse } from '@/Types'
 import { createApolloClient } from '@/libs/client'
 import { useRouter } from 'next/router'
+import { GetStaticPaths } from 'next'
 
 interface PlacesListProps {
   data: PlacesResponse
@@ -14,7 +15,7 @@ const PlacesList = ({ data }: PlacesListProps) => {
   const router = useRouter()
   const handleCardClick = (place: Place) => {
     router.push({
-      pathname: '/fishlogslist',
+      pathname: `/[id]/${place.id}`,
       query: { placeId: place.id},
     })
   }
@@ -28,7 +29,7 @@ const PlacesList = ({ data }: PlacesListProps) => {
             </p>
           </NavbarBrand>
           <NavbarItem>
-            <Link href={'/placeslist/new'} passHref legacyBehavior>
+            <Link href={'/place/new'} passHref legacyBehavior>
               <Button color='primary' variant='shadow'>
                 釣り場登録
               </Button>
@@ -40,9 +41,8 @@ const PlacesList = ({ data }: PlacesListProps) => {
       {data &&
         data.getAllPlaces.map((place: Place) => (
           <Link
-          href={`/placeslist/fishlogslist?placeId=${place.id}`} 
+          href={`/place/${place.id}`}
           key={place.id}
-          passHref
         >
          <Card key={place.id} onClick={() => handleCardClick(place)}>
               <CardBody>
@@ -55,25 +55,29 @@ const PlacesList = ({ data }: PlacesListProps) => {
     </div>
   )
 }
-//getStaticProps型にすることで、関数がサーバーサイドでデータを取得するためにNext.jsで定義された予測される形式に従う
-export const getStaticProps = async () => {
-  //Apollo クライアント インスタンスを作成
-  const apolloClient = createApolloClient()
 
-  //データのフェッチ
+
+
+export const getStaticProps = async () => {
+  const apolloClient = createApolloClient();
   const { data, error } = await apolloClient.query<PlacesListProps>({
     query: GET_PLACES,
-  })
-  console.error('Error fetching data:', error)
+  });
 
-  //取得したデータを props として返す
+  if (error) {
+    console.error('Error fetching data:', error);
+    return {
+      notFound: true,
+    };
+  }
+
   return {
     props: {
       data,
     },
-    //30秒に一回更新できるようにする
     revalidate: 30,
-  }
-}
+  };
+};
+
 
 export default PlacesList

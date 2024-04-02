@@ -47,7 +47,7 @@ const PlaceForm = ({ data }: PlaceFormProps) => {
       })
 
       // 一覧画面に遷移
-      router.push('/placeslist')
+      router.push('/place')
     } catch (error) {
       console.error('Error creating place:', error)
     }
@@ -101,7 +101,7 @@ const PlaceForm = ({ data }: PlaceFormProps) => {
         </Select>
       </div>
       <div style={{ marginTop: '100px', textAlign: 'center' }}>
-        <Link href={'/placeslist'} passHref legacyBehavior>
+        <Link href={'/place'} passHref legacyBehavior>
           <Button color='default' variant='shadow' size='lg' style={{ marginRight: '50px' }}>
             キャンセル
           </Button>

@@ -12,19 +12,26 @@ import React from 'react'
 import { useRouter } from 'next/router'
 import { useQuery } from '@apollo/client'
 import { GET_FISHLOG } from '@/graphql/getFishlog'
-import { FishLog } from '@/Types'
+import {  FishLog, FishLogResponse, } from '@/Types'
+
 
 const FishlogDetail = () => {
     const router = useRouter();
-    const { fishLogId ,placeName} = router.query;
-    const {data } = useQuery(GET_FISHLOG, {
-      variables: { id: Number(fishLogId) },
+    const {id}  = router.query;
+    const { data,loading,error} = useQuery<FishLogResponse>(GET_FISHLOG, {
+      variables: { getFishLogId: Number(id) },
     });
-    const fishLog: FishLog = data?.fishLog;
-    console.log('取得したデータ:', data);
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error.message}</p>;
+    if (!data) {
+      return <p>Data is undefined</p>;
+    }
+
+const fishLog: FishLog = data.getFishLog;
 
 
-  return (
+return (
     <div>
       <header className='text-gray-600'>
         <Navbar style={{ backgroundColor: '#3498db' }}>
@@ -35,19 +42,18 @@ const FishlogDetail = () => {
           </NavbarBrand>
         </Navbar>
       </header>
-      <h1 style={{ textAlign: 'center', width: '100%', fontSize: '20px', marginBottom: '30px' }}>
-      {placeName} 釣行詳細記録
+        <h1 style={{ textAlign: 'center', width: '100%', fontSize: '20px', marginBottom: '30px' }}>
+       {fishLog.placeName} 釣行詳細記録
       </h1>
       <div style={{ textAlign: 'center' }}>
-      {fishLog &&
+      
         <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '80px' }}>
           {fishLog.fishName}
         </h2>
-      }
+    
       </div>
       <div>
-      {fishLog &&
-        <Table key={fishLog.id} hideHeader removeWrapper aria-label='Example static collection table'>
+          <Table hideHeader removeWrapper aria-label='Example static collection table'>
           <TableHeader>
             <TableColumn>項目</TableColumn>
             <TableColumn>情報</TableColumn>
@@ -81,8 +87,7 @@ const FishlogDetail = () => {
             </TableRow>
           </TableBody>
         </Table>
-      }
- 
+
       </div>
          
     </div>

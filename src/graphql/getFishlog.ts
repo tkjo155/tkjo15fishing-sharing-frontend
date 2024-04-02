@@ -1,9 +1,10 @@
 import { gql } from '@apollo/client';
 
 export const GET_FISHLOG = gql`
-  query {
-    getFishLog{
+  query GetFishLog($getFishLogId: Int) {
+    getFishLog(id: $getFishLogId){
       id
+      placeId
       placeName
       date
       image
