@@ -5,7 +5,6 @@ import { GET_PLACES } from '../../graphql/getPlaces'
 import { Place, PlacesResponse } from '@/Types'
 import { createApolloClient } from '@/libs/client'
 import { useRouter } from 'next/router'
-import { GetStaticPaths } from 'next'
 
 interface PlacesListProps {
   data: PlacesResponse

@@ -4,6 +4,7 @@ export type FishLog = {
   placeId: number 
   placeName: string
   date: string
+  image: string
   fishName: string
   weather: string
   size: number
@@ -14,7 +15,7 @@ export type FishLog = {
   isWakashio: boolean
 }
 
-export type FishLogs = {
+export type SimpleFishLog = {
   id: number
   placeId: number 
   placeName: string
@@ -40,7 +41,7 @@ export type PlacesResponse = {
 }
 
 export type FishLogsResponse = {
-  getFishLogs: FishLogs[]
+  getFishLogs: SimpleFishLog[]
 }
 
 export type FishLogResponse = {
