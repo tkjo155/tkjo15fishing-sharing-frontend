@@ -15,7 +15,7 @@ const FishlogsList = ({ data }: FishLogsListProps ) => {
   const router = useRouter();
  const handleCardClick = (fishLog: SimpleFishLog) => {
   router.push({
-    pathname:`/log/${fishLog.id}`,
+    pathname:`/log/[id]`,
     query: { id: fishLog.id},
   })
 }
@@ -62,10 +62,20 @@ type PathParams = {
 //// 事前生成するページのパス（URL のパラメータ部分）のリストを返す（プリビルドすべきページの一覧情報を Next.js に教えてあげる）
 export const getStaticPaths: GetStaticPaths<PathParams> = async () => {
   return {
-    paths:[],
-    fallback: false,
-  };
-};
+    paths: [{
+      params: { id: '1' }
+    },{
+      params: { id: '2' }
+    },{
+      params: { id: '3' }
+    },{
+      params: { id: '4' }
+    },{
+      params: { id: '5' }
+    }],
+    fallback: 'blocking'
+  }
+}
 //パラメータ情報をもとにページコンポーネントに渡す props データを生成
 export const getStaticProps: GetStaticProps<FishLogsListProps> = async  context =>  {
   const apolloClient = createApolloClient();

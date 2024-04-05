@@ -24,9 +24,7 @@ const FishlogDetail = () => {
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;
-    if (!data) {
-      return <p>Data is undefined</p>;
-    }
+    if (!data) return <>なし</>
 
 const fishLog: FishLog = data.getFishLog;
 

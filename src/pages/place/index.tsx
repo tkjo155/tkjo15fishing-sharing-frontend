@@ -14,7 +14,7 @@ const PlacesList = ({ data }: PlacesListProps) => {
   const router = useRouter()
   const handleCardClick = (place: Place) => {
     router.push({
-      pathname: `/[id]/${place.id}`,
+      pathname: `/places/[id]`,
       query: { placeId: place.id},
     })
   }
@@ -63,12 +63,7 @@ export const getStaticProps = async () => {
     query: GET_PLACES,
   });
 
-  if (error) {
-    console.error('Error fetching data:', error);
-    return {
-      notFound: true,
-    };
-  }
+  console.log(error)
 
   return {
     props: {
