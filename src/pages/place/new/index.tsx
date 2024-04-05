@@ -56,17 +56,17 @@ const PlaceForm = ({ data }: PlaceFormProps) => {
   return (
     <form>
       <div>
-        <header className='text-gray-600'>
+        <header>
           <Navbar style={{ backgroundColor: '#3498db' }}>
             <NavbarBrand style={{ textAlign: 'center', width: '100%' }}>
-              <p className='font-bold text-white' style={{ fontSize: '30px' }}>
+              <p style={{ fontSize: '30px',fontWeight:'font-bold',color:'white', }}>
                 Fishing Spots
               </p>
             </NavbarBrand>
           </Navbar>
         </header>
         <h1 style={{ textAlign: 'center', width: '100%', fontSize: '24px' }}>釣り場登録</h1>
-        <div className='flex w-full flex-wrap gap-4 md:flex-nowrap'>
+        <div>
           <label style={{ fontSize: '18px', display: 'block' }}>港名</label>
           {errors.name && <span style={{ color: 'red' }}>{errors.name.message}</span>}
           <Input
@@ -86,10 +86,9 @@ const PlaceForm = ({ data }: PlaceFormProps) => {
       </div>
       <label style={{ fontSize: '18px', display: 'block', marginTop: '30px' }}>都道府県</label>
       {errors.prefectureId && <span style={{ color: 'red' }}>{errors.prefectureId.message}</span>}
-      <div className='flex w-full flex-wrap gap-4 md:flex-nowrap'>
+      <div>
         <Select
           label='Select prefecture'
-          className='max-w-xs'
           {...register('prefectureId', { required: '都道府県は必須です' })}
         >
           {data.prefectures.map((prefecture) => (

@@ -21,10 +21,10 @@ const FishlogsList = ({ data }: FishLogsListProps ) => {
 }
   return (
     <div>
-      <header className='text-gray-600'>
+      <header>
         <Navbar style={{ backgroundColor: '#3498db' }}>
           <NavbarBrand style={{ textAlign: 'center', width: '100%' }}>
-            <p className='font-bold text-white'style={{ fontSize: '30px' }}>
+            <p style={{ fontSize: '30px',fontWeight:'font-bold',color:'white', }}>
               Fishing Spots
             </p>
           </NavbarBrand>
