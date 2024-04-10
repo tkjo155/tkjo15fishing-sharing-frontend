@@ -1,4 +1,4 @@
-import { Card, Navbar, NavbarBrand, CardHeader } from '@nextui-org/react'
+import { Card, Navbar, NavbarBrand, CardHeader, NavbarItem, Button } from '@nextui-org/react'
 import Link from 'next/link'
 import { GET_FISHLOGS } from '@/graphql/getFishlogs'
 import {  SimpleFishLog, FishLogsResponse } from '@/Types'
@@ -12,13 +12,7 @@ interface FishLogsListProps {
 }
 
 const FishlogsList = ({ data }: FishLogsListProps ) => {
-  const router = useRouter();
- const handleCardClick = (fishLog: SimpleFishLog) => {
-  router.push({
-    pathname:`/log/[id]`,
-    query: { id: fishLog.id},
-  })
-}
+ 
   return (
     <div>
       <header>
@@ -28,9 +22,21 @@ const FishlogsList = ({ data }: FishLogsListProps ) => {
               Fishing Spots
             </p>
           </NavbarBrand>
+          {data && data.getFishLogs && data.getFishLogs.length > 0 && (
+            <NavbarItem>
+              <Link
+                href={`/place/${data.getFishLogs[0].placeId}/new`}
+                passHref
+              >
+                <Button color='primary' variant='shadow'>
+                  釣行記録登録
+                </Button>
+              </Link>
+            </NavbarItem>
+          )}
         </Navbar>
       </header>
-      {data && data.getFishLogs && (
+      {data && data.getFishLogs && data.getFishLogs.length > 0 &&(
       <h1 style={{ textAlign: 'center', width: '100%', fontSize: '24px' }}>
          {data.getFishLogs[0].placeName}釣行記録   
      </h1>
@@ -38,7 +44,7 @@ const FishlogsList = ({ data }: FishLogsListProps ) => {
       <div style={{ display: 'flex', justifyContent: 'center' }}>
       {data && data.getFishLogs &&
           data.getFishLogs.map((fishLog:SimpleFishLog) => (
-           <Card  key={fishLog.id}  style={{ width: '800px', padding: '15px' }} onClick={() => handleCardClick(fishLog)}>
+           <Card  key={fishLog.id}  style={{ width: '800px', padding: '15px' }}>
             <Link 
             href={`/place/${fishLog.id}/log`}
             key={fishLog.id}

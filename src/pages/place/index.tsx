@@ -14,7 +14,7 @@ const PlacesList = ({ data }: PlacesListProps) => {
   const router = useRouter()
   const handleCardClick = (place: Place) => {
     router.push({
-      pathname: `/places/[id]`,
+      pathname: `/place/${place.id}`,
       query: { placeId: place.id},
     })
   }
