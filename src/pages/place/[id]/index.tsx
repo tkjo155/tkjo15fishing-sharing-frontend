@@ -23,17 +23,20 @@ const FishlogsList = ({ data }: FishLogsListProps ) => {
             </p>
           </NavbarBrand>
           {data && data.getFishLogs && data.getFishLogs.length > 0 && (
-            <NavbarItem>
+            data.getFishLogs.map((fishLog: SimpleFishLog) => (
+            <NavbarItem key={fishLog.id}>
               <Link
-                href={`/place/${data.getFishLogs[0].placeId}/new`}
+                href={`/place/${fishLog.placeId}/new`} 
+                key={fishLog.id}
                 passHref
               >
-                <Button color='primary' variant='shadow'>
-                  釣行記録登録
-                </Button>
               </Link>
             </NavbarItem>
+            ))
           )}
+            <Button color='primary' variant='shadow'>
+              釣行記録登録
+            </Button>
         </Navbar>
       </header>
       {data && data.getFishLogs && data.getFishLogs.length > 0 &&(
@@ -46,7 +49,7 @@ const FishlogsList = ({ data }: FishLogsListProps ) => {
           data.getFishLogs.map((fishLog:SimpleFishLog) => (
            <Card  key={fishLog.id}  style={{ width: '800px', padding: '15px' }}>
             <Link 
-            href={`/place/${fishLog.id}/log`}
+            href={`/place/${fishLog.placeId}/log/${fishLog.id}`}
             key={fishLog.id}
             passHref
              >
@@ -65,7 +68,7 @@ type PathParams = {
   id: string;
 }
 
-//// 事前生成するページのパス（URL のパラメータ部分）のリストを返す（プリビルドすべきページの一覧情報を Next.js に教えてあげる）
+// 事前生成するページのパス（URL のパラメータ部分）のリストを返す（プリビルドすべきページの一覧情報を Next.js に教えてあげる）
 export const getStaticPaths: GetStaticPaths<PathParams> = async () => {
   return {
     paths: [{
@@ -93,6 +96,7 @@ export const getStaticProps: GetStaticProps<FishLogsListProps> = async  context 
     variables: { placeId: Number(id) },
   });
 
+
   if (error) {
     console.error('Error fetching data:', error);
     return {
@@ -106,6 +110,5 @@ export const getStaticProps: GetStaticProps<FishLogsListProps> = async  context 
     },
     revalidate: 30, // オプション: ページの再生成を有効にする
   };}
-
 
 export default FishlogsList

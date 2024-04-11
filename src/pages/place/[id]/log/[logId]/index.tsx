@@ -17,9 +17,10 @@ import {  FishLog, FishLogResponse, } from '@/Types'
 
 const FishlogDetail = () => {
     const router = useRouter();
-    const {id}  = router.query;
+    const {logId}  = router.query;
+   
     const { data,loading,error} = useQuery<FishLogResponse>(GET_FISHLOG, {
-      variables: { getFishLogId: Number(id) },
+      variables: { getFishLogId: Number(logId)},
     });
 
     if (loading) return <p>Loading...</p>;
@@ -27,7 +28,6 @@ const FishlogDetail = () => {
     if (!data) return <>なし</>
 
 const fishLog: FishLog = data.getFishLog;
-
 
 return (
     <div>
