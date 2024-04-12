@@ -30,25 +30,23 @@ const FishlogDetail = () => {
 const fishLog: FishLog = data.getFishLog;
 
 return (
-    <div>
-      <header>
-        <Navbar style={{ backgroundColor: '#3498db' }}>
-          <NavbarBrand style={{ textAlign: 'center', width: '100%' }}>
-            <p  style={{ fontSize: '30px',fontWeight:'font-bold',color:'white',}}>
+    <div >
+      <header className='bg-sky-500'>
+        <Navbar>
+          <NavbarBrand >
+            <p  className='text-4xl font-bold border-black text-white'>
               Fishing Spots
             </p>
           </NavbarBrand>
         </Navbar>
       </header>
-        <h1 style={{ textAlign: 'center', width: '100%', fontSize: '20px', marginBottom: '30px' }}>
+        <h1 className='text-center text-2xl mt-4'>
        {fishLog.placeName} 釣行詳細記録
       </h1>
-      <div style={{ textAlign: 'center' }}>
-      
-        <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '80px' }}>
+      <div className="mt-4 mb-4">
+        <h2 className='text-center text-3xl font-semibold '>
           {fishLog.fishName}
         </h2>
-    
       </div>
       <div>
           <Table hideHeader removeWrapper aria-label='Example static collection table'>

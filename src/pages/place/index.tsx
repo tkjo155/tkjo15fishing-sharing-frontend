@@ -20,10 +20,10 @@ const PlacesList = ({ data }: PlacesListProps) => {
   }
   return (
     <div>
-      <header>
-        <Navbar style={{ backgroundColor: '#3498db' }}>
-          <NavbarBrand style={{ textAlign: 'center', width: '100%' }}>
-            <p  style={{ fontSize: '30px',fontWeight:'font-bold',color:'white',}}>
+     <header className='bg-sky-500'>
+        <Navbar>
+          <NavbarBrand >
+            <p  className='text-4xl font-bold border-black text-white'>
               Fishing Spots
             </p>
           </NavbarBrand>
@@ -36,7 +36,7 @@ const PlacesList = ({ data }: PlacesListProps) => {
           </NavbarItem>
         </Navbar>
       </header>
-      <h1 style={{ textAlign: 'center', width: '100%', fontSize: '24px' }}>釣り場一覧</h1>
+      <h1 className='text-center text-2xl mt-4 mb-4'>釣り場一覧</h1>
       {data &&
         data.getAllPlaces.map((place: Place) => (
           <Link

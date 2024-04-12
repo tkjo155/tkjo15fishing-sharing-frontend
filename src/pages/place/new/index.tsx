@@ -56,18 +56,18 @@ const PlaceForm = ({ data }: PlaceFormProps) => {
   return (
     <form>
       <div>
-        <header>
-          <Navbar style={{ backgroundColor: '#3498db' }}>
-            <NavbarBrand style={{ textAlign: 'center', width: '100%' }}>
-              <p style={{ fontSize: '30px',fontWeight:'font-bold',color:'white', }}>
-                Fishing Spots
-              </p>
-            </NavbarBrand>
+      <header className='bg-sky-500'>
+        <Navbar>
+          <NavbarBrand >
+            <p  className='text-4xl font-bold border-black text-white'>
+              Fishing Spots
+            </p>
+          </NavbarBrand>
           </Navbar>
         </header>
-        <h1 style={{ textAlign: 'center', width: '100%', fontSize: '24px' }}>釣り場登録</h1>
-        <div>
-          <label style={{ fontSize: '18px', display: 'block' }}>港名</label>
+        <h1 className='text-center text-2xl mt-4 mb-4'>釣り場登録</h1>
+        <div className="mb-6">
+          <label className='text-lg '>港名</label>
           {errors.name && <span style={{ color: 'red' }}>{errors.name.message}</span>}
           <Input
             {...register('name', {
@@ -84,7 +84,7 @@ const PlaceForm = ({ data }: PlaceFormProps) => {
           />
         </div>
       </div>
-      <label style={{ fontSize: '18px', display: 'block', marginTop: '30px' }}>都道府県</label>
+      <label className='text-lg'>都道府県</label>
       {errors.prefectureId && <span style={{ color: 'red' }}>{errors.prefectureId.message}</span>}
       <div>
         <Select
@@ -99,7 +99,7 @@ const PlaceForm = ({ data }: PlaceFormProps) => {
           ))}
         </Select>
       </div>
-      <div style={{ marginTop: '100px', textAlign: 'center' }}>
+      <div className='mt-16 text-center'>
         <Link href={'/place'} passHref legacyBehavior>
           <Button color='default' variant='shadow' size='lg' style={{ marginRight: '50px' }}>
             キャンセル

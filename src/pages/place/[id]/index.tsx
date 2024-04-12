@@ -2,7 +2,6 @@ import { Card, Navbar, NavbarBrand, CardHeader, NavbarItem, Button } from '@next
 import Link from 'next/link'
 import { GET_FISHLOGS } from '@/graphql/getFishlogs'
 import {  SimpleFishLog, FishLogsResponse } from '@/Types'
-import { useRouter } from 'next/router'
 import { createApolloClient } from '@/libs/client'
 import { GetStaticPaths, GetStaticProps } from 'next'
 
@@ -12,18 +11,19 @@ interface FishLogsListProps {
 }
 
 const FishlogsList = ({ data }: FishLogsListProps ) => {
+
+  if (!data) return <>データなし</>
  
   return (
     <div>
-      <header>
-        <Navbar style={{ backgroundColor: '#3498db' }}>
-          <NavbarBrand style={{ textAlign: 'center', width: '100%' }}>
-            <p style={{ fontSize: '30px',fontWeight:'font-bold',color:'white', }}>
+      <header className='bg-sky-500'>
+        <Navbar>
+        <NavbarBrand >
+            <p  className='text-4xl font-bold border-black text-white'>
               Fishing Spots
             </p>
           </NavbarBrand>
-          {data && data.getFishLogs && data.getFishLogs.length > 0 && (
-            data.getFishLogs.map((fishLog: SimpleFishLog) => (
+          {data.getFishLogs.map((fishLog: SimpleFishLog) => (
             <NavbarItem key={fishLog.id}>
               <Link
                 href={`/place/${fishLog.placeId}/new`} 
@@ -32,21 +32,17 @@ const FishlogsList = ({ data }: FishLogsListProps ) => {
               >
               </Link>
             </NavbarItem>
-            ))
-          )}
+            ))}
             <Button color='primary' variant='shadow'>
               釣行記録登録
             </Button>
         </Navbar>
       </header>
-      {data && data.getFishLogs && data.getFishLogs.length > 0 &&(
-      <h1 style={{ textAlign: 'center', width: '100%', fontSize: '24px' }}>
+      <h1 className='text-center text-2xl mt-4 mb-4'>
          {data.getFishLogs[0].placeName}釣行記録   
      </h1>
-     ) }
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-      {data && data.getFishLogs &&
-          data.getFishLogs.map((fishLog:SimpleFishLog) => (
+      <div className='flex justify-center'>
+      {data.getFishLogs.map((fishLog:SimpleFishLog) => (
            <Card  key={fishLog.id}  style={{ width: '800px', padding: '15px' }}>
             <Link 
             href={`/place/${fishLog.placeId}/log/${fishLog.id}`}
@@ -54,7 +50,7 @@ const FishlogsList = ({ data }: FishLogsListProps ) => {
             passHref
              >
              <CardHeader style={{ fontSize: '20px' }}>{fishLog.fishName}</CardHeader>
-              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>{fishLog.date}</div>
+              <div className='flex justify-end'>{fishLog.date}</div>
               </Link>
           </Card>
          ))}
