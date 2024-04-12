@@ -43,13 +43,13 @@ const FishlogsList = ({ data }: FishLogsListProps ) => {
      </h1>
       <div className='flex justify-center'>
       {data.getFishLogs.map((fishLog:SimpleFishLog) => (
-           <Card  key={fishLog.id}  style={{ width: '800px', padding: '15px' }}>
+           <Card  key={fishLog.id} className='w-96 p-4'>
             <Link 
             href={`/place/${fishLog.placeId}/log/${fishLog.id}`}
             key={fishLog.id}
             passHref
              >
-             <CardHeader style={{ fontSize: '20px' }}>{fishLog.fishName}</CardHeader>
+             <CardHeader className='text-lg'>{fishLog.fishName}</CardHeader>
               <div className='flex justify-end'>{fishLog.date}</div>
               </Link>
           </Card>

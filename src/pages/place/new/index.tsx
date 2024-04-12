@@ -68,7 +68,7 @@ const PlaceForm = ({ data }: PlaceFormProps) => {
         <h1 className='text-center text-2xl mt-4 mb-4'>釣り場登録</h1>
         <div className="mb-6">
           <label className='text-lg '>港名</label>
-          {errors.name && <span style={{ color: 'red' }}>{errors.name.message}</span>}
+          {errors.name && <span className='text-red-500'>{errors.name.message}</span>}
           <Input
             {...register('name', {
               required: '港名は必須です',
@@ -80,12 +80,12 @@ const PlaceForm = ({ data }: PlaceFormProps) => {
             type='text'
             value={inputName}
             onChange={(e) => setInputName(e.target.value)}
-            style={{ width: '600px', margin: '5px 0 10px 0' }}
+            className='w-96 my-5'
           />
         </div>
       </div>
       <label className='text-lg'>都道府県</label>
-      {errors.prefectureId && <span style={{ color: 'red' }}>{errors.prefectureId.message}</span>}
+      {errors.prefectureId && <span className='text-red-500'>{errors.prefectureId.message}</span>}
       <div>
         <Select
           label='Select prefecture'
@@ -101,7 +101,7 @@ const PlaceForm = ({ data }: PlaceFormProps) => {
       </div>
       <div className='mt-16 text-center'>
         <Link href={'/place'} passHref legacyBehavior>
-          <Button color='default' variant='shadow' size='lg' style={{ marginRight: '50px' }}>
+          <Button color='default' variant='shadow' size='lg' className='mr-10'>
             キャンセル
           </Button>
         </Link>
