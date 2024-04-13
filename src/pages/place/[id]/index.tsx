@@ -18,26 +18,18 @@ const FishlogsList = ({ data }: FishLogsListProps ) => {
     <div>
       <header className='bg-sky-500'>
         <Navbar>
-        <NavbarBrand >
-            <p  className='text-4xl font-bold border-black text-white'>
+        <NavbarBrand>
+            <p className='text-4xl font-bold border-black text-white'>
               Fishing Spots
             </p>
           </NavbarBrand>
-          {data.getFishLogs.map((fishLog: SimpleFishLog) => (
-            <NavbarItem key={fishLog.id}>
-              <Link
-                href={`/place/${fishLog.placeId}/new`} 
-                key={fishLog.id}
-                passHref
-              >
-              </Link>
-            </NavbarItem>
-            ))}
             <Button color='primary' variant='shadow'>
               釣行記録登録
             </Button>
         </Navbar>
       </header>
+      {data.getFishLogs.length > 0 ?(
+        <>
       <h1 className='text-center text-2xl mt-4 mb-4'>
          {data.getFishLogs[0].placeName}釣行記録   
      </h1>
@@ -55,6 +47,10 @@ const FishlogsList = ({ data }: FishLogsListProps ) => {
           </Card>
          ))}
       </div>
+      </>
+      ) : (
+        <>釣行記録がありません</>
+      )}
     </div>
   )}
 

@@ -33,7 +33,7 @@ return (
     <div>
       <header className='bg-sky-500'>
         <Navbar>
-          <NavbarBrand >
+          <NavbarBrand>
             <p className='text-4xl font-bold border-black text-white'>
               Fishing Spots
             </p>
