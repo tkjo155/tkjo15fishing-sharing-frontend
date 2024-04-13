@@ -23,19 +23,16 @@ const FishlogsList = ({ data }: FishLogsListProps ) => {
               Fishing Spots
             </p>
           </NavbarBrand>
-          {data.getFishLogs.map((fishLog: SimpleFishLog) => (
-            <NavbarItem key={fishLog.id}>
+            <NavbarItem>
               <Link
-                href={`/place/${fishLog.placeId}/new`} 
-                key={fishLog.id}
+                href={`/place/${data.getFishLogs[0].placeId}/new`} 
                 passHref
               >
-              </Link>
-            </NavbarItem>
-            ))}
             <Button color='primary' variant='shadow'>
               釣行記録登録
             </Button>
+            </Link>
+            </NavbarItem>
         </Navbar>
       </header>
       <h1 className='text-center text-2xl mt-4 mb-4'>

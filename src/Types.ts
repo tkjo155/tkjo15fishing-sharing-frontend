@@ -23,6 +23,22 @@ export type SimpleFishLog = {
   fishName: string
 }
 
+export type InputFishLog = {
+  d: number
+  placeId: number 
+  placeName: string
+  date: string
+  image: string
+  fishName: string
+  weather: string
+  size: number
+  isSpringTide: boolean
+  isMiddleTide: boolean
+  isNeapTide: boolean
+  isNagashio: boolean
+  isWakashio: boolean
+}
+
 
 export type Place = {
   id: number

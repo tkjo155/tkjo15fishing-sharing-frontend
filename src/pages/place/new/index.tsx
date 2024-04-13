@@ -67,7 +67,7 @@ const PlaceForm = ({ data }: PlaceFormProps) => {
         </header>
         <h1 className='text-center text-2xl mt-4 mb-4'>釣り場登録</h1>
         <div className="mb-6">
-          <label className='text-lg '>港名</label>
+          <label className='text-lg'>港名</label>
           {errors.name && <span className='text-red-500'>{errors.name.message}</span>}
           <Input
             {...register('name', {
@@ -90,6 +90,7 @@ const PlaceForm = ({ data }: PlaceFormProps) => {
         <Select
           label='Select prefecture'
           {...register('prefectureId', { required: '都道府県は必須です' })}
+          className='w-96 my-5'
         >
           {data.prefectures.map((prefecture) => (
             //prefecturesData?.prefecturesがundefinedの場合、空の配列を返す
