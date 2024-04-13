@@ -1,6 +1,7 @@
-//釣行記録
+
 export type FishLog = {
   id: number
+  placeId: number 
   placeName: string
   date: string
   image: string
@@ -13,6 +14,15 @@ export type FishLog = {
   isNagashio: boolean
   isWakashio: boolean
 }
+
+export type SimpleFishLog = {
+  id: number
+  placeId: number 
+  placeName: string
+  date: string
+  fishName: string
+}
+
 
 export type Place = {
   id: number
@@ -28,6 +38,14 @@ export type InputPlace = {
 
 export type PlacesResponse = {
   getAllPlaces: Place[]
+}
+
+export type FishLogsResponse = {
+  getFishLogs: SimpleFishLog[]
+}
+
+export type FishLogResponse = {
+  getFishLog: FishLog
 }
 
 export type Prefecture = {

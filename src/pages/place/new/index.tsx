@@ -47,7 +47,7 @@ const PlaceForm = ({ data }: PlaceFormProps) => {
       })
 
       // 一覧画面に遷移
-      router.push('/placeslist')
+      router.push('/place')
     } catch (error) {
       console.error('Error creating place:', error)
     }
@@ -56,19 +56,19 @@ const PlaceForm = ({ data }: PlaceFormProps) => {
   return (
     <form>
       <div>
-        <header className='text-gray-600'>
-          <Navbar style={{ backgroundColor: '#3498db' }}>
-            <NavbarBrand style={{ textAlign: 'center', width: '100%' }}>
-              <p className='font-bold text-white' style={{ fontSize: '30px' }}>
-                Fishing Spots
-              </p>
-            </NavbarBrand>
+      <header className='bg-sky-500'>
+        <Navbar>
+          <NavbarBrand>
+            <p className='text-4xl font-bold border-black text-white'>
+              Fishing Spots
+            </p>
+          </NavbarBrand>
           </Navbar>
         </header>
-        <h1 style={{ textAlign: 'center', width: '100%', fontSize: '24px' }}>釣り場登録</h1>
-        <div className='flex w-full flex-wrap gap-4 md:flex-nowrap'>
-          <label style={{ fontSize: '18px', display: 'block' }}>港名</label>
-          {errors.name && <span style={{ color: 'red' }}>{errors.name.message}</span>}
+        <h1 className='text-center text-2xl mt-4 mb-4'>釣り場登録</h1>
+        <div className="mb-6">
+          <label className='text-lg '>港名</label>
+          {errors.name && <span className='text-red-500'>{errors.name.message}</span>}
           <Input
             {...register('name', {
               required: '港名は必須です',
@@ -80,16 +80,15 @@ const PlaceForm = ({ data }: PlaceFormProps) => {
             type='text'
             value={inputName}
             onChange={(e) => setInputName(e.target.value)}
-            style={{ width: '600px', margin: '5px 0 10px 0' }}
+            className='w-96 my-5'
           />
         </div>
       </div>
-      <label style={{ fontSize: '18px', display: 'block', marginTop: '30px' }}>都道府県</label>
-      {errors.prefectureId && <span style={{ color: 'red' }}>{errors.prefectureId.message}</span>}
-      <div className='flex w-full flex-wrap gap-4 md:flex-nowrap'>
+      <label className='text-lg'>都道府県</label>
+      {errors.prefectureId && <span className='text-red-500'>{errors.prefectureId.message}</span>}
+      <div>
         <Select
           label='Select prefecture'
-          className='max-w-xs'
           {...register('prefectureId', { required: '都道府県は必須です' })}
         >
           {data.prefectures.map((prefecture) => (
@@ -100,9 +99,9 @@ const PlaceForm = ({ data }: PlaceFormProps) => {
           ))}
         </Select>
       </div>
-      <div style={{ marginTop: '100px', textAlign: 'center' }}>
-        <Link href={'/placeslist'} passHref legacyBehavior>
-          <Button color='default' variant='shadow' size='lg' style={{ marginRight: '50px' }}>
+      <div className='mt-16 text-center'>
+        <Link href={'/place'} passHref legacyBehavior>
+          <Button color='default' variant='shadow' size='lg' className='mr-10'>
             キャンセル
           </Button>
         </Link>
