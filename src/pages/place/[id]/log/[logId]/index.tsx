@@ -30,11 +30,11 @@ const FishlogDetail = () => {
 const fishLog: FishLog = data.getFishLog;
 
 return (
-    <div >
+    <div>
       <header className='bg-sky-500'>
         <Navbar>
           <NavbarBrand >
-            <p  className='text-4xl font-bold border-black text-white'>
+            <p className='text-4xl font-bold border-black text-white'>
               Fishing Spots
             </p>
           </NavbarBrand>
