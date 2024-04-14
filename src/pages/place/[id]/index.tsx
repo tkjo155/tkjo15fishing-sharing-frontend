@@ -17,8 +17,8 @@ const FishlogsList = ({ data}: FishLogsListProps ) => {
     <div>
       <header className='bg-sky-500'>
         <Navbar>
-        <NavbarBrand >
-            <p  className='text-4xl font-bold border-black text-white'>
+        <NavbarBrand>
+            <p className='text-4xl font-bold border-black text-white'>
               Fishing Spots
             </p>
           </NavbarBrand>
@@ -32,6 +32,8 @@ const FishlogsList = ({ data}: FishLogsListProps ) => {
             </Link>
             </Navbar>
       </header>
+      {data.getFishLogs.length > 0 ?(
+        <>
       <h1 className='text-center text-2xl mt-4 mb-4'>
          {data.getFishLogs[0].placeName}釣行記録   
      </h1>
@@ -49,6 +51,10 @@ const FishlogsList = ({ data}: FishLogsListProps ) => {
           </Card>
          ))}
       </div>
+      </>
+      ) : (
+        <>釣行記録がありません</>
+      )}
     </div>
   )}
 
