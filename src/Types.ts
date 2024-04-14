@@ -32,6 +32,7 @@ export type InputFishLog = {
   fishName: string
   weather: string
   size: number
+  tide: string, 
   isSpringTide: boolean
   isMiddleTide: boolean
   isNeapTide: boolean

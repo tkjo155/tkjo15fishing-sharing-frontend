@@ -4,13 +4,15 @@ import { GET_FISHLOGS } from '@/graphql/getFishlogs'
 import {  SimpleFishLog, FishLogsResponse } from '@/Types'
 import { createApolloClient } from '@/libs/client'
 import { GetStaticPaths, GetStaticProps } from 'next'
+import FishLogForm from './new'
+import { useRouter } from 'next/router'
 
 
 interface FishLogsListProps {
   data: FishLogsResponse
 }
 
-const FishlogsList = ({ data }: FishLogsListProps ) => {
+const FishlogsList = ({ data}: FishLogsListProps ) => {
 
   if (!data) return <>データなし</>
  
@@ -23,24 +25,22 @@ const FishlogsList = ({ data }: FishLogsListProps ) => {
               Fishing Spots
             </p>
           </NavbarBrand>
-            <NavbarItem>
-              <Link
-                href={`/place/${data.getFishLogs[0].placeId}/new`} 
-                passHref
-              >
+          <Link href="/place/[id]/new" 
+          as={`/place/${data.getFishLogs[0].placeId}/new`} 
+          passHref
+          >
             <Button color='primary' variant='shadow'>
               釣行記録登録
             </Button>
             </Link>
-            </NavbarItem>
-        </Navbar>
+            </Navbar>
       </header>
       <h1 className='text-center text-2xl mt-4 mb-4'>
          {data.getFishLogs[0].placeName}釣行記録   
      </h1>
-      <div className='flex justify-center'>
+      <div className='flex justify-center flex-wrap'>
       {data.getFishLogs.map((fishLog:SimpleFishLog) => (
-           <Card  key={fishLog.id} className='w-96 p-4'>
+           <Card  key={fishLog.id} className='w-96 p-4 m-4'>
             <Link 
             href={`/place/${fishLog.placeId}/log/${fishLog.id}`}
             key={fishLog.id}
