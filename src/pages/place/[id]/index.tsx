@@ -1,12 +1,9 @@
-import { Card, Navbar, NavbarBrand, CardHeader, NavbarItem, Button } from '@nextui-org/react'
+import { Card, Navbar, NavbarBrand, CardHeader, Button } from '@nextui-org/react'
 import Link from 'next/link'
 import { GET_FISHLOGS } from '@/graphql/getFishlogs'
 import {  SimpleFishLog, FishLogsResponse } from '@/Types'
 import { createApolloClient } from '@/libs/client'
 import { GetStaticPaths, GetStaticProps } from 'next'
-import FishLogForm from './new'
-import { useRouter } from 'next/router'
-
 
 interface FishLogsListProps {
   data: FishLogsResponse

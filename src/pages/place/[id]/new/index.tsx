@@ -1,17 +1,15 @@
 
-import { useMutation, useQuery } from '@apollo/client'
-import { Button, Checkbox, Input, Navbar, NavbarBrand, Radio, RadioGroup } from '@nextui-org/react'
+import { useMutation } from '@apollo/client'
+import { Button, Input, Navbar, NavbarBrand, Radio, RadioGroup } from '@nextui-org/react'
 import Link from 'next/link'
-import router from 'next/router'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { FishLog, FishLogsResponse, InputFishLog} from '@/Types'
+import { InputFishLog} from '@/Types'
 import { CREATE_FISHLOG } from '@/graphql/createFishlog'
 import { GET_FISHLOG } from '@/graphql/getFishlog'
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useRouter } from 'next/router';
-import { GET_PLACES } from '@/graphql/getPlaces'
 
 const FishLogForm = () => {
   const router = useRouter();
