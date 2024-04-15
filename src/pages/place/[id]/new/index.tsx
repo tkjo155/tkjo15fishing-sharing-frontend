@@ -8,8 +8,8 @@ import { InputFishLog} from '@/Types'
 import { CREATE_FISHLOG } from '@/graphql/createFishlog'
 import { GET_FISHLOG } from '@/graphql/getFishlog'
 import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 import { useRouter } from 'next/router';
+import {Checkbox} from "@nextui-org/react";
 
 const FishLogForm = () => {
   const router = useRouter();
@@ -18,17 +18,20 @@ const FishLogForm = () => {
   //釣行記録情報登録
   const [createFishlog] = useMutation(CREATE_FISHLOG)
   //日にちの状態管理
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [inputDate, setInputDate] = useState('');
   //魚の名前の状態管理
   const [inputFishName, setInputFishName] = useState('')
   //天気の状態管理
-  const [inputWeather, setInputWeather] = useState('晴れ');
+  const [isSunny, setIsSunny] = useState(true);
+  const [isRainy, setIsRainy] = useState(false);
+  const [isCloudy, setIsCloudy] = useState(false);
   //釣行情報の状態管理
   const [inputTide, setInputTide] = useState('大潮');
   //大きさの状態管理
-  const [inputFishSize, setInputFishSize] = useState('')
+  const [inputFishSize, setInputFishSize] = useState(0)
   // 画像の状態管理
   const [image, setImage] = useState('');
+
 
   //FishLogの型でバリデーション
   const {
@@ -41,21 +44,23 @@ const FishLogForm = () => {
   const onSubmit: SubmitHandler<InputFishLog> = async (formData) => {
 
     try {
+      // バリデーションチェック
+    if (inputFishSize === 0) {
+      throw new Error('大きさは0より大きい値を入力してください');
+    }
       // データ追加
       await createFishlog({
         variables: {
           create: {
             placeId: Number(id),
-            date: selectedDate,
+            date: formData.date,
             image:image,
             fishName: formData.fishName,
-            weather: inputWeather,
-            size: Number(formData.size),
-            isSpringTide: inputTide === '大潮', 
-            isMiddleTide: inputTide === '中潮',
-            isNeapTide: inputTide === '小潮',
-            isNagashio: inputTide === '長潮',
-            isWakashio: inputTide === '若潮',
+            isSunny: isSunny,
+            isRainy: isRainy,
+            isCloudy: isCloudy,
+            size: inputFishSize,
+            tide: inputTide,
           },
         },
         // サーバーに変更を加えた後に UI を最新のデータで更新
@@ -63,7 +68,7 @@ const FishLogForm = () => {
       })
 
       // 一覧画面に遷移
-      router.push('/place')
+      router.push(`/place/${id}`)
     } catch (error) {
       console.error('Error creating fishlog:', error)
     }
@@ -84,12 +89,20 @@ const FishLogForm = () => {
         <h1 className='text-center text-2xl mt-4 mb-4'>釣行記録登録</h1>
         <div>
           <label className='text-lg'>日にち</label>
-         <DatePicker
-          selected={selectedDate}
-          onChange={(date) => date && setSelectedDate(date)}
-          className='w-96 my-5 border-2 border-gray-300 rounded-md p-2'
-          dateFormat="yyyy/MM/dd"
-         />
+          {errors.date && <span style={{ color: 'red' }}>{errors.date.message}</span>}
+          <Input
+            {...register('date', {
+              required: '日にちは必須です',
+              maxLength: {
+                value: 15,
+                message: '日にちは15文字以内で入力してください',
+              },
+            })}
+            type='text'
+            value={inputDate}
+            onChange={(e) => setInputDate(e.target.value)}
+            className='w-96 my-5'         
+            />
         </div>
         </div>
         <label className='text-lg'>魚の名前</label>
@@ -111,16 +124,28 @@ const FishLogForm = () => {
          </div>
          <label className='text-lg'>天気</label>
          <div>
-          <RadioGroup
-          color="primary"
-          defaultValue="晴れ"
-          value={inputWeather} // ラジオボタンの選択された値を表示
-          onChange={(event) => setInputWeather(event.target.value)} 
-          >
-          <Radio value="晴れ">晴れ</Radio>
-          <Radio value="曇り">曇り</Radio>
-          <Radio value="雨">雨</Radio>
-          </RadioGroup>
+         <Checkbox
+          checked={isSunny}
+          onChange={() => setIsSunny(!isSunny)}
+          className='mr-4'
+          defaultChecked
+        >
+          晴れ
+        </Checkbox>
+        <Checkbox
+          checked={isRainy}
+          onChange={() => setIsRainy(!isRainy)}
+          className='mr-4'
+        >
+          雨
+        </Checkbox>
+        <Checkbox
+          checked={isCloudy}
+          onChange={() => setIsCloudy(!isCloudy)}
+          className='mr-4'
+        >
+          曇り
+        </Checkbox>
          </div>
          <label className='text-lg'>大きさ(cm)</label>
           {errors.size && <span style={{ color: 'red' }}>{errors.size.message}</span>}
@@ -133,29 +158,31 @@ const FishLogForm = () => {
                 message: '大きさは10文字以内で入力してください',
               },
             })}
-            type='text'
-            value={inputFishSize}
-            onChange={(e) => setInputFishSize(e.target.value)}
-            className='w-96 my-5'          />
+            type='number' 
+            value={inputFishSize.toString()} // 数値型を文字列型に変換
+            onChange={(e) => setInputFishSize(parseInt(e.target.value))} // 文字列型を数値型に変換して状態を更新
+            className='w-96 my-5'         
+             />
         </div>
         <label className='text-lg'>潮汐情報</label>
         <div>
-        <RadioGroup
-          color="primary"
-          defaultValue="大潮"
-          value={inputTide} // ラジオボタンの選択された値を表示
-          onChange={(event) => setInputTide(event.target.value)} 
-          >
-          <Radio value="大潮">大潮</Radio>
-          <Radio value="中潮">中潮</Radio>
-          <Radio value="小潮">小潮</Radio>
-          <Radio value="長潮">長潮</Radio>
-          <Radio value="若潮">若潮</Radio>
-          </RadioGroup>
+        <RadioGroup 
+         color="primary"
+         value={inputTide} // ラジオボタンの選択された値を表示 
+         onChange={(event) => {
+          setInputTide(event.target.value);
+           }}
+           >
+        <Radio value="大潮">大潮</Radio>
+        <Radio value="中潮">中潮</Radio>
+        <Radio value="小潮">小潮</Radio>
+        <Radio value="長潮">長潮</Radio>
+        <Radio value="若潮">若潮</Radio>
+        </RadioGroup>
         </div>
         <div className='mt-16 text-center'>
          <Link 
-         href={'/place'} 
+         href={`/place/${id}`} 
          passHref 
          legacyBehavior>
         <Button color='default' variant='shadow' size='lg' className='mr-10'>

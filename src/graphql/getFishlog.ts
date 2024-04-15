@@ -9,13 +9,11 @@ export const GET_FISHLOG = gql`
       date
       image
       fishName
-      weather
+      isSunny 
+      isRainy 
+      isCloudy 
       size
-      isSpringTide
-      isMiddleTide
-      isNeapTide
-      isNagashio
-      isWakashio
+      tide
     }
   }
 `;

@@ -61,7 +61,11 @@ return (
           </TableRow>
           <TableRow key={`weather-${fishLog.id}`}>
            <TableCell className='border border-gray-300 font-semibold'>天気</TableCell>
-           <TableCell className='border border-gray-300'>{fishLog.weather}</TableCell>
+           <TableCell className='border border-gray-300'>
+            {fishLog.isSunny && '晴れ'}
+            {fishLog.isRainy && '雨'}
+            {fishLog.isCloudy && '曇り'}
+           </TableCell>
           </TableRow>
           <TableRow key={`size-${fishLog.id}`}>
            <TableCell className='border border-gray-300 font-semibold'>サイズ(cm)</TableCell>
@@ -69,13 +73,7 @@ return (
           </TableRow>
           <TableRow key={`tide-${fishLog.id}`}>
            <TableCell className='border border-gray-300 font-semibold'>潮汐情報</TableCell>
-           <TableCell className='border border-gray-300'>
-          {fishLog.isSpringTide && '大潮'}
-          {fishLog.isMiddleTide && '中潮'}
-          {fishLog.isNeapTide && '小潮'}
-          {fishLog.isNagashio && '長潮'}
-          {fishLog.isWakashio && '若潮'}
-           </TableCell>
+           <TableCell className='border border-gray-300'>{fishLog.tide}</TableCell>
           </TableRow>
          </TableBody>
          </Table>

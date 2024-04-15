@@ -4,12 +4,15 @@ import { GET_FISHLOGS } from '@/graphql/getFishlogs'
 import {  SimpleFishLog, FishLogsResponse } from '@/Types'
 import { createApolloClient } from '@/libs/client'
 import { GetStaticPaths, GetStaticProps } from 'next'
+import { useRouter } from 'next/router'
 
 interface FishLogsListProps {
   data: FishLogsResponse
 }
 
 const FishlogsList = ({ data}: FishLogsListProps ) => {
+  const router = useRouter();
+  const {id}  = router.query;
 
   if (!data) return <>データなし</>
  
@@ -22,9 +25,9 @@ const FishlogsList = ({ data}: FishLogsListProps ) => {
               Fishing Spots
             </p>
           </NavbarBrand>
-          <Link href="/place/[id]/new" 
-          as={`/place/${data.getFishLogs[0].placeId}/new`} 
-          passHref
+          <Link
+           href={`/place/${id}/new`} 
+           passHref
           >
             <Button color='primary' variant='shadow'>
               釣行記録登録
