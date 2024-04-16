@@ -32,6 +32,25 @@ const FishLogForm = () => {
   // 画像の状態管理
   const [image, setImage] = useState('');
 
+ // 天気の選択状態の管理
+ const [selectedWeather, setSelectedWeather] = useState<string[]>([]);
+ // 天気のチェックボックスの値が変更されたときに呼び出される関数
+ const handleWeatherChange = (value: string) => {
+   // 選択されている天気を更新
+   setSelectedWeather((prevSelectedWeather) => {
+     // 選択されていない場合は追加し、選択されている場合は削除
+     if (prevSelectedWeather.includes(value)) {
+       return prevSelectedWeather.filter((weather) => weather !== value);
+     } else {
+       return [...prevSelectedWeather, value];
+     }
+   });
+ };
+ // 天気のバリデーションルール
+ const validationRules = {
+   validate: () => selectedWeather.length > 0 || '天気を少なくとも1つ選択してください',
+ };
+
 
   //FishLogの型でバリデーション
   const {
@@ -39,15 +58,12 @@ const FishLogForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<InputFishLog>()
+  
 
   //完了ボタンを押したらデータ追加、画面遷移
   const onSubmit: SubmitHandler<InputFishLog> = async (formData) => {
 
     try {
-      // バリデーションチェック
-    if (inputFishSize === 0) {
-      throw new Error('大きさは0より大きい値を入力してください');
-    }
       // データ追加
       await createFishlog({
         variables: {
@@ -56,7 +72,7 @@ const FishLogForm = () => {
             date: formData.date,
             image:image,
             fishName: formData.fishName,
-            isSunny: isSunny,
+            isSunny: isSunny, 
             isRainy: isRainy,
             isCloudy: isCloudy,
             size: inputFishSize,
@@ -123,29 +139,29 @@ const FishLogForm = () => {
             />
          </div>
          <label className='text-lg'>天気</label>
+         {errors.isSunny && <span style={{ color: 'red' }}>{errors.isSunny.message}</span>}
          <div>
          <Checkbox
-          checked={isSunny}
-          onChange={() => setIsSunny(!isSunny)}
-          className='mr-4'
-          defaultChecked
-        >
-          晴れ
+          {...register('isSunny', validationRules)}
+           checked={selectedWeather.includes('sunny')}
+           onChange={() => handleWeatherChange('sunny')}
+         >
+         晴れ
         </Checkbox>
         <Checkbox
-          checked={isRainy}
-          onChange={() => setIsRainy(!isRainy)}
-          className='mr-4'
+         {...register('isRainy', validationRules)}
+         checked={selectedWeather.includes('rainy')}
+         onChange={() => handleWeatherChange('rainy')}
         >
-          雨
-        </Checkbox>
-        <Checkbox
-          checked={isCloudy}
-          onChange={() => setIsCloudy(!isCloudy)}
-          className='mr-4'
+        雨
+       </Checkbox>
+       <Checkbox
+         {...register('isCloudy', validationRules)}
+         checked={selectedWeather.includes('cloudy')}
+         onChange={() => handleWeatherChange('cloudy')}
         >
-          曇り
-        </Checkbox>
+       曇り
+       </Checkbox>
          </div>
          <label className='text-lg'>大きさ(cm)</label>
           {errors.size && <span style={{ color: 'red' }}>{errors.size.message}</span>}
@@ -153,7 +169,11 @@ const FishLogForm = () => {
           <Input
             {...register('size', {
               required: '大きさは必須です',
-              maxLength: {
+              min: {
+                value: 1,
+                message: '大きさは1以上で入力してください',
+              },
+              max: {
                 value: 10,
                 message: '大きさは10文字以内で入力してください',
               },
