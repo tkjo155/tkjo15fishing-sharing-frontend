@@ -7,7 +7,6 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { InputFishLog} from '@/Types'
 import { CREATE_FISHLOG } from '@/graphql/createFishlog'
 import { GET_FISHLOG } from '@/graphql/getFishlog'
-import DatePicker from 'react-datepicker';
 import { useRouter } from 'next/router';
 import {Checkbox} from "@nextui-org/react";
 
