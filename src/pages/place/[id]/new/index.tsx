@@ -4,14 +4,14 @@ import { Button, Input, Navbar, NavbarBrand, Radio, RadioGroup } from '@nextui-o
 import Link from 'next/link'
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { InputFishLog} from '@/Types'
+import { InputFishLog } from '@/Types'
 import { CREATE_FISHLOG } from '@/graphql/createFishlog'
 import { GET_FISHLOG } from '@/graphql/getFishlog'
 import { useRouter } from 'next/router';
 
 const FishLogForm = () => {
   const router = useRouter();
-  const {id}  = router.query;
+  const { id } = router.query;
 
   interface Weather {
     id: string;
@@ -24,32 +24,33 @@ const FishLogForm = () => {
   const [createFishlog] = useMutation(CREATE_FISHLOG)
 
   const [weather, setWeather] = useState<Weather[]>([
-      {
-        id: "sunny",
-        name: "晴れ",
-        checked: false,
-        disabled: false,
-      },
-      {
-        id: "rainy",
-        name: "雨",
-        checked: false,
-        disabled: false,
-      },
-      {
-        id: "cloudy",
-        name: "曇り",
-        checked: false,
-        disabled: false,
-      },
-    ]);
+    {
+      id: "sunny",
+      name: "晴れ",
+      checked: false,
+      disabled: false,
+    },
+    {
+      id: "rainy",
+      name: "雨",
+      checked: false,
+      disabled: false,
+    },
+    {
+      id: "cloudy",
+      name: "曇り",
+      checked: false,
+      disabled: false,
+    },
+  ]);
+
 
   const { register, handleSubmit, formState: { errors } } = useForm<InputFishLog>({ mode: "onChange" });
-  
+
   // 完了ボタンを押したらデータ追加、画面遷移
   const onSubmit: SubmitHandler<InputFishLog> = async (formData) => {
     try {
-      
+
       // データ追加
       await createFishlog({
         variables: {
@@ -82,11 +83,11 @@ const FishLogForm = () => {
       <div>
         <header className='bg-sky-500'>
           <Navbar>
-          <NavbarBrand >
-            <p  className='text-4xl font-bold border-black text-white'>
-              Fishing Spots
-            </p>
-          </NavbarBrand>
+            <NavbarBrand >
+              <p className='text-4xl font-bold border-black text-white'>
+                Fishing Spots
+              </p>
+            </NavbarBrand>
           </Navbar>
         </header>
         <h1 className='text-center text-2xl mt-4 mb-4'>釣行記録登録</h1>
@@ -105,9 +106,9 @@ const FishLogForm = () => {
             className='w-96 my-5'
           />
         </div>
-        </div>
-        <label className='text-lg'>魚の名前</label>
-        {errors.fishName && <span style={{ color: 'red' }}>{errors.fishName.message}</span>}
+      </div>
+      <label className='text-lg'>魚の名前</label>
+      {errors.fishName && <span style={{ color: 'red' }}>{errors.fishName.message}</span>}
       <div>
         <Input
           {...register('fishName', {
@@ -120,71 +121,108 @@ const FishLogForm = () => {
           type='text'
           className='w-96 my-5'
         />
-         </div>
-         <label className='text-lg'>天気</label>
-         {errors.weather && <span style={{ color: 'red' }}>{errors.weather.message}</span>}
-         <div>
-           {weather.map((item) => (
-         <div key={item.id}>
-       <input
-       id={item.id}
-       type="checkbox"
-       value={item.id}
-       defaultChecked={item.checked}
-       disabled={item.disabled}
-       {...register("weather", {
-        validate: {
-        atLeastOneRequired: (value) =>
-        value.length >= 1 || "1つ以上選択してください",
-      },
-      })}
-      />
-      <label htmlFor={item.id}>{item.name}</label>
       </div>
-      ))}
-         </div>
-         <label className='text-lg'>大きさ(cm)</label>
-          {errors.size && <span style={{ color: 'red' }}>{errors.size.message}</span>}
-         <div>
-          <Input
-            {...register('size', {
-              required: '大きさは必須です',
-              min: {
-                value: 20,
-                message: '大きさは20㎝以上で入力してください',
-              },
-              max: {
-                value: 100,
-                message: '大きさは100㎝以内で入力してください',
-              },
-            })}
-            type='number' 
-            className='w-96 my-5'         
-             />
-        </div>
-        <label className='text-lg'>潮汐情報</label>
-        {errors.tide && <span style={{ color: 'red' }}>{errors.tide.message}</span>}
-        <div>
-        <RadioGroup 
-          color="primary"
-          {...register('tide', { 
-            required: '潮汐情報は必須です' })} 
-         >
-       <Radio value="大潮">大潮</Radio>
-       <Radio value="中潮">中潮</Radio>
-       <Radio value="小潮">小潮</Radio>
-       <Radio value="長潮">長潮</Radio>
-       <Radio value="若潮">若潮</Radio>
-       </RadioGroup>
-        </div>
-        <div className='mt-16 text-center'>
-         <Link 
-         href={`/place/${id}`} 
-         passHref 
-         legacyBehavior>
-        <Button color='default' variant='shadow' size='lg' className='mr-10'>
-         キャンセル
-        </Button>
+      <label className='text-lg'>天気</label>
+      {errors.weather && <span style={{ color: 'red' }}>{errors.weather.message}</span>}
+      <div>
+        {weather.map((item) => (
+          <div key={item.id}>
+            <input
+              id={item.id}
+              type="checkbox"
+              value={item.id}
+              defaultChecked={item.checked}
+              disabled={item.disabled}
+              {...register("weather", {
+                validate: {
+                  atLeastOneRequired: (value) =>
+                    value.length >= 1 || "1つ以上選択してください",
+                },
+              })}
+            />
+            <label htmlFor={item.id}>{item.name}</label>
+          </div>
+        ))}
+      </div>
+      <label className='text-lg'>大きさ(cm)</label>
+      {errors.size && <span style={{ color: 'red' }}>{errors.size.message}</span>}
+      <div>
+        <Input
+          {...register('size', {
+            required: '大きさは必須です',
+            min: {
+              value: 20,
+              message: '大きさは20㎝以上で入力してください',
+            },
+            max: {
+              value: 100,
+              message: '大きさは100㎝以内で入力してください',
+            },
+          })}
+          type='number'
+          className='w-96 my-5'
+        />
+      </div>
+      <label className='text-lg'>潮汐情報</label>
+      {errors.tide && <span style={{ color: 'red' }}>{errors.tide.message}</span>}
+      <div>
+        <label htmlFor="tide大潮">
+          <input
+            {...register("tide",{
+              required: "潮汐情報は必須です"
+          })}
+            type="radio"
+            value="大潮"
+            id="tide大潮"
+            required
+          />
+          大潮
+        </label>
+        <label htmlFor="tide中潮">
+          <input
+            {...register("tide")}
+            type="radio"
+            value="中潮"
+            id="tide中潮"
+          />
+          中潮
+        </label>
+        <label htmlFor="tide小潮">
+          <input
+            {...register("tide")}
+            type="radio"
+            value="小潮"
+            id="tide小潮"
+          />
+          小潮
+        </label>
+        <label htmlFor="tide長潮">
+          <input
+            {...register("tide")}
+            type="radio"
+            value="長潮"
+            id="tide長潮"
+          />
+          長潮
+        </label>
+        <label htmlFor="tide若潮">
+          <input
+            {...register("tide")}
+            type="radio"
+            value="若潮"
+            id="tide若潮"
+          />
+          若潮
+        </label>
+      </div>
+      <div className='mt-16 text-center'>
+        <Link
+          href={`/place/${id}`}
+          passHref
+          legacyBehavior>
+          <Button color='default' variant='shadow' size='lg' className='mr-10'>
+            キャンセル
+          </Button>
         </Link>
         <Button color='primary' variant='shadow' size='lg' onClick={handleSubmit(onSubmit)}>
           登録
