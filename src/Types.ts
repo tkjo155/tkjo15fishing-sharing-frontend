@@ -31,7 +31,6 @@ export type InputFishLog = {
   isSunny: boolean
   isRainy: boolean
   isCloudy: boolean
-  weather: string[]
   size: number
   tide: string
 }

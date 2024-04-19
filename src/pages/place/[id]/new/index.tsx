@@ -15,7 +15,15 @@ const FishLogForm = () => {
   //釣行記録情報登録
   const [createFishlog] = useMutation(CREATE_FISHLOG)
 
-  const { register, handleSubmit, clearErrors, watch, setValue, formState: { errors } } = useForm<InputFishLog>();
+  const { register, handleSubmit, clearErrors, watch, setValue, formState: { errors } } = useForm<InputFishLog>(
+    {
+      defaultValues: {
+        isSunny: false,
+        isRainy: false,
+        isCloudy: false,
+      }
+    }
+  );
 
   // 完了ボタンを押したらデータ追加、画面遷移
   const onSubmit: SubmitHandler<InputFishLog> = async (formData) => {
@@ -29,9 +37,9 @@ const FishLogForm = () => {
             date: formData.date,
             image: "",
             fishName: formData.fishName,
-            isSunny: formData.weather.includes('sunny'),
-            isRainy: formData.weather.includes('rainy'),
-            isCloudy: formData.weather.includes('cloudy'),
+            isSunny: Boolean(formData.isSunny),
+            isRainy: Boolean(formData.isRainy),
+            isCloudy: Boolean(formData.isCloudy),
             size: Number(formData.size),
             tide: formData.tide,
           },
@@ -93,35 +101,25 @@ const FishLogForm = () => {
         />
       </div>
       <label className='text-lg'>天気</label>
-      {watch("weather") && watch("weather").length === 0 && <span style={{ color: 'red' }}>天気を選択してください</span>}
       <div>
         <Checkbox
           id="sunny"
-          checked={watch("weather")?.includes("sunny")}
-          onChange={(e) => {
-            const newWeather = e.target.checked ? [...(watch("weather") || []), "sunny"] : (watch("weather") || []).filter(item => item !== "sunny");
-            setValue("weather", newWeather);
-          }}
+          {...register('isSunny')}
+          onChange={(e) => setValue('isSunny', e.target.checked)}
         >
           晴れ
         </Checkbox>
         <Checkbox
           id="rainy"
-          checked={watch("weather")?.includes("rainy")}
-          onChange={(e) => {
-            const newWeather = e.target.checked ? [...(watch("weather") || []), "rainy"] : (watch("weather") || []).filter(item => item !== "rainy");
-            setValue("weather", newWeather);
-          }}
+          {...register('isRainy')}
+          onChange={(e) => setValue('isRainy', e.target.checked)}
         >
           雨
         </Checkbox>
         <Checkbox
           id="cloudy"
-          checked={watch("weather")?.includes("cloudy")}
-          onChange={(e) => {
-            const newWeather = e.target.checked ? [...(watch("weather") || []), "cloudy"] : (watch("weather") || []).filter(item => item !== "cloudy");
-            setValue("weather", newWeather);
-          }}
+          {...register('isCloudy')}
+          onChange={(e) => setValue('isCloudy', e.target.checked)}
         >
           曇り
         </Checkbox>
