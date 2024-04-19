@@ -1,8 +1,7 @@
 
 import { useMutation } from '@apollo/client'
-import { Button, Input, Navbar, NavbarBrand } from '@nextui-org/react'
+import { Button, Checkbox, Input, Navbar, NavbarBrand, Radio, RadioGroup } from '@nextui-org/react'
 import Link from 'next/link'
-import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { InputFishLog } from '@/Types'
 import { CREATE_FISHLOG } from '@/graphql/createFishlog'
@@ -13,39 +12,10 @@ const FishLogForm = () => {
   const router = useRouter();
   const { id } = router.query;
 
-  interface Weather {
-    id: string;
-    name: string;
-    checked: boolean;
-    disabled: boolean;
-  }
-
   //釣行記録情報登録
   const [createFishlog] = useMutation(CREATE_FISHLOG)
 
-  const [weather, setWeather] = useState<Weather[]>([
-    {
-      id: "sunny",
-      name: "晴れ",
-      checked: false,
-      disabled: false,
-    },
-    {
-      id: "rainy",
-      name: "雨",
-      checked: false,
-      disabled: false,
-    },
-    {
-      id: "cloudy",
-      name: "曇り",
-      checked: false,
-      disabled: false,
-    },
-  ]);
-
-
-  const { register, handleSubmit, formState: { errors } } = useForm<InputFishLog>({ mode: "onChange" });
+  const { register, handleSubmit, clearErrors, watch, setValue, formState: { errors } } = useForm<InputFishLog>();
 
   // 完了ボタンを押したらデータ追加、画面遷移
   const onSubmit: SubmitHandler<InputFishLog> = async (formData) => {
@@ -59,9 +29,9 @@ const FishLogForm = () => {
             date: formData.date,
             image: "",
             fishName: formData.fishName,
-            isSunny: Boolean(formData.weather.includes('sunny')),
-            isRainy: Boolean(formData.weather.includes('rainy')),
-            isCloudy: Boolean(formData.weather.includes('cloudy')),
+            isSunny: formData.weather.includes('sunny'),
+            isRainy: formData.weather.includes('rainy'),
+            isCloudy: formData.weather.includes('cloudy'),
             size: Number(formData.size),
             tide: formData.tide,
           },
@@ -75,8 +45,8 @@ const FishLogForm = () => {
     } catch (error) {
       console.error('Error creating fishlog:', error);
     }
+    console.log(formData)
   };
-
 
   return (
     <form>
@@ -123,26 +93,38 @@ const FishLogForm = () => {
         />
       </div>
       <label className='text-lg'>天気</label>
-      {errors.weather && <span style={{ color: 'red' }}>{errors.weather.message}</span>}
+      {watch("weather") && watch("weather").length === 0 && <span style={{ color: 'red' }}>天気を選択してください</span>}
       <div>
-        {weather.map((item) => (
-          <div key={item.id}>
-            <input
-              id={item.id}
-              type="checkbox"
-              value={item.id}
-              defaultChecked={item.checked}
-              disabled={item.disabled}
-              {...register("weather", {
-                validate: {
-                  atLeastOneRequired: (value) =>
-                    value.length >= 1 || "1つ以上選択してください",
-                },
-              })}
-            />
-            <label htmlFor={item.id}>{item.name}</label>
-          </div>
-        ))}
+        <Checkbox
+          id="sunny"
+          checked={watch("weather")?.includes("sunny")}
+          onChange={(e) => {
+            const newWeather = e.target.checked ? [...(watch("weather") || []), "sunny"] : (watch("weather") || []).filter(item => item !== "sunny");
+            setValue("weather", newWeather);
+          }}
+        >
+          晴れ
+        </Checkbox>
+        <Checkbox
+          id="rainy"
+          checked={watch("weather")?.includes("rainy")}
+          onChange={(e) => {
+            const newWeather = e.target.checked ? [...(watch("weather") || []), "rainy"] : (watch("weather") || []).filter(item => item !== "rainy");
+            setValue("weather", newWeather);
+          }}
+        >
+          雨
+        </Checkbox>
+        <Checkbox
+          id="cloudy"
+          checked={watch("weather")?.includes("cloudy")}
+          onChange={(e) => {
+            const newWeather = e.target.checked ? [...(watch("weather") || []), "cloudy"] : (watch("weather") || []).filter(item => item !== "cloudy");
+            setValue("weather", newWeather);
+          }}
+        >
+          曇り
+        </Checkbox>
       </div>
       <label className='text-lg'>大きさ(cm)</label>
       {errors.size && <span style={{ color: 'red' }}>{errors.size.message}</span>}
@@ -150,10 +132,6 @@ const FishLogForm = () => {
         <Input
           {...register('size', {
             required: '大きさは必須です',
-            min: {
-              value: 20,
-              message: '大きさは20㎝以上で入力してください',
-            },
             max: {
               value: 100,
               message: '大きさは100㎝以内で入力してください',
@@ -165,56 +143,21 @@ const FishLogForm = () => {
       </div>
       <label className='text-lg'>潮汐情報</label>
       {errors.tide && <span style={{ color: 'red' }}>{errors.tide.message}</span>}
-      <div>
-        <label htmlFor="tide大潮">
-          <input
-            {...register("tide",{
-              required: "潮汐情報は必須です"
-          })}
-            type="radio"
-            value="大潮"
-            id="tide大潮"
-            required
-          />
-          大潮
-        </label>
-        <label htmlFor="tide中潮">
-          <input
-            {...register("tide")}
-            type="radio"
-            value="中潮"
-            id="tide中潮"
-          />
-          中潮
-        </label>
-        <label htmlFor="tide小潮">
-          <input
-            {...register("tide")}
-            type="radio"
-            value="小潮"
-            id="tide小潮"
-          />
-          小潮
-        </label>
-        <label htmlFor="tide長潮">
-          <input
-            {...register("tide")}
-            type="radio"
-            value="長潮"
-            id="tide長潮"
-          />
-          長潮
-        </label>
-        <label htmlFor="tide若潮">
-          <input
-            {...register("tide")}
-            type="radio"
-            value="若潮"
-            id="tide若潮"
-          />
-          若潮
-        </label>
-      </div>
+      <RadioGroup
+        value={watch("tide")}
+        className="mt-2"
+        onChange={(e) => {
+          const selectedValue = e.target.value; // 選択された値を取得
+          setValue("tide", selectedValue); // フォームに選択された値をセット
+          clearErrors("tide"); // エラーメッセージをクリア
+        }}
+      >
+        <Radio value="大潮" id="tide大潮">大潮</Radio>
+        <Radio value="中潮" id="tide中潮">中潮</Radio>
+        <Radio value="小潮" id="tide小潮">小潮</Radio>
+        <Radio value="長潮" id="tide長潮">長潮</Radio>
+        <Radio value="若潮" id="tide若潮">若潮</Radio>
+      </RadioGroup>
       <div className='mt-16 text-center'>
         <Link
           href={`/place/${id}`}

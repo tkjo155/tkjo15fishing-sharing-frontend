@@ -28,10 +28,10 @@ export type InputFishLog = {
   date: string
   image: string
   fishName: string
-  isSunny: Boolean
-  isRainy: Boolean
-  isCloudy: Boolean
-  weather: String
+  isSunny: boolean
+  isRainy: boolean
+  isCloudy: boolean
+  weather: string[]
   size: number
   tide: string
 }

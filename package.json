@@ -28,7 +28,6 @@
     "npm": "^10.3.0",
     "postcss-selector-parser": "^6.0.15",
     "react": "^18.2.0",
-    "react-datepicker": "^6.6.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.49.3"
   },
