@@ -127,11 +127,11 @@ const FishLogForm = () => {
             clearErrors('tide');
           }}
         >
-          <Radio value='大潮' id='tide大潮' {...register('tide', { required: '潮汐情報は必須です' })} className='mb-2'>大潮</Radio>
-          <Radio value='中潮' id='tide中潮' {...register('tide', { required: '潮汐情報は必須です' })} className='mb-2'>中潮</Radio>
-          <Radio value='小潮' id='tide小潮' {...register('tide', { required: '潮汐情報は必須です' })} className='mb-2'>小潮</Radio>
-          <Radio value='長潮' id='tide長潮' {...register('tide', { required: '潮汐情報は必須です' })} className='mb-2'>長潮</Radio>
-          <Radio value='若潮' id='tide若潮' {...register('tide', { required: '潮汐情報は必須です' })} className='mb-2'>若潮</Radio>
+          <Radio value='SpringTide' id='tideSpring' {...register('tide', { required: '潮汐情報は必須です' })} className='mb-2'>大潮</Radio>
+          <Radio value='MiddleTide' id='tideMiddle' {...register('tide', { required: '潮汐情報は必須です' })} className='mb-2'>中潮</Radio>
+          <Radio value='NeapTide' id='tideNeap' {...register('tide', { required: '潮汐情報は必須です' })} className='mb-2'>小潮</Radio>
+          <Radio value='Nagashio' id='tideNagashio' {...register('tide', { required: '潮汐情報は必須です' })} className='mb-2'>長潮</Radio>
+          <Radio value='Wakashio' id='tideWakashio' {...register('tide', { required: '潮汐情報は必須です' })} className='mb-2'>若潮</Radio>
         </RadioGroup>
       </div>
       <div className='text-center'>
