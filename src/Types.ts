@@ -7,8 +7,8 @@ export type FishLog = {
   image: string
   fishName: string
   isSunny: boolean
-  isRainy: Boolean
-  isCloudy: Boolean
+  isRainy: boolean
+  isCloudy: boolean
   size: number
   tide: string
 }
@@ -31,6 +31,7 @@ export type InputFishLog = {
   isSunny: boolean
   isRainy: boolean
   isCloudy: boolean
+  weather: string[]
   size: number
   tide: string
 }

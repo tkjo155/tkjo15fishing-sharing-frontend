@@ -54,19 +54,19 @@ const PlaceForm = ({ data }: PlaceFormProps) => {
   }
 
   return (
-    <form>
-      <div>
-      <header className='bg-sky-500'>
-        <Navbar>
-          <NavbarBrand>
-            <p className='text-4xl font-bold border-black text-white'>
-              Fishing Spots
-            </p>
-          </NavbarBrand>
+    <form className='container mx-auto px-4'>
+      <div className='container mx-auto'>
+      <header className='bg-gray-900 py-4 mb-8 rounded-t-lg'>
+        <div className='container mx-auto'>
+          <Navbar style={{ backgroundColor: 'transparent' }}>
+            <NavbarBrand>
+              <h1 className='text-white text-4xl font-bold px-6'>Fishing Spots</h1>
+            </NavbarBrand>
           </Navbar>
-        </header>
-        <h1 className='text-center text-2xl mt-4 mb-4'>釣り場登録</h1>
-        <div className="mb-6">
+        </div>
+      </header>
+        <h1 className='text-center text-3xl mt-4 mb-8 font-semibold text-gray-800'>釣り場登録</h1>
+        <div className='mb-6'>
           <label className='text-lg'>港名</label>
           {errors.name && <span className='text-red-500'>{errors.name.message}</span>}
           <Input
@@ -80,7 +80,7 @@ const PlaceForm = ({ data }: PlaceFormProps) => {
             type='text'
             value={inputName}
             onChange={(e) => setInputName(e.target.value)}
-            className='w-96 my-5'
+            className='w-full my-5 ml-4'
           />
         </div>
       </div>
@@ -90,7 +90,7 @@ const PlaceForm = ({ data }: PlaceFormProps) => {
         <Select
           label='Select prefecture'
           {...register('prefectureId', { required: '都道府県は必須です' })}
-          className='w-96 my-5'
+          className='w-full my-5 ml-4'
         >
           {data.prefectures.map((prefecture) => (
             //prefecturesData?.prefecturesがundefinedの場合、空の配列を返す
