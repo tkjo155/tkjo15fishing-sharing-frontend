@@ -96,7 +96,6 @@ const FishLogForm = () => {
               <Checkbox value='cloudy'>曇り</Checkbox>
             </CheckboxGroup>
           )}
-          rules={{ required: '天気は必須です' }}
         />
       </div>
       <div className='mb-4'>
