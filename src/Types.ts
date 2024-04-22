@@ -6,13 +6,11 @@ export type FishLog = {
   date: string
   image: string
   fishName: string
-  weather: string
+  isSunny: boolean
+  isRainy: boolean
+  isCloudy: boolean
   size: number
-  isSpringTide: boolean
-  isMiddleTide: boolean
-  isNeapTide: boolean
-  isNagashio: boolean
-  isWakashio: boolean
+  tide: string
 }
 
 export type SimpleFishLog = {
@@ -21,6 +19,21 @@ export type SimpleFishLog = {
   placeName: string
   date: string
   fishName: string
+}
+
+export type InputFishLog = {
+  id: number
+  placeId: number 
+  placeName: string
+  date: string
+  image: string
+  fishName: string
+  isSunny: boolean
+  isRainy: boolean
+  isCloudy: boolean
+  weather: string[]
+  size: number
+  tide: string
 }
 
 
