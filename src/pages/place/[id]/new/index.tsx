@@ -96,6 +96,7 @@ const FishLogForm = () => {
               <Checkbox value='cloudy'>曇り</Checkbox>
             </CheckboxGroup>
           )}
+          rules={{ required: true }}
         />
       </div>
       <div className='mb-4'>
