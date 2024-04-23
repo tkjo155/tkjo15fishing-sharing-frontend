@@ -8,7 +8,6 @@ import { GET_FISHLOG } from '@/graphql/getFishlog'
 import { useRouter } from 'next/router'
 import { DatePicker } from "@nextui-org/date-picker";
 import { format } from 'date-fns'
-import { useState } from 'react'
 
 const FishLogForm = () => {
   const router = useRouter();
@@ -18,20 +17,13 @@ const FishLogForm = () => {
 
   const { register, handleSubmit, clearErrors, watch, setValue, control, formState: { errors } } = useForm<InputFishLog>();
 
-    // 選択された日付を管理するstate
-    const [selectedDate, setSelectedDate] = useState("");
-    // 日付が変更されたときのハンドラ
-    const handleDateChange = (date:any) => {
-      setSelectedDate(date);
-    };
-
   const onSubmit: SubmitHandler<InputFishLog> = async (formData) => {
     try {
       await createFishlog({
         variables: {
           create: {
             placeId: Number(id),
-            date: String(selectedDate),
+            date: String(formData.date), 
             image: "",
             fishName: formData.fishName,
             isSunny: formData.weather.includes('sunny'),
@@ -63,11 +55,20 @@ const FishLogForm = () => {
       <h1 className='text-center text-2xl mb-4'>釣行記録登録</h1>
       <div className='mb-4'>
         <label className='text-lg'>日にち</label>
-        <DatePicker
-          label="Fishing date"
-          className="max-w-[284px]"
-          onChange={handleDateChange}
-          />
+        {errors.date && <span className='text-red-500 ml-2'>日にちを選択してください</span>}
+        <Controller
+          name='date'
+          control={control}
+          defaultValue={""} 
+          render={({ field: { onChange} }) => (
+            <DatePicker
+              label="Fishing date"
+              className="max-w-[280px]"
+              onChange={(date) => onChange(format(new Date, 'yyyy/MM/dd'))}
+            />
+          )}
+          rules={{ required: true }}
+        />
       </div>
       <div className='mb-4'>
         <label className='text-lg'>魚の名前</label>
