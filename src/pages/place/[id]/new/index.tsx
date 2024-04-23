@@ -7,7 +7,6 @@ import { CREATE_FISHLOG } from '@/graphql/createFishlog'
 import { GET_FISHLOG } from '@/graphql/getFishlog'
 import { useRouter } from 'next/router'
 import { DatePicker } from "@nextui-org/date-picker";
-import { format } from 'date-fns'
 
 const FishLogForm = () => {
   const router = useRouter();
@@ -64,7 +63,7 @@ const FishLogForm = () => {
             <DatePicker
               label="Fishing date"
               className="max-w-[280px]"
-              onChange={() => onChange(format(new Date, 'yyyy/MM/dd'))}
+              onChange={(date) => onChange(date ? date : '')}
             />
           )}
           rules={{ required: true }}
