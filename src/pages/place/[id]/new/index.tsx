@@ -64,7 +64,7 @@ const FishLogForm = () => {
             <DatePicker
               label="Fishing date"
               className="max-w-[280px]"
-              onChange={(date) => onChange(format(new Date, 'yyyy/MM/dd'))}
+              onChange={() => onChange(format(new Date, 'yyyy/MM/dd'))}
             />
           )}
           rules={{ required: true }}
