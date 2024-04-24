@@ -58,7 +58,6 @@ const FishLogForm = () => {
         <Controller
           name='date'
           control={control}
-          defaultValue={""} 
           render={({ field: { onChange} }) => (
             <DatePicker
               label="Fishing date"
