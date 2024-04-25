@@ -22,7 +22,7 @@ const FishLogForm = () => {
         variables: {
           create: {
             placeId: Number(id),
-            date: String(formData.date), 
+            date: String(formData.date),
             image: "",
             fishName: formData.fishName,
             isSunny: formData.weather.includes('sunny'),
@@ -54,19 +54,17 @@ const FishLogForm = () => {
       <h1 className='text-center text-2xl mb-4'>釣行記録登録</h1>
       <div className='mb-4'>
         <label className='text-lg'>日にち</label>
-        {errors.date && <span className='text-red-500 ml-2'>日にちを選択してください</span>}
-        <Controller
-          name='date'
-          control={control}
-          render={({ field: { onChange} }) => (
-            <DatePicker
-              label="Fishing date"
-              className="max-w-[280px]"
-              onChange={(date) => onChange(date ? date : '')}
-            />
-          )}
-          rules={{ required: true }}
-        />
+        {errors.date && <span className='text-red-500 ml-2'>{errors.date.message}</span>}
+        <DatePicker
+          {...register('date', { 
+            required: '日にちは必須です' })} 
+          label="Fishing date"
+          className="max-w-[280px]"
+          onChange={(date) => {
+            setValue('date', date ? date.toString() : '');
+            clearErrors('date'); 
+          }}          
+          />
       </div>
       <div className='mb-4'>
         <label className='text-lg'>魚の名前</label>
