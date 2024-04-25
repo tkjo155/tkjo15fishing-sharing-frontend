@@ -7,6 +7,8 @@ import { CREATE_FISHLOG } from '@/graphql/createFishlog'
 import { GET_FISHLOG } from '@/graphql/getFishlog'
 import { useRouter } from 'next/router'
 import { DatePicker } from "@nextui-org/date-picker";
+import { format } from 'date-fns';
+
 
 const FishLogForm = () => {
   const router = useRouter();
@@ -22,7 +24,7 @@ const FishLogForm = () => {
         variables: {
           create: {
             placeId: Number(id),
-            date: String(formData.date),
+            date: formData.date,
             image: "",
             fishName: formData.fishName,
             isSunny: formData.weather.includes('sunny'),
@@ -56,15 +58,16 @@ const FishLogForm = () => {
         <label className='text-lg'>日にち</label>
         {errors.date && <span className='text-red-500 ml-2'>{errors.date.message}</span>}
         <DatePicker
-          {...register('date', { 
-            required: '日にちは必須です' })} 
+          {...register('date', {
+            required: '日にちは必須です'
+          })}
           label="Fishing date"
           className="max-w-[280px]"
           onChange={(date) => {
             setValue('date', date ? date.toString() : '');
-            clearErrors('date'); 
-          }}          
-          />
+            clearErrors('date');
+          }}
+        />
       </div>
       <div className='mb-4'>
         <label className='text-lg'>魚の名前</label>

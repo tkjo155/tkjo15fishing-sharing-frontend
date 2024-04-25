@@ -5,6 +5,8 @@ import { SimpleFishLog, FishLogsResponse } from '@/Types'
 import { createApolloClient } from '@/libs/client'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
+import { format } from 'date-fns';
+
 
 interface FishLogsListProps {
   data: FishLogsResponse
@@ -47,7 +49,9 @@ const FishlogsList = ({ data }: FishLogsListProps) => {
                   passHref
                 >
                   <CardHeader className='text-lg'>{fishLog.fishName}</CardHeader>
-                  <div className='flex text-gray-600 justify-end'>{fishLog.date}</div>
+                  <div className='flex text-gray-600 justify-end'>
+                  {format(new Date(fishLog.date), 'yyyy/MM/dd')}
+                    </div>
                 </Link>
               </Card>
             ))}
