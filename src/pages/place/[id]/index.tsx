@@ -5,7 +5,6 @@ import { SimpleFishLog, FishLogsResponse } from '@/Types'
 import { createApolloClient } from '@/libs/client'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
-import { format } from 'date-fns';
 
 
 interface FishLogsListProps {

@@ -13,8 +13,6 @@ import { useRouter } from 'next/router'
 import { useQuery } from '@apollo/client'
 import { GET_FISHLOG } from '@/graphql/getFishlog'
 import { FishLog, FishLogResponse, } from '@/Types'
-import { format } from 'date-fns';
-
 
 
 const FishlogDetail = () => {

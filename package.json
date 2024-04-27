@@ -23,7 +23,6 @@
     "@nextui-org/system": "^2.1.2",
     "@nextui-org/theme": "^2.2.2",
     "@react-stately/table": "^3.11.6",
-    "date-fns": "^3.6.0",
     "framer-motion": "^11.0.3",
     "graphql": "^16.8.1",
     "next": "^14.1.0",
