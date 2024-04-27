@@ -6,6 +6,9 @@ import { Place, PlacesResponse } from '@/Types'
 import { createApolloClient } from '@/libs/client'
 import { useRouter } from 'next/router'
 import { IoIosSend } from "react-icons/io"
+import { TbFish } from "react-icons/tb"
+import { GiBoatFishing } from "react-icons/gi"
+
 
 
 interface PlacesListProps {
@@ -28,7 +31,8 @@ const PlacesList = ({ data }: PlacesListProps) => {
       <div className='container'>
           <Navbar style={{ backgroundColor: 'transparent' }}>
             <NavbarBrand>
-              <h1 className='text-white text-3xl font-bold px-6'>Fishing Spots</h1>
+            <h1 className='text-white text-3xl font-bold'>
+              <TbFish />Fishing Spots</h1>
             </NavbarBrand>
             <NavbarItem>
               <Link href={'/place/new'} passHref>
@@ -41,8 +45,12 @@ const PlacesList = ({ data }: PlacesListProps) => {
           </Navbar>
         </div>
       </header>
-      <h1 className='text-center text-4xl font-bold mb-3'>List of fishing spots</h1>
-          <h2 className='text-center text-xl mb-20'>釣り場一覧</h2>
+      <div className='flex items-center justify-center'>
+          <h1 className='text-center text-4xl font-bold mb-3'>
+            Fishing spots
+          </h1>
+          <GiBoatFishing className='ml-2' size={32}/>
+        </div>          <h2 className='text-center text-xl mb-20'>釣り場一覧</h2>
       <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3'>
         {data &&
           data.getAllPlaces.map((place: Place) => (

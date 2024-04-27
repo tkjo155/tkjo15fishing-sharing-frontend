@@ -11,6 +11,7 @@ import { GET_PREFECTURES } from '@/graphql/getPrefecture'
 import { createApolloClient } from '@/libs/client'
 import { MdCancel } from "react-icons/md"
 import { IoIosSend } from "react-icons/io"
+import { TbFish } from "react-icons/tb"
 
 interface PlaceFormProps {
   data: {
@@ -61,7 +62,8 @@ const PlaceForm = ({ data }: PlaceFormProps) => {
         <div className='container'>
           <Navbar style={{ backgroundColor: 'transparent' }}>
             <NavbarBrand>
-              <h1 className='text-white text-3xl font-bold'>Fishing Spots</h1>
+            <h1 className='text-white text-3xl font-bold'>
+              <TbFish />Fishing Spots</h1>
             </NavbarBrand>
           </Navbar>
         </div>
@@ -91,6 +93,7 @@ const PlaceForm = ({ data }: PlaceFormProps) => {
                       },
                     })}
                     type='text'
+                    label="Port name"
                     value={inputName}
                     onChange={(e) => setInputName(e.target.value)}
                     className='w-full mt-2'

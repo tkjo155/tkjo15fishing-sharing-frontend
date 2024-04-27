@@ -6,8 +6,8 @@ import { createApolloClient } from '@/libs/client'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import { IoIosSend } from "react-icons/io"
-
-
+import { TbFish } from "react-icons/tb"
+import { PiFishSimpleDuotone } from "react-icons/pi"
 
 interface FishLogsListProps {
   data: FishLogsResponse
@@ -25,7 +25,8 @@ const FishlogsList = ({ data }: FishLogsListProps) => {
         <div className='container'>
           <Navbar style={{ backgroundColor: 'transparent' }}>
             <NavbarBrand>
-              <h1 className='text-white text-3xl font-bold'>Fishing Spots</h1>
+              <h1 className='text-white text-3xl font-bold'>
+                <TbFish />Fishing Spots</h1>
             </NavbarBrand>
             <Link
               href={`/place/${id}/new`}
@@ -41,7 +42,12 @@ const FishlogsList = ({ data }: FishLogsListProps) => {
       </header>
       {data.getFishLogs.length > 0 ? (
         <>
-          <h1 className='text-center text-4xl font-bold mb-3'>List of fishing records</h1>
+          <div className='flex items-center justify-center'>
+            <h1 className='text-center text-4xl font-bold mb-3'>
+              Fishing records
+            </h1>
+            <PiFishSimpleDuotone className='ml-2' size={32} />
+          </div>
           <h2 className='text-center text-xl mb-20'>
             {data.getFishLogs[0].placeName} 釣行記録一覧
           </h2>

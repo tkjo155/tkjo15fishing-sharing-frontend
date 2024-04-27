@@ -13,6 +13,8 @@ import { useRouter } from 'next/router'
 import { useQuery } from '@apollo/client'
 import { GET_FISHLOG } from '@/graphql/getFishlog'
 import { FishLog, FishLogResponse, } from '@/Types'
+import { TbFish } from "react-icons/tb"
+import { GiLuckyFisherman } from "react-icons/gi"
 
 
 const FishlogDetail = () => {
@@ -30,53 +32,71 @@ const FishlogDetail = () => {
   const fishLog: FishLog = data.getFishLog;
 
   return (
-    <div className='container mx-auto'>
-      <header className='bg-gray-900 py-4 mb-8 rounded-t-lg'>
-        <div className='container mx-auto flex justify-center'>
+    <div className='bg-gray-100 h-full'>
+      <header className='bg-gray-900 py-4 mb-8 w-full'>
+        <div className='container'>
           <Navbar style={{ backgroundColor: 'transparent' }}>
             <NavbarBrand>
-              <h1 className='text-white text-4xl font-bold px-6'>Fishing Spots</h1>
+              <h1 className='text-white text-3xl font-bold'>
+              <TbFish />Fishing Spots</h1>
             </NavbarBrand>
           </Navbar>
         </div>
       </header>
-      <h1 className='text-center text-2xl mt-4'>
+      <div className='flex items-center justify-center'>
+          <h1 className='text-center text-4xl font-bold mb-3'>
+            Fishing record
+          </h1>
+          <GiLuckyFisherman className='ml-2' size={32}/>
+        </div>
+      <h2 className='text-center text-xl mb-10'>
         {fishLog.placeName} 釣行詳細記録
-      </h1>
-      <div className='mt-4 mb-4'>
-        <h2 className='text-center text-3xl font-semibold '>
+      </h2>
+      <div className='container max-w-lg mx-auto shadow-lg p-6 mb-10 bg-white'>
+        <h2 className='text-center text-3xl font-semibold mb-8'>
           {fishLog.fishName}
         </h2>
-      </div>
-      <div className='w-full mt-10 max-w-xl mx-auto'>
-        <Table hideHeader removeWrapper aria-label='Example static collection table'>
-          <TableHeader>
-            <TableColumn>項目</TableColumn>
-            <TableColumn>情報</TableColumn>
-          </TableHeader>
-          <TableBody>
-            <TableRow key={`date-${fishLog.id}`}>
-              <TableCell className='border border-gray-300 font-semibold w-2/5'>日にち</TableCell>
-              <TableCell className='border border-gray-300 w-3/5'>{fishLog.date}</TableCell>
-            </TableRow>
-            <TableRow key={`weather-${fishLog.id}`}>
-              <TableCell className='border border-gray-300 font-semibold w-2/5'>天気</TableCell>
-              <TableCell className='border border-gray-300 w-3/5'>
-                {fishLog.isSunny && '晴れ'}
-                {fishLog.isRainy && '雨'}
-                {fishLog.isCloudy && '曇り'}
-              </TableCell>
-            </TableRow>
-            <TableRow key={`size-${fishLog.id}`}>
-              <TableCell className='border border-gray-300 font-semibold w-2/5'>サイズ(cm)</TableCell>
-              <TableCell className='border border-gray-300 w-3/5'>{fishLog.size}cm</TableCell>
-            </TableRow>
-            <TableRow key={`tide-${fishLog.id}`}>
-              <TableCell className='border border-gray-300 font-semibold w-2/5'>潮汐情報</TableCell>
-              <TableCell className='border border-gray-300 w-3/5'>{fishLog.tide}</TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
+        <div className='container max-w-lg mx-auto'>
+          <Table className='mb-10' hideHeader removeWrapper aria-label='Example static collection table'>
+            <TableHeader>
+              <TableColumn className='border-r'>項目</TableColumn>
+              <TableColumn>情報</TableColumn>
+            </TableHeader>
+            <TableBody>
+              <TableRow key={`date-${fishLog.id}`}>
+                <TableCell className='border-t-5 border-gray-300 border-b bg-gray-100 font-semibold w-1/4'>
+                  <label className='text-lg w-28'>日にち</label>
+                </TableCell>
+                <TableCell className='text-lg border border-t-5 border-b border-gray-300 w-3/4'>
+                  {fishLog.date}
+                </TableCell>
+              </TableRow>
+              <TableRow key={`weather-${fishLog.id}`}>
+                <TableCell className='border-t border-gray-300 border-b bg-gray-100 font-semibold w-1/4'>
+                  <label className='text-lg w-28'>天気</label>
+                </TableCell>
+                <TableCell className='text-lg border border-t border-b border-gray-300 w-3/4'>
+                  {fishLog.isSunny && '晴れ'}
+                  {fishLog.isRainy && '雨'}
+                  {fishLog.isCloudy && '曇り'}
+                </TableCell>
+              </TableRow>
+              <TableRow key={`size-${fishLog.id}`}>
+                <TableCell className='border-t border-gray-300 border-b bg-gray-100 font-semibold w-1/4'>
+                  <label className='text-lg w-28'>サイズ(cm)</label>
+                </TableCell>
+                <TableCell className='text-lg border border-t border-b border-gray-300 w-3/4'>
+                  {fishLog.size}cm</TableCell>
+              </TableRow>
+              <TableRow key={`tide-${fishLog.id}`}>
+                <TableCell className='border-t border-gray-300 border-b bg-gray-100 font-semibold w-1/4'>
+                  <label className='text-lg w-28'>潮汐情報</label>
+                </TableCell>
+                <TableCell className='text-lg border border-gray-300 w-3/5'>{fishLog.tide}</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </div>
       </div>
     </div>
   )

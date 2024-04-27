@@ -9,6 +9,8 @@ import { useRouter } from 'next/router'
 import { DatePicker } from "@nextui-org/date-picker"
 import { MdCancel } from "react-icons/md"
 import { IoIosSend } from "react-icons/io"
+import { TbFish } from "react-icons/tb"
+import { GiBoatFishing } from "react-icons/gi"
 
 
 const FishLogForm = () => {
@@ -49,13 +51,19 @@ const FishLogForm = () => {
         <div className='container'>
           <Navbar style={{ backgroundColor: 'transparent' }}>
             <NavbarBrand>
-              <h1 className='text-white text-3xl font-bold'>Fishing Spots</h1>
+              <h1 className='text-white text-3xl font-bold'>
+                <TbFish />Fishing Spots</h1>
             </NavbarBrand>
           </Navbar>
         </div>
       </header>
       <form className='container max-w-3lg mx-auto'>
-        <h1 className='text-center text-4xl font-bold mb-3'>Fishing record entry</h1>
+        <div className='flex items-center justify-center'>
+          <h1 className='text-center text-4xl font-bold mb-3'>
+            Fishing record entry
+          </h1>
+          <GiBoatFishing className='ml-2' size={32}/>
+        </div>
         <h2 className='text-center text-mx mb-20'>釣果データを入力してください</h2>
         <Table className='shadow-lg mb-10' hideHeader removeWrapper aria-label='Example static collection table'>
           <TableHeader>
@@ -85,26 +93,6 @@ const FishLogForm = () => {
             </TableRow>
             <TableRow>
               <TableCell className='border-t border-gray-300 border-b bg-gray-100 font-semibold w-1/4'>
-                <label className='text-lg w-28'>魚の名前</label>
-                {errors.fishName && <span className='text-red-500 ml-2'>{errors.fishName.message}</span>}
-              </TableCell>
-              <TableCell className='border-t border-b border-gray-300 w-3/4'>
-                <Input
-                  {...register('fishName', {
-                    required: '魚名は必須です',
-                    maxLength: {
-                      value: 20,
-                      message: '魚名は20文字以内で入力してください',
-                    },
-                  })}
-                  type='text'
-                  label="Fish name"
-                  className='w-full mt-2'
-                />
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className='border-t border-gray-300 border-b bg-gray-100 font-semibold w-1/4'>
                 <label className='text-lg w-28'>天気 <span className="text-red-500 text-sm">(複数選択可)</span></label>
                 {errors.weather && <span className='text-red-500 ml-2'>天気は必須です</span>}
               </TableCell>
@@ -120,6 +108,26 @@ const FishLogForm = () => {
                     </CheckboxGroup>
                   )}
                   rules={{ required: true }}
+                />
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell className='border-t border-gray-300 border-b bg-gray-100 font-semibold w-1/4'>
+                <label className='text-lg w-28'>魚の名前</label>
+                {errors.fishName && <span className='text-red-500 ml-2'>{errors.fishName.message}</span>}
+              </TableCell>
+              <TableCell className='border-t border-b border-gray-300 w-3/4'>
+                <Input
+                  {...register('fishName', {
+                    required: '魚名は必須です',
+                    maxLength: {
+                      value: 20,
+                      message: '魚名は20文字以内で入力してください',
+                    },
+                  })}
+                  type='text'
+                  label="Fish name"
+                  className='w-full mt-2'
                 />
               </TableCell>
             </TableRow>
