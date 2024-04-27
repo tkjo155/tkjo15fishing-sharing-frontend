@@ -6,6 +6,7 @@ import { createApolloClient } from '@/libs/client'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 
+
 interface FishLogsListProps {
   data: FishLogsResponse
 }

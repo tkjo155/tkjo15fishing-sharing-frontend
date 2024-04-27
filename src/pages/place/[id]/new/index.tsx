@@ -5,7 +5,9 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { InputFishLog } from '@/Types'
 import { CREATE_FISHLOG } from '@/graphql/createFishlog'
 import { GET_FISHLOG } from '@/graphql/getFishlog'
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/router'
+import { DatePicker } from "@nextui-org/date-picker";
+
 
 const FishLogForm = () => {
   const router = useRouter();
@@ -54,16 +56,17 @@ const FishLogForm = () => {
       <div className='mb-4'>
         <label className='text-lg'>日にち</label>
         {errors.date && <span className='text-red-500 ml-2'>{errors.date.message}</span>}
-        <Input
+        <DatePicker
           {...register('date', {
-            required: '日にちは必須です',
-            maxLength: {
-              value: 15,
-              message: '日にちは15文字以内で入力してください',
-            },
+            required: '日にちは必須です'
           })}
-          type='text'
-          className='w-full mt-2'
+          label="Fishing date"
+          className="max-w-[280px]"
+          onChange={(selectDate) => {
+            const date = `${selectDate.year}/${selectDate.month}/${selectDate.day}`;
+            setValue('date', date)
+            clearErrors('date');
+          }}
         />
       </div>
       <div className='mb-4'>
