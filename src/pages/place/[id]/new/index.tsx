@@ -6,7 +6,9 @@ import { InputFishLog } from '@/Types'
 import { CREATE_FISHLOG } from '@/graphql/createFishlog'
 import { GET_FISHLOG } from '@/graphql/getFishlog'
 import { useRouter } from 'next/router'
-import { DatePicker } from "@nextui-org/date-picker";
+import { DatePicker } from "@nextui-org/date-picker"
+import { MdCancel } from "react-icons/md"
+import { IoIosSend } from "react-icons/io"
 
 
 const FishLogForm = () => {
@@ -53,7 +55,7 @@ const FishLogForm = () => {
         </div>
       </header>
       <form className='container max-w-3lg mx-auto'>
-        <h1 className='text-center text-4xl font-bold mb-3'>Fishing Record</h1>
+        <h1 className='text-center text-4xl font-bold mb-3'>Fishing record entry</h1>
         <h2 className='text-center text-mx mb-20'>釣果データを入力してください</h2>
         <Table className='shadow-lg mb-10' hideHeader removeWrapper aria-label='Example static collection table'>
           <TableHeader>
@@ -170,10 +172,12 @@ const FishLogForm = () => {
         <div className='text-center'>
           <Link href={`/place/${id}`} passHref>
             <Button color='default' variant='shadow' size='lg' className='mr-20 mt-15 mb-20'>
+              <MdCancel />
               キャンセル
             </Button>
           </Link>
-          <Button color='primary' variant='shadow' size='lg' onClick={handleSubmit(onSubmit)}>
+          <Button color='primary' variant='shadow' size='lg' className='mr-20 mt-15 mb-20' onClick={handleSubmit(onSubmit)}>
+            <IoIosSend />
             登録
           </Button>
         </div>

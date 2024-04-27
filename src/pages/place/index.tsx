@@ -5,6 +5,8 @@ import { GET_PLACES } from '../../graphql/getPlaces'
 import { Place, PlacesResponse } from '@/Types'
 import { createApolloClient } from '@/libs/client'
 import { useRouter } from 'next/router'
+import { IoIosSend } from "react-icons/io"
+
 
 interface PlacesListProps {
   data: PlacesResponse
@@ -21,24 +23,26 @@ const PlacesList = ({ data }: PlacesListProps) => {
   }
 
   return (
-    <div className='container mx-auto'>
-      <header className='bg-gray-900 py-4 mb-8 rounded-t-lg'>
-        <div className='container mx-auto'>
+    <div>
+      <header className='bg-gray-900 py-4 mb-8 w-full'>
+      <div className='container'>
           <Navbar style={{ backgroundColor: 'transparent' }}>
             <NavbarBrand>
-              <h1 className='text-white text-4xl font-bold px-6'>Fishing Spots</h1>
+              <h1 className='text-white text-3xl font-bold px-6'>Fishing Spots</h1>
             </NavbarBrand>
             <NavbarItem>
               <Link href={'/place/new'} passHref>
                 <Button color='primary' size='lg' variant='shadow' style={{ color: '#fff', fontFamily: 'Arial, sans-serif' }}>
-                  釣り場登録
+                <IoIosSend />
+                釣り場を登録
                 </Button>
               </Link>
             </NavbarItem>
           </Navbar>
         </div>
       </header>
-      <h1 className='text-center text-3xl mt-4 mb-8 font-semibold text-gray-800'>釣り場一覧</h1>
+      <h1 className='text-center text-4xl font-bold mb-3'>List of fishing spots</h1>
+          <h2 className='text-center text-xl mb-20'>釣り場一覧</h2>
       <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3'>
         {data &&
           data.getAllPlaces.map((place: Place) => (

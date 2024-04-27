@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client'
-import { Button, Input, Navbar, NavbarBrand, Select, SelectItem } from '@nextui-org/react'
+import { Button, Input, Navbar, NavbarBrand, Select, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
 import Link from 'next/link'
 import router from 'next/router'
 import { useState } from 'react'
@@ -9,6 +9,8 @@ import { CREATE_PLACE } from '@/graphql/createPlaces'
 import { GET_PLACES } from '@/graphql/getPlaces'
 import { GET_PREFECTURES } from '@/graphql/getPrefecture'
 import { createApolloClient } from '@/libs/client'
+import { MdCancel } from "react-icons/md"
+import { IoIosSend } from "react-icons/io"
 
 interface PlaceFormProps {
   data: {
@@ -54,63 +56,84 @@ const PlaceForm = ({ data }: PlaceFormProps) => {
   }
 
   return (
-    <form className='container mx-auto px-4'>
-      <div className='container mx-auto'>
-      <header className='bg-gray-900 py-4 mb-8 rounded-t-lg'>
-        <div className='container mx-auto'>
+    <div>
+      <header className='bg-gray-900 py-4 mb-8 w-full'>
+        <div className='container'>
           <Navbar style={{ backgroundColor: 'transparent' }}>
             <NavbarBrand>
-              <h1 className='text-white text-4xl font-bold px-6'>Fishing Spots</h1>
+              <h1 className='text-white text-3xl font-bold'>Fishing Spots</h1>
             </NavbarBrand>
           </Navbar>
         </div>
       </header>
-        <h1 className='text-center text-3xl mt-4 mb-8 font-semibold text-gray-800'>釣り場登録</h1>
-        <div className='mb-6'>
-          <label className='text-lg'>港名</label>
-          {errors.name && <span className='text-red-500'>{errors.name.message}</span>}
-          <Input
-            {...register('name', {
-              required: '港名は必須です',
-              maxLength: {
-                value: 50,
-                message: '港名は50文字以内で入力してください',
-              },
-            })}
-            type='text'
-            value={inputName}
-            onChange={(e) => setInputName(e.target.value)}
-            className='w-full my-5 ml-4'
-          />
+      <form className='container max-w-3lg mx-auto'>
+        <h1 className='text-center text-4xl font-bold mb-3'>Fishing spot entry</h1>
+        <h2 className='text-center text-mx mb-20'>釣り場を入力してください</h2>
+        <div className='container mx-auto'>
+          <Table className='shadow-lg mb-10' hideHeader removeWrapper aria-label='Example static collection table'>
+            <TableHeader>
+              <TableColumn className='border-r'>項目</TableColumn>
+              <TableColumn>情報</TableColumn>
+            </TableHeader>
+            <TableBody>
+              <TableRow>
+                <TableCell className='border-t-5 border-gray-300 border-b bg-gray-100 font-semibold w-1/4'>
+                  <label className='text-lg'>港名</label>
+                  {errors.name && <span className='text-red-500'>{errors.name.message}</span>}
+                </TableCell>
+                <TableCell className='border-t-5 border-b border-gray-300 w-3/4'>
+                  <Input
+                    {...register('name', {
+                      required: '港名は必須です',
+                      maxLength: {
+                        value: 50,
+                        message: '港名は50文字以内で入力してください',
+                      },
+                    })}
+                    type='text'
+                    value={inputName}
+                    onChange={(e) => setInputName(e.target.value)}
+                    className='w-full mt-2'
+                  />
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell className='border-t border-gray-300 border-b bg-gray-100 font-semibold w-1/4'>
+                  <label className='text-lg'>都道府県</label>
+                  {errors.prefectureId && <span className='text-red-500'>{errors.prefectureId.message}</span>}
+                </TableCell>
+                <TableCell className='border-t border-b border-gray-300 w-3/4'>
+                  <Select
+                    label='Select prefecture'
+                    {...register('prefectureId', { required: '都道府県は必須です' })}
+                    className='w-full mt-2'
+                  >
+                    {data.prefectures.map((prefecture) => (
+                      //prefecturesData?.prefecturesがundefinedの場合、空の配列を返す
+                      <SelectItem key={prefecture.id} value={prefecture.id}>
+                        {prefecture.name}
+                      </SelectItem>
+                    ))}
+                  </Select>
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
         </div>
-      </div>
-      <label className='text-lg'>都道府県</label>
-      {errors.prefectureId && <span className='text-red-500'>{errors.prefectureId.message}</span>}
-      <div>
-        <Select
-          label='Select prefecture'
-          {...register('prefectureId', { required: '都道府県は必須です' })}
-          className='w-full my-5 ml-4'
-        >
-          {data.prefectures.map((prefecture) => (
-            //prefecturesData?.prefecturesがundefinedの場合、空の配列を返す
-            <SelectItem key={prefecture.id} value={prefecture.id}>
-              {prefecture.name}
-            </SelectItem>
-          ))}
-        </Select>
-      </div>
-      <div className='mt-16 text-center'>
-        <Link href={'/place'} passHref legacyBehavior>
-          <Button color='default' variant='shadow' size='lg' className='mr-10'>
-            キャンセル
+        <div className='mt-16 text-center'>
+          <Link href={'/place'} passHref legacyBehavior>
+            <Button color='default' variant='shadow' size='lg' className='mr-10'>
+            <MdCancel />
+              キャンセル
+            </Button>
+          </Link>
+          <Button color='primary' variant='shadow' size='lg' onClick={handleSubmit(onSubmit)}>
+          <IoIosSend />
+            完了
           </Button>
-        </Link>
-        <Button color='primary' variant='shadow' size='lg' onClick={handleSubmit(onSubmit)}>
-          完了
-        </Button>
-      </div>
-    </form>
+        </div>
+      </form>
+    </div>
   )
 }
 
