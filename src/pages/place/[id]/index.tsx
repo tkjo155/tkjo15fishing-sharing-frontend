@@ -49,9 +49,7 @@ const FishlogsList = ({ data }: FishLogsListProps) => {
                   passHref
                 >
                   <CardHeader className='text-lg'>{fishLog.fishName}</CardHeader>
-                  <div className='flex text-gray-600 justify-end'>
-                  {format(new Date(fishLog.date), 'yyyy/MM/dd')}
-                    </div>
+                  <div className='flex text-gray-600 justify-end'>{fishLog.date}</div>
                 </Link>
               </Card>
             ))}

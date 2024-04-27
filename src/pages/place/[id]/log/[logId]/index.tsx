@@ -59,7 +59,7 @@ const FishlogDetail = () => {
           <TableBody>
             <TableRow key={`date-${fishLog.id}`}>
               <TableCell className='border border-gray-300 font-semibold w-2/5'>日にち</TableCell>
-              <TableCell className='border border-gray-300 w-3/5'>{format(fishLog.date,'yyyy/MM/dd')}</TableCell>
+              <TableCell className='border border-gray-300 w-3/5'>{fishLog.date}</TableCell>
             </TableRow>
             <TableRow key={`weather-${fishLog.id}`}>
               <TableCell className='border border-gray-300 font-semibold w-2/5'>天気</TableCell>
