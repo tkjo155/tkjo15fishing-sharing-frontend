@@ -10,7 +10,7 @@ import { DatePicker } from "@nextui-org/date-picker"
 import { MdCancel } from "react-icons/md"
 import { IoIosSend } from "react-icons/io"
 import { TbFish } from "react-icons/tb"
-import { GiBoatFishing } from "react-icons/gi"
+import { PiFishSimpleDuotone } from "react-icons/pi"
 
 
 const FishLogForm = () => {
@@ -62,7 +62,7 @@ const FishLogForm = () => {
           <h1 className='text-center text-4xl font-bold mb-3'>
             Fishing record entry
           </h1>
-          <GiBoatFishing className='ml-2' size={32}/>
+          <PiFishSimpleDuotone className='ml-2' size={32} />
         </div>
         <h2 className='text-center text-mx mb-20'>釣果データを入力してください</h2>
         <Table className='shadow-lg mb-10' hideHeader removeWrapper aria-label='Example static collection table'>
@@ -179,12 +179,12 @@ const FishLogForm = () => {
         </Table>
         <div className='text-center'>
           <Link href={`/place/${id}`} passHref>
-            <Button color='default' variant='shadow' size='lg' className='mr-20 mt-15 mb-20'>
+            <Button color='default' variant='shadow' size='sm' className='mr-20 mt-15 mb-20'>
               <MdCancel />
               キャンセル
             </Button>
           </Link>
-          <Button color='primary' variant='shadow' size='lg' className='mr-20 mt-15 mb-20' onClick={handleSubmit(onSubmit)}>
+          <Button color='primary' variant='shadow' size='sm' className='mr-20 mt-15 mb-20' onClick={handleSubmit(onSubmit)}>
             <IoIosSend />
             登録
           </Button>

@@ -12,6 +12,8 @@ import { createApolloClient } from '@/libs/client'
 import { MdCancel } from "react-icons/md"
 import { IoIosSend } from "react-icons/io"
 import { TbFish } from "react-icons/tb"
+import { GiBoatFishing } from "react-icons/gi"
+
 
 interface PlaceFormProps {
   data: {
@@ -62,14 +64,19 @@ const PlaceForm = ({ data }: PlaceFormProps) => {
         <div className='container'>
           <Navbar style={{ backgroundColor: 'transparent' }}>
             <NavbarBrand>
-            <h1 className='text-white text-3xl font-bold'>
-              <TbFish />Fishing Spots</h1>
+              <h1 className='text-white text-3xl font-bold'>
+                <TbFish />Fishing Spots</h1>
             </NavbarBrand>
           </Navbar>
         </div>
       </header>
       <form className='container max-w-3lg mx-auto'>
-        <h1 className='text-center text-4xl font-bold mb-3'>Fishing spot entry</h1>
+        <div className='flex items-center justify-center'>
+          <h1 className='text-center text-4xl font-bold mb-3'>
+            Fishing spot entry
+          </h1>
+          <GiBoatFishing className='ml-2' size={32} />
+        </div>
         <h2 className='text-center text-mx mb-20'>釣り場を入力してください</h2>
         <div className='container mx-auto'>
           <Table className='shadow-lg mb-10' hideHeader removeWrapper aria-label='Example static collection table'>
@@ -126,12 +133,12 @@ const PlaceForm = ({ data }: PlaceFormProps) => {
         <div className='mt-16 text-center'>
           <Link href={'/place'} passHref legacyBehavior>
             <Button color='default' variant='shadow' size='lg' className='mr-10'>
-            <MdCancel />
+              <MdCancel />
               キャンセル
             </Button>
           </Link>
           <Button color='primary' variant='shadow' size='lg' onClick={handleSubmit(onSubmit)}>
-          <IoIosSend />
+            <IoIosSend />
             完了
           </Button>
         </div>

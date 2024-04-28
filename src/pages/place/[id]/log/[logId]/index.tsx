@@ -32,23 +32,23 @@ const FishlogDetail = () => {
   const fishLog: FishLog = data.getFishLog;
 
   return (
-    <div className='bg-gray-100 h-full'>
+    <div className='bg-gray-100'>
       <header className='bg-gray-900 py-4 mb-8 w-full'>
         <div className='container'>
           <Navbar style={{ backgroundColor: 'transparent' }}>
             <NavbarBrand>
               <h1 className='text-white text-3xl font-bold'>
-              <TbFish />Fishing Spots</h1>
+                <TbFish />Fishing Spots</h1>
             </NavbarBrand>
           </Navbar>
         </div>
       </header>
       <div className='flex items-center justify-center'>
-          <h1 className='text-center text-4xl font-bold mb-3'>
-            Fishing record
-          </h1>
-          <GiLuckyFisherman className='ml-2' size={32}/>
-        </div>
+        <h1 className='text-center text-4xl font-bold mb-3'>
+          Fishing record
+        </h1>
+        <GiLuckyFisherman className='ml-2' size={32} />
+      </div>
       <h2 className='text-center text-xl mb-10'>
         {fishLog.placeName} 釣行詳細記録
       </h2>
@@ -62,7 +62,7 @@ const FishlogDetail = () => {
               <TableColumn className='border-r'>項目</TableColumn>
               <TableColumn>情報</TableColumn>
             </TableHeader>
-            <TableBody>
+            <TableBody className='bg-gray-100'>
               <TableRow key={`date-${fishLog.id}`}>
                 <TableCell className='border-t-5 border-gray-300 border-b bg-gray-100 font-semibold w-1/4'>
                   <label className='text-lg w-28'>日にち</label>
@@ -76,9 +76,9 @@ const FishlogDetail = () => {
                   <label className='text-lg w-28'>天気</label>
                 </TableCell>
                 <TableCell className='text-lg border border-t border-b border-gray-300 w-3/4'>
-                  {fishLog.isSunny && '晴れ'}
-                  {fishLog.isRainy && '雨'}
-                  {fishLog.isCloudy && '曇り'}
+                  {((fishLog.isSunny && '晴れ') || '') +
+                    ((fishLog.isRainy && (fishLog.isSunny ? '・' : '') + '雨') || '') +
+                    ((fishLog.isCloudy && (fishLog.isSunny || fishLog.isRainy ? '・' : '') + '曇り') || '')}
                 </TableCell>
               </TableRow>
               <TableRow key={`size-${fishLog.id}`}>

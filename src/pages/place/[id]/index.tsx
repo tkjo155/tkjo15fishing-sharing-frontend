@@ -5,9 +5,10 @@ import { SimpleFishLog, FishLogsResponse } from '@/Types'
 import { createApolloClient } from '@/libs/client'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
-import { IoIosSend } from "react-icons/io"
 import { TbFish } from "react-icons/tb"
 import { PiFishSimpleDuotone } from "react-icons/pi"
+import { GiPlayButton } from "react-icons/gi"
+
 
 interface FishLogsListProps {
   data: FishLogsResponse
@@ -20,7 +21,7 @@ const FishlogsList = ({ data }: FishLogsListProps) => {
   if (!data) return <>データなし</>
 
   return (
-    <div>
+    <div className='bg-gray-100'>
       <header className='bg-gray-900 py-4 mb-8 w-full'>
         <div className='container'>
           <Navbar style={{ backgroundColor: 'transparent' }}>
@@ -32,8 +33,8 @@ const FishlogsList = ({ data }: FishLogsListProps) => {
               href={`/place/${id}/new`}
               passHref
             >
-              <Button color='primary' size='lg' variant='shadow' style={{ color: '#fff', fontFamily: 'Arial, sans-serif' }}>
-                <IoIosSend />
+              <Button color='primary' size='sm' variant='shadow' style={{ color: '#fff', fontFamily: 'Arial, sans-serif' }}>
+                <GiPlayButton />
                 釣行記録を登録
               </Button>
             </Link>
@@ -51,16 +52,17 @@ const FishlogsList = ({ data }: FishLogsListProps) => {
           <h2 className='text-center text-xl mb-20'>
             {data.getFishLogs[0].placeName} 釣行記録一覧
           </h2>
-          <div className='grid grid-rows-3 gap-1 md:grid-cols-2 lg:grid-cols-3'>
+          <div className='grid md:grid-cols-2 lg:grid-cols-3 max-w-4xl mx-auto'>
             {data.getFishLogs.map((fishLog: SimpleFishLog) => (
-              <Card key={fishLog.id} className='w-96 p-3 m-3 justify-self-center'>
+              <Card key={fishLog.id} className='py-4 w-64 mx-4 hover:bg-gray-200 my-4 h-60'>
                 <Link
                   href={`/place/${fishLog.placeId}/log/${fishLog.id}`}
                   key={fishLog.id}
                   passHref
                 >
-                  <CardHeader className='text-lg'>{fishLog.fishName}</CardHeader>
-                  <div className='flex text-gray-600 justify-end'>{fishLog.date}</div>
+                  <p className="text-tiny uppercase font-bold ml-3">Fish name</p>
+                  <CardHeader className='pb-0 pt-2 px-4 text-2xl font-semibold'>{fishLog.fishName}</CardHeader>
+                  <div className='absolute bottom-2 right-2 text-gray-600'>{fishLog.date}</div>
                 </Link>
               </Card>
             ))}
