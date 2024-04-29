@@ -83,7 +83,7 @@ const FishlogDetail = () => {
               </TableRow>
               <TableRow key={`size-${fishLog.id}`}>
                 <TableCell className='border-t border-gray-300 border-b bg-gray-100 font-semibold w-1/4'>
-                  <label className='text-lg w-28'>サイズ(cm)</label>
+                  <label className='text-lg w-28'>サイズ</label>
                 </TableCell>
                 <TableCell className='text-lg border border-t border-b border-gray-300 w-3/4'>
                   {fishLog.size}cm</TableCell>

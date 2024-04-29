@@ -52,7 +52,7 @@ const FishlogsList = ({ data }: FishLogsListProps) => {
           <h2 className='text-center text-xl mb-20'>
             {data.getFishLogs[0].placeName} 釣行記録一覧
           </h2>
-          <div className='grid md:grid-cols-2 lg:grid-cols-3 max-w-4xl mx-auto'>
+          <div className='grid md:grid-cols-2 lg:grid-cols-3 max-w-4xl mx-auto justify-center'>
             {data.getFishLogs.map((fishLog: SimpleFishLog) => (
               <Card key={fishLog.id} className='py-4 w-64 mx-4 hover:bg-gray-200 my-4 h-60'>
                 <Link
