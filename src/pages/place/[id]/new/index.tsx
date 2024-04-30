@@ -179,12 +179,12 @@ const FishLogForm = () => {
         </Table>
         <div className='text-center'>
           <Link href={`/place/${id}`} passHref>
-          <Button color='default' variant='shadow' size='sm' className='mt-10 mr-10 ml-10 mb-20'>
+          <Button color='default' variant='shadow' size='sm' className='mt-20 mr-10 ml-10 mb-20'>
             <MdCancel />
               キャンセル
             </Button>
           </Link>
-          <Button color='primary' variant='shadow' size='sm' className='mt-10 mr-10 ml-10 mb-20' onClick={handleSubmit(onSubmit)}>
+          <Button color='primary' variant='shadow' size='sm' className='mt-20 mr-10 ml-10 mb-20' onClick={handleSubmit(onSubmit)}>
             <IoIosSend />
             登録
           </Button>
