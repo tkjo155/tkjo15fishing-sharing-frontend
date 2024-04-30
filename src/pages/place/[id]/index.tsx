@@ -21,7 +21,7 @@ const FishlogsList = ({ data }: FishLogsListProps) => {
   if (!data) return <>データなし</>
 
   return (
-    <div className='bg-gray-100'>
+    <div className='bg-gray-100 min-h-screen'>
       <header className='bg-gray-900 py-4 mb-8 w-full'>
         <div className='container'>
           <Navbar style={{ backgroundColor: 'transparent' }}>

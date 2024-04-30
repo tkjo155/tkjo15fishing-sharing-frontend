@@ -132,12 +132,12 @@ const PlaceForm = ({ data }: PlaceFormProps) => {
         </div>
         <div className='mt-16 text-center'>
           <Link href={'/place'} passHref legacyBehavior>
-            <Button color='default' variant='shadow' size='sm' className='mr-10'>
+            <Button color='default' variant='shadow' size='sm' className='mt-20 mr-10 ml-10 mb-20'>
               <MdCancel />
               キャンセル
             </Button>
           </Link>
-          <Button color='primary' variant='shadow' size='sm' onClick={handleSubmit(onSubmit)}>
+          <Button color='primary' variant='shadow' size='sm' className='mt-20 mr-10 ml-10 mb-20' onClick={handleSubmit(onSubmit)}>
             <IoIosSend />
             完了
           </Button>
