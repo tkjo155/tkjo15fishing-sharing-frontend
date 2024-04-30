@@ -5,6 +5,10 @@ import { GET_PLACES } from '../../graphql/getPlaces'
 import { Place, PlacesResponse } from '@/Types'
 import { createApolloClient } from '@/libs/client'
 import { useRouter } from 'next/router'
+import { TbFish } from "react-icons/tb"
+import { GiBoatFishing } from "react-icons/gi"
+import { GiPlayButton } from "react-icons/gi";
+
 
 interface PlacesListProps {
   data: PlacesResponse
@@ -21,37 +25,47 @@ const PlacesList = ({ data }: PlacesListProps) => {
   }
 
   return (
-    <div className='container mx-auto'>
-      <header className='bg-gray-900 py-4 mb-8 rounded-t-lg'>
-        <div className='container mx-auto'>
+    <div className='bg-gray-100 min-h-screen'>
+      <header className='bg-gray-900 py-4 mb-8 w-full'>
+        <div className='container'>
           <Navbar style={{ backgroundColor: 'transparent' }}>
             <NavbarBrand>
-              <h1 className='text-white text-4xl font-bold px-6'>Fishing Spots</h1>
+              <h1 className='text-white text-3xl font-bold'>
+                <TbFish />Fishing Spots</h1>
             </NavbarBrand>
             <NavbarItem>
               <Link href={'/place/new'} passHref>
-                <Button color='primary' size='lg' variant='shadow' style={{ color: '#fff', fontFamily: 'Arial, sans-serif' }}>
-                  釣り場登録
+                <Button color='primary' size='sm' variant='shadow' style={{ color: '#fff', fontFamily: 'Arial, sans-serif' }}>
+                  <GiPlayButton />
+                  釣り場を登録
                 </Button>
               </Link>
             </NavbarItem>
           </Navbar>
         </div>
       </header>
-      <h1 className='text-center text-3xl mt-4 mb-8 font-semibold text-gray-800'>釣り場一覧</h1>
-      <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3'>
+      <div className='flex items-center justify-center'>
+        <h1 className='text-center text-4xl font-bold mb-3'>
+          Fishing spots
+        </h1>
+        <GiBoatFishing className='ml-2' size={32} />
+      </div>
+      <h2 className='text-center text-xl mb-20'>釣り場一覧</h2>
+      <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-2 max-w-4xl mx-auto'>
         {data &&
           data.getAllPlaces.map((place: Place) => (
             <Link
               href={`/place/${place.id}`}
-              key={place.id}>
+              key={place.id}
+            >
               <Card
-                className='w-full cursor-pointer'
+                className='max-w-md py-4 rounded overflow-hidden hover:bg-gray-200 shadow-lg bg-white'
                 onClick={() => handleCardClick(place)}
               >
                 <CardBody>
-                  <h2 className='text-xl font-semibold mb-2 text-gray-800'>{place.name}</h2>
-                  <p className='text-sm text-gray-600 text-right'>{place.prefecture}</p>
+                  <p className="text-tiny uppercase font-bold ml-1 mt-0">Spot name</p>
+                  <h2 className='font-bold text-xl mb-2 ml-3 text-gray-800'>{place.name}</h2>
+                  <p className='absolute bottom-2 right-3 text-sm text-gray-600'>{place.prefecture}</p>
                 </CardBody>
               </Card>
             </Link>

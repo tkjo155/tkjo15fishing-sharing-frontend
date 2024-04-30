@@ -5,6 +5,9 @@ import { SimpleFishLog, FishLogsResponse } from '@/Types'
 import { createApolloClient } from '@/libs/client'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
+import { TbFish } from "react-icons/tb"
+import { PiFishSimpleDuotone } from "react-icons/pi"
+import { GiPlayButton } from "react-icons/gi"
 
 
 interface FishLogsListProps {
@@ -18,37 +21,48 @@ const FishlogsList = ({ data }: FishLogsListProps) => {
   if (!data) return <>データなし</>
 
   return (
-    <div className='container mx-auto'>
-      <header className='bg-gray-900 py-4 mb-8 rounded-t-lg'>
-        <Navbar style={{ backgroundColor: 'transparent' }}>
-          <NavbarBrand>
-            <h1 className='text-white text-4xl font-bold px-6'>Fishing Spots</h1>
-          </NavbarBrand>
-          <Link
-            href={`/place/${id}/new`}
-            passHref
-          >
-            <Button color='primary' size='lg' variant='shadow' style={{ color: '#fff', fontFamily: 'Arial, sans-serif' }}>
-              釣行記録登録
-            </Button>
-          </Link>
-        </Navbar>
+    <div className='bg-gray-100 min-h-screen'>
+      <header className='bg-gray-900 py-4 mb-8 w-full'>
+        <div className='container'>
+          <Navbar style={{ backgroundColor: 'transparent' }}>
+            <NavbarBrand>
+              <h1 className='text-white text-3xl font-bold'>
+                <TbFish />Fishing Spots</h1>
+            </NavbarBrand>
+            <Link
+              href={`/place/${id}/new`}
+              passHref
+            >
+              <Button color='primary' size='sm' variant='shadow' style={{ color: '#fff', fontFamily: 'Arial, sans-serif' }}>
+                <GiPlayButton />
+                釣行記録を登録
+              </Button>
+            </Link>
+          </Navbar>
+        </div>
       </header>
       {data.getFishLogs.length > 0 ? (
         <>
-          <h1 className='text-center text-3xl mt-4 mb-8 font-semibold text-gray-800'>
-            {data.getFishLogs[0].placeName} 釣行記録
-          </h1>
-          <div className='grid grid-rows-3 gap-1 md:grid-cols-2 lg:grid-cols-3'>
+          <div className='flex items-center justify-center'>
+            <h1 className='text-center text-4xl font-bold mb-3'>
+              Fishing records
+            </h1>
+            <PiFishSimpleDuotone className='ml-2' size={32} />
+          </div>
+          <h2 className='text-center text-xl mb-20'>
+            {data.getFishLogs[0].placeName} 釣行記録一覧
+          </h2>
+          <div className='grid md:grid-cols-2 lg:grid-cols-3 max-w-4xl mx-auto justify-center'>
             {data.getFishLogs.map((fishLog: SimpleFishLog) => (
-              <Card key={fishLog.id} className='w-96 p-3 m-3 justify-self-center'>
+              <Card key={fishLog.id} className='py-4 w-64 mx-4 hover:bg-gray-200 my-4 h-60'>
                 <Link
                   href={`/place/${fishLog.placeId}/log/${fishLog.id}`}
                   key={fishLog.id}
                   passHref
                 >
-                  <CardHeader className='text-lg'>{fishLog.fishName}</CardHeader>
-                  <div className='flex text-gray-600 justify-end'>{fishLog.date}</div>
+                  <p className="text-tiny uppercase font-bold ml-3">Fish name</p>
+                  <CardHeader className='pb-0 pt-2 px-4 text-2xl font-semibold'>{fishLog.fishName}</CardHeader>
+                  <div className='absolute bottom-2 right-2 text-gray-600'>{fishLog.date}</div>
                 </Link>
               </Card>
             ))}
