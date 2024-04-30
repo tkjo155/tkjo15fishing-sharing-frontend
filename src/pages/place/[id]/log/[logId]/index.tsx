@@ -19,7 +19,7 @@ import React from 'react'
 import { useRouter } from 'next/router'
 import { useMutation, useQuery } from '@apollo/client'
 import { GET_FISHLOG } from '@/graphql/getFishlog'
-import { FishLog, FishLogResponse, Place, PlacesResponse, } from '@/Types'
+import { FishLog, FishLogResponse } from '@/Types'
 import { TbFish } from "react-icons/tb"
 import { GiLuckyFisherman } from "react-icons/gi"
 import { DELETE_Fishlog } from '@/graphql/deleteFishlog'
