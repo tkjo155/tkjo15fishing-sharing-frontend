@@ -37,22 +37,20 @@ const FishlogDetail = () => {
   const [deleteFishlog] = useMutation(DELETE_Fishlog);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const handleDelete = () => {
-    if (confirm('本当に削除しますか？')) {
-      deleteFishlog({
-        variables: {
-          delete: {
-            id: fishLog.id,
-          },
+    deleteFishlog({
+      variables: {
+        delete: {
+          id: fishLog.id,
         },
-        onCompleted: () => {
-          router.push({
-              pathname: `/place/${logId}`,
-            })
-        },
-      });
-      onClose();
-    }
-  };
+      },
+      onCompleted: () => {
+        router.push({
+          pathname: `/place/${logId}`,
+        })
+      }
+    });
+    onClose();
+  }
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
@@ -127,7 +125,7 @@ const FishlogDetail = () => {
           </Table>
           <div className="flex justify-center">
             <Button onClick={onOpen}>
-            <FaRegTrashAlt />
+              <FaRegTrashAlt />
               削除</Button>
             <Modal isOpen={isOpen} onClose={onClose}>
               <ModalContent>
@@ -137,10 +135,10 @@ const FishlogDetail = () => {
                 </ModalBody>
                 <ModalFooter>
                   <Button color="danger" onPress={onClose} onClick={handleDelete}>
-                  <FaRegTrashAlt />
+                    <FaRegTrashAlt />
                     削除</Button>
                   <Button onClick={onClose}>
-                  <MdCancel />
+                    <MdCancel />
                     キャンセル</Button>
                 </ModalFooter>
               </ModalContent>
