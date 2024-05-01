@@ -45,7 +45,7 @@ const FishlogDetail = () => {
       },
       onCompleted: () => {
         router.push({
-          pathname: `/place/${logId}`,
+          pathname: `/place/${fishLog.placeId}`,
         })
       }
     });
