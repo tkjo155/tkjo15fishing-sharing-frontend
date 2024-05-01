@@ -7,15 +7,24 @@ import {
   TableHeader,
   TableColumn,
   TableCell,
+  Modal,
+  ModalBody,
+  Button,
+  ModalFooter,
+  ModalContent,
+  ModalHeader,
+  useDisclosure,
 } from '@nextui-org/react'
 import React from 'react'
 import { useRouter } from 'next/router'
-import { useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { GET_FISHLOG } from '@/graphql/getFishlog'
-import { FishLog, FishLogResponse, } from '@/Types'
+import { FishLog, FishLogResponse } from '@/Types'
 import { TbFish } from "react-icons/tb"
 import { GiLuckyFisherman } from "react-icons/gi"
-
+import { DELETE_Fishlog } from '@/graphql/deleteFishlog'
+import { MdCancel } from "react-icons/md"
+import { FaRegTrashAlt } from "react-icons/fa"
 
 const FishlogDetail = () => {
   const router = useRouter();
@@ -24,6 +33,24 @@ const FishlogDetail = () => {
   const { data, loading, error } = useQuery<FishLogResponse>(GET_FISHLOG, {
     variables: { getFishLogId: Number(logId) },
   });
+
+  const [deleteFishlog] = useMutation(DELETE_Fishlog);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const handleDelete = () => {
+    deleteFishlog({
+      variables: {
+        delete: {
+          id: fishLog.id,
+        },
+      },
+      onCompleted: () => {
+        router.push({
+          pathname: `/place/${fishLog.placeId}`,
+        })
+      }
+    });
+    onClose();
+  }
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
@@ -96,6 +123,27 @@ const FishlogDetail = () => {
               </TableRow>
             </TableBody>
           </Table>
+          <div className="flex justify-center">
+            <Button onClick={onOpen}>
+              <FaRegTrashAlt />
+              削除</Button>
+            <Modal isOpen={isOpen} onClose={onClose}>
+              <ModalContent>
+                <ModalHeader>本当に削除しますか？</ModalHeader>
+                <ModalBody>
+                  <p>削除すると元に戻すことはできません。</p>
+                </ModalBody>
+                <ModalFooter>
+                  <Button color="danger" onPress={onClose} onClick={handleDelete}>
+                    <FaRegTrashAlt />
+                    削除</Button>
+                  <Button onClick={onClose}>
+                    <MdCancel />
+                    キャンセル</Button>
+                </ModalFooter>
+              </ModalContent>
+            </Modal>
+          </div>
         </div>
       </div>
     </div>

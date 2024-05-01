@@ -54,17 +54,17 @@ const FishlogsList = ({ data }: FishLogsListProps) => {
           </h2>
           <div className='grid md:grid-cols-2 lg:grid-cols-3 max-w-4xl mx-auto justify-center'>
             {data.getFishLogs.map((fishLog: SimpleFishLog) => (
+               <Link
+               href={`/place/${fishLog.placeId}/log/${fishLog.id}`}
+               key={fishLog.id}
+               passHref
+             >
               <Card key={fishLog.id} className='py-4 w-64 mx-4 hover:bg-gray-200 my-4 h-60'>
-                <Link
-                  href={`/place/${fishLog.placeId}/log/${fishLog.id}`}
-                  key={fishLog.id}
-                  passHref
-                >
                   <p className="text-tiny uppercase font-bold ml-3">Fish name</p>
                   <CardHeader className='pb-0 pt-2 px-4 text-2xl font-semibold'>{fishLog.fishName}</CardHeader>
                   <div className='absolute bottom-2 right-2 text-gray-600'>{fishLog.date}</div>
-                </Link>
               </Card>
+              </Link>
             ))}
           </div>
         </>
