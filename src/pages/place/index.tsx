@@ -1,6 +1,6 @@
+import React from 'react'
 import { Card, CardBody, Navbar, NavbarBrand, Button, NavbarItem } from '@nextui-org/react'
 import Link from 'next/link'
-import React from 'react'
 import { GET_PLACES } from '../../graphql/getPlaces'
 import { Place, PlacesResponse } from '@/Types'
 import { createApolloClient } from '@/libs/client'
@@ -100,10 +100,10 @@ const PlacesList = ({ data }: PlacesListProps) => {
 }
 
 export const getStaticProps = async () => {
-  const apolloClient = createApolloClient();
+  const apolloClient = createApolloClient()
   const { data, error } = await apolloClient.query<PlacesListProps>({
     query: GET_PLACES,
-  });
+  })
 
   console.log(error)
 
@@ -112,7 +112,7 @@ export const getStaticProps = async () => {
       data,
     },
     revalidate: 30,
-  };
-};
+  }
+}
 
 export default PlacesList

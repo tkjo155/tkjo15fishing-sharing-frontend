@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   Navbar,
   NavbarBrand,
@@ -15,7 +16,6 @@ import {
   ModalHeader,
   useDisclosure,
 } from '@nextui-org/react'
-import React from 'react'
 import { useRouter } from 'next/router'
 import { useMutation, useQuery } from '@apollo/client'
 import { GET_FISHLOG } from '@/graphql/getFishlog'
@@ -27,8 +27,8 @@ import { MdCancel } from 'react-icons/md'
 import { FaRegTrashAlt } from 'react-icons/fa'
 
 const FishlogDetail = () => {
-  const router = useRouter();
-  const { logId } = router.query;
+  const router = useRouter()
+  const { logId } = router.query
 
   const { data, loading, error } = useQuery<FishLogResponse>(GET_FISHLOG, {
     variables: { getFishLogId: Number(logId) },

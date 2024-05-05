@@ -1,3 +1,4 @@
+import React from 'react'
 import { useMutation } from '@apollo/client'
 import {
   Button,
@@ -71,8 +72,7 @@ const PlaceForm = ({ data }: PlaceFormProps) => {
     defaultValues: {
       name: String(name) || '', // nameがundefinedの場合は空文字を設定
     },
-  });
-  
+  })
 
   //完了ボタンを押したらデータ追加、画面遷移
   const onSubmit: SubmitHandler<InputPlace> = async (formData) => {
@@ -82,9 +82,9 @@ const PlaceForm = ({ data }: PlaceFormProps) => {
         await updatePlace({
           variables: {
             edit: {
-              id: placeId, 
+              id: placeId,
               name: formData.name,
-              prefectureId: Number(formData.prefectureId), 
+              prefectureId: Number(formData.prefectureId),
             },
           },
           refetchQueries: [{ query: GET_PLACES }],
@@ -111,10 +111,10 @@ const PlaceForm = ({ data }: PlaceFormProps) => {
   return (
     <div>
       <header className='bg-gray-900 py-4 mb-8 w-full'>
-      <div className='container mx-auto'>
+        <div className='container mx-auto'>
           <Navbar style={{ backgroundColor: 'transparent' }}>
             <NavbarBrand>
-            <div className='flex items-center ml-1'>
+              <div className='flex items-center ml-1'>
                 <TbFish className='text-white text-3xl mr-2' />
                 <h1 className='text-white text-3xl font-bold ml-2'>Fishing Spots</h1>
               </div>
@@ -170,14 +170,14 @@ const PlaceForm = ({ data }: PlaceFormProps) => {
                   )}
                 </TableCell>
                 <TableCell className='border-t border-b border-gray-300 w-3/4'>
-                {(selectedPrefectureId !== undefined || !id) && (
+                  {(selectedPrefectureId !== undefined || !id) && (
                     <Select
                       label='Select prefecture'
                       {...register('prefectureId', { required: '都道府県は必須です' })}
                       {...(selectedPrefectureId !== undefined
                         ? { defaultSelectedKeys: [String(selectedPrefectureId)] }
-                        : {})}                      
-                        className='w-full mt-2'
+                        : {})}
+                      className='w-full mt-2'
                     >
                       {data.prefectures.map((prefecture) => (
                         <SelectItem key={prefecture.id} value={prefecture.id}>

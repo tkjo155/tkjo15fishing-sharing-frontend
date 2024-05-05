@@ -1,3 +1,4 @@
+import React from 'react'
 import { useMutation } from '@apollo/client'
 import {
   Button,
@@ -28,8 +29,8 @@ import { TbFish } from 'react-icons/tb'
 import { PiFishSimpleDuotone } from 'react-icons/pi'
 
 const FishLogForm = () => {
-  const router = useRouter();
-  const { id } = router.query;
+  const router = useRouter()
+  const { id } = router.query
 
   const [createFishlog] = useMutation(CREATE_FISHLOG)
 
@@ -50,7 +51,7 @@ const FishLogForm = () => {
           create: {
             placeId: Number(id),
             date: formData.date,
-            image: "",
+            image: '',
             fishName: formData.fishName,
             isSunny: formData.weather.includes('sunny'),
             isRainy: formData.weather.includes('rainy'),
@@ -60,12 +61,12 @@ const FishLogForm = () => {
           },
         },
         refetchQueries: [{ query: GET_FISHLOG }],
-      });
+      })
       router.push(`/place/${id}`)
     } catch (error) {
       console.error('Error creating fishlog:', error)
     }
-  };
+  }
 
   return (
     <div>
