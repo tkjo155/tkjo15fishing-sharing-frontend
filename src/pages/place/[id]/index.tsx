@@ -69,7 +69,7 @@ const FishlogsList = ({ data }: FishLogsListProps) => {
           </div>
         </>
       ) : (
-        <>釣行記録がありません</>
+        <div className='p-3'>釣行記録がありません</div>
       )}
     </div>
   )
