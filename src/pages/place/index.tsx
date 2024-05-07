@@ -26,7 +26,7 @@ const PlacesList = ({ data }: PlacesListProps) => {
 
   const handleEditClick = (place: Place) => {
     router.push({
-      pathname: '/place/new',
+      pathname: '/place/form',
       query: {
         id: place.id,
         name: place.name,
@@ -47,7 +47,7 @@ const PlacesList = ({ data }: PlacesListProps) => {
               </div>
             </NavbarBrand>
             <NavbarItem>
-              <Link href={'/place/new'} passHref>
+              <Link href={'/place/form'} passHref>
                 <Button
                   color='primary'
                   size='sm'
