@@ -16,7 +16,6 @@ import {
 } from '@nextui-org/react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { InputPlace, PlacesResponse, Prefecture } from '@/Types'
 import { CREATE_PLACE } from '@/graphql/createPlaces'
@@ -42,47 +41,25 @@ const PlaceForm = ({ data }: PlaceFormProps) => {
   //港情報登録
   const [createPlace] = useMutation(CREATE_PLACE)
   const [updatePlace] = useMutation(UPDATE_PLACE)
-  //港名の状態管理
-  const [inputName, setInputName] = useState('')
-  const [selectedPrefectureId, setSelectedPrefectureId] = useState<number>()
   const selectedPrefecture = data.prefectures.find((pref) => pref.name === prefecture)
+  const selectedPrefectureId = selectedPrefecture ? selectedPrefecture.id : undefined;
 
-  useEffect(() => {
-    if (name) {
-      setInputName(String(name))
-    }
-  }, [name])
-
-  useEffect(() => {
-    if (selectedPrefecture) {
-      const prefectureId = data.prefectures.find(
-        (prefecture) => prefecture.name === selectedPrefecture.name,
-      )?.id
-      if (prefectureId) {
-        setSelectedPrefectureId(prefectureId)
-      }
-    }
-  }, [selectedPrefecture, data.prefectures])
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<InputPlace>({
-    defaultValues: {
-      name: String(name) || '', // nameがundefinedの場合は空文字を設定
-    },
-  })
+  } = useForm<InputPlace>()
+
 
   //完了ボタンを押したらデータ追加、画面遷移
   const onSubmit: SubmitHandler<InputPlace> = async (formData) => {
     try {
-      if (placeId) {
-        // idが定義されている場合、既存の場所を更新
-        await updatePlace({
+      if (!placeId) {
+        // idが未定義の場合、新しい場所を作成
+        await createPlace({
           variables: {
-            edit: {
-              id: placeId,
+            create: {
               name: formData.name,
               prefectureId: Number(formData.prefectureId),
             },
@@ -90,10 +67,11 @@ const PlaceForm = ({ data }: PlaceFormProps) => {
           refetchQueries: [{ query: GET_PLACES }],
         })
       } else {
-        // idが未定義の場合、新しい場所を作成
-        await createPlace({
+        // idが定義されている場合、既存の場所を更新
+        await updatePlace({
           variables: {
-            create: {
+            edit: {
+              id: placeId,
               name: formData.name,
               prefectureId: Number(formData.prefectureId),
             },
@@ -155,9 +133,8 @@ const PlaceForm = ({ data }: PlaceFormProps) => {
                       },
                     })}
                     type='text'
+                    defaultValue={name ? String(name) : ''}
                     label='Port name'
-                    value={inputName}
-                    onChange={(e) => setInputName(e.target.value)}
                     className='w-full mt-2'
                   />
                 </TableCell>
@@ -169,14 +146,12 @@ const PlaceForm = ({ data }: PlaceFormProps) => {
                     <span className='text-red-500'>{errors.prefectureId.message}</span>
                   )}
                 </TableCell>
+                
                 <TableCell className='border-t border-b border-gray-300 w-3/4'>
-                  {(selectedPrefectureId !== undefined || !id) && (
                     <Select
                       label='Select prefecture'
                       {...register('prefectureId', { required: '都道府県は必須です' })}
-                      {...(selectedPrefectureId !== undefined
-                        ? { defaultSelectedKeys: [String(selectedPrefectureId)] }
-                        : {})}
+                      defaultSelectedKeys={selectedPrefectureId !== undefined ? [String(selectedPrefectureId)] : []}
                       className='w-full mt-2'
                     >
                       {data.prefectures.map((prefecture) => (
@@ -185,7 +160,6 @@ const PlaceForm = ({ data }: PlaceFormProps) => {
                         </SelectItem>
                       ))}
                     </Select>
-                  )}
                 </TableCell>
               </TableRow>
             </TableBody>
