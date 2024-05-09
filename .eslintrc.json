@@ -4,8 +4,9 @@
     "es2021": true
   },
   "extends": ["plugin:react/recommended"],
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "ecmaVersion": "latest",
+    "ecmaVersion": 12,
     "sourceType": "module"
   },
   "plugins": ["@typescript-eslint", "import"],
@@ -24,7 +25,7 @@
       {
         "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
         "alphabetize": {
-          "order": "asc",
+          "order": "",
           "caseInsensitive": true
         }
       }

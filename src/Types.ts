@@ -1,7 +1,6 @@
-
 export type FishLog = {
   id: number
-  placeId: number 
+  placeId: number
   placeName: string
   date: string
   image: string
@@ -15,7 +14,7 @@ export type FishLog = {
 
 export type SimpleFishLog = {
   id: number
-  placeId: number 
+  placeId: number
   placeName: string
   date: string
   fishName: string
@@ -23,7 +22,7 @@ export type SimpleFishLog = {
 
 export type InputFishLog = {
   id: number
-  placeId: number 
+  placeId: number
   placeName: string
   date: string
   image: string
@@ -35,7 +34,6 @@ export type InputFishLog = {
   size: number
   tide: string
 }
-
 
 export type Place = {
   id: number
